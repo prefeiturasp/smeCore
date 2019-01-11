@@ -1,0 +1,31 @@
+﻿#topMenu {
+    height: 2.5em;
+}
+
+.container-content {
+    padding-left: 2.5em;
+    padding-right: 2.5em;
+}
+
+#townhallIcon {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.background-color-menu1 {
+    background-color: #4B01D1;
+}
+
+.background-color-menu2 {
+    background-color: #3700B3;
+}
+
+.background-color-menu3 {
+    background-color: #280096;
+}
+
+.no-white-space {
+    white-space: nowrap;
+}

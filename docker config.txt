@@ -1,0 +1,6 @@
+Docker:
+- Instancia um data volume container para incrementar a persistencia de dados, evitando que as informações se percam caso o container principal seja atualizado/recriado.
+docker create -v /var/lib/postgresql/data --name PostgresData alpine
+
+- Instancia o container principal do postgres, definindo nome da instancia (postgresql) e senha (39162604), expondo a porta 5432 (padrão) e vinculando o data volume container (PostresData)
+docker run -p 5432:5432 --name postgresql -e POSTGRES_PASSWORD=39162604 -d --volumes-from PostgresData postgres

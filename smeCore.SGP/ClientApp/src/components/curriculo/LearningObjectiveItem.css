@@ -1,0 +1,19 @@
+﻿.rounded-pill > span {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 0.9em;
+}
+
+.LearningObjective-label {
+    padding-right: 1em;
+}
+
+.LearningObjective-item-description {
+    font-size: 0.7em;
+}
+
+.LearningObjective-item {
+    padding-bottom: 0.5em;
+}

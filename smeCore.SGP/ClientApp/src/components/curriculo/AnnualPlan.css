@@ -1,0 +1,7 @@
+﻿.red-dot {
+    width: 0.8em;
+    height: 0.8em;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}

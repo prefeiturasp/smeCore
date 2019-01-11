@@ -1,0 +1,17 @@
+﻿.small-text {
+    font-size: 0.8em;
+}
+
+#cyclePlanning-textarea {
+    height: 25em;
+}
+
+.number-icon {
+    width: 2em;
+    height: 2em;
+}
+
+    .number-icon > h5 {
+        padding-top: 0.25em;
+        margin-left: -0.0em
+    }

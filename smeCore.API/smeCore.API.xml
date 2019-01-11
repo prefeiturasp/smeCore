@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>smeCore.API</name>
+    </assembly>
+    <members>
+        <member name="T:smeCore.API.Contexts.SMEContext">
+            <summary>
+            DataBase Context do smeCore.
+            </summary>
+        </member>
+        <member name="P:smeCore.API.Contexts.SMEContext.LoggedUsers">
+            <summary>
+            DbSet para mapear os usuários logados no sistema.
+            </summary>
+        </member>
+        <member name="M:smeCore.API.Contexts.SMEContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{smeCore.API.Contexts.SMEContext})">
+            <summary>
+            Construtor padrão do SMEContext
+            </summary>
+            <param name="options">Dependência de configuração/inicialização do SMECore</param>
+        </member>
+        <member name="T:smeCore.API.Controllers.Authentication.AuthController">
+            <summary>
+            Controller da API responsável pela autenticação do usuário.
+            </summary>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,smeCore.API.Contexts.SMEContext)">
+            <summary>
+            Construtor padrão para o AuthController, faz injeção de dependências de IConfiguration e SMEContext.
+            </summary>
+            <param name="config">Depêndencia de configurações</param>
+            <param name="db">Depêndencia de dataContext (SMEContext)</param>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.Authenticate(smeCore.Models.Authentication.Credential)">
+            <summary>
+            Método para validar as credenciais de login do usuário.
+            </summary>
+            <param name="credential">Objeto que contém informações da credencial do usuário</param>
+            <returns>Objeto contendo informações do usuário encontrado, caso não seja encontrado nenhum usuário com correspondente a credencial enviada o método retorna nulo.</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CreateToken(smeCore.Models.Authentication.User)">
+            <summary>
+            Método para gerar o token de acesso.
+            </summary>
+            <param name="user">Objeto contendo informações do usuário</param>
+            <returns>Token gerado à partir das informações do usuário.</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CreateRefreshToken">
+            <summary>
+            Método para gerar um refresh token para revalidar acesso do usuário sem a necessidade de um novo login.
+            </summary>
+            <returns>Refresh token para revalidação do usuário</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CleanString(System.String,System.String[])">
+            <summary>
+            Método para limpar a string removendo caracteres indesejados
+            </summary>
+            <param name="originalString">String original a ser retirado os caracteres</param>
+            <param name="parameters">Vetor de caracteres a serem removidas</param>
+            <returns>String sem os caracteres contidos no vetor 'parameters'</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.GetUser(System.String)">
+            <summary>
+            Método para encontrar um usuário pelo username. Não está implementado corretamente ainda.
+            </summary>
+            <param name="username">Nome de usuário a ser retornado</param>
+            <returns>Usuário com o username especificado.</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.ExtractDataByName(System.String,System.String)">
+            <summary>
+            Método para extrair atributos de uma página html (raw) pela propriedade 'name'. Só funciona se a propriedade 'name' estiver antes do 'value'.
+            </summary>
+            <param name="source">Fonte do html (raw)</param>
+            <param name="name">Nome do atributo desejado</param>
+            <returns>Valor (value) do atributo desejado</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.LoginJWT(smeCore.Models.Authentication.Credential)">
+            <summary>
+            Método para efetuar o login do usuário utilizando o sistema http://identity.sme.prefeitura.sp.gov.br para validar o usuário e receber um token JWT.
+            </summary>
+            <param name="credential">Objeto que contém informações da credencial do usuário, neste caso específico é necessário o atributo username e password</param>
+            <returns>Token e RefreshToken gerado à partir das informações do usuário encontrado, caso não seja encontrado nenhum usuário correspondente à credencial, o método retorna usuário não autorizado.</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.RefreshLoginJWT(smeCore.Models.Authentication.Credential)">
+            <summary>
+            Método para renovar o token através do refresh token e nome de usuário.
+            </summary>
+            <param name="credential">Objeto que contém informações da credencial do usuário, neste caso específico é necessário o atributo username e refreshToken</param>
+            <returns>Token e RefreshToken gerado à partir do RefreshToken utilizado, caso o RefreshToken não seja válido, o método retorna usuário não autorizado.</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.LoginIdentity(smeCore.Models.Authentication.Credential)">
+            <summary>
+            Método para fazer login do usuário utilizando o sistema http://identity.sme.prefeitura.sp.gov.br.
+            </summary>
+            <param name="credential">Objeto que contém informações da credencial do usuário, neste caso específico é necessário o atributo username e password</param>
+            <returns>Informações sobre o usuário que está tentando logar (tokens de acesso e cookies), caso não seja encontrado nenhum usuário correspondente à credencial, o método retorna usuário não autorizado.</returns>
+        </member>
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.LogoutIdentity(smeCore.Models.Authentication.Credential)">
+            <summary>
+            Método para fazer o logout utilizando o sistema http://identity.sme.prefeitura.sp.gov.br.
+            </summary>
+            <param name="credential">Objeto que contém informações da credencial do usuário, neste caso específico é necessário o atributo username</param>
+            <returns>Sucesso (status code 200) caso seja possível deslogar o usuário desejado.</returns>
+        </member>
+    </members>
+</doc>

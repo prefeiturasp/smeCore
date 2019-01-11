@@ -1,0 +1,57 @@
+﻿#homeRoot {
+    padding-top: 3.2em;
+    padding-left: 3.2em;
+    padding-right: 3.2em;
+}
+
+#changeClass {
+    padding-top: 1em;
+}
+
+#changeClassTextBox {
+    width: 35em;
+}
+
+#curriculoContent {
+    padding-top: 2em;
+}
+
+.container-tabpanel {
+    padding: 1em;
+}
+
+.container-tabpanel-content {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+.spacing {
+    width: 1em;
+}
+
+.vertical-spacing {
+    height: 1em;
+}
+
+.vertical-spacing-2 {
+    height: 2em;
+}
+
+.horizontal-rule {
+    margin-top: 0;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.header-rule {
+    margin-top: -0.1em;
+}
+
+.color-purple {
+    color: #7C4DFF;
+}
+
+.tab-pane {
+    margin-bottom: 3em;
+}

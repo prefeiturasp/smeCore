@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>smeCore.SGP</name>
+    </assembly>
+    <members>
+        <member name="T:smeCore.SGP.Contexts.SMEContext">
+            <summary>
+            DataBase Context do smeCore.
+            </summary>
+        </member>
+        <member name="P:smeCore.SGP.Contexts.SMEContext.LoggedUsers">
+            <summary>
+            DbSet para mapear os usuários logados no sistema.
+            </summary>
+        </member>
+        <member name="M:smeCore.SGP.Contexts.SMEContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{smeCore.SGP.Contexts.SMEContext})">
+            <summary>
+            Construtor padrão do SMEContext
+            </summary>
+            <param name="options">Dependência de configuração/inicialização do SMECore</param>
+        </member>
+    </members>
+</doc>
