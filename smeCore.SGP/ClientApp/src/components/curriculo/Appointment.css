@@ -1,0 +1,22 @@
+﻿.dot {
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.color-red {
+    background-color: red;
+}
+
+.color-purple {
+    background-color: mediumpurple;
+}
+
+.color-brown {
+    background-color: saddlebrown;
+}
+
+.color-yellow {
+    background-color: gold;
+}
