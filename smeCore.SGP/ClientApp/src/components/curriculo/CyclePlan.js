@@ -62,11 +62,11 @@ export class CyclePlan extends Component {
                         <div className="spacing"></div>
 
                         <div className="btn-group" role="group" arial-label="Change day control">
-                            <button type="button" className="btn btn-outline-secondary btn-sm">&lt;</button>
-                            <button type="button" className="btn btn-outline-secondary btn-sm">&gt;</button>
+                            <button type="button" className="btn btn-outline-secondary btn-sm sem-border">&lt;</button>
+                            <button type="button" className="btn btn-outline-secondary btn-sm sem-border">&gt;</button>
                         </div>
                         &nbsp;
-                                    <button className="btn btn-sm">2019</button>
+                        <button className="btn btn-sm">2019</button>
                     </div>
 
                     <ul className="nav navbar-nav ml-auto">
@@ -79,7 +79,7 @@ export class CyclePlan extends Component {
                     </ul>
                 </nav>
 
-                <hr className="horizontal-rule" />
+                <hr className="horizontal-rule bg-azul-ux" />
 
                 <div id="cyclePlan-info" className="container-tabpanel-content">
                     <div className="container row">

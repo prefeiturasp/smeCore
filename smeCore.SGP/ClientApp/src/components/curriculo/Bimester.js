@@ -51,7 +51,7 @@ export class Bimester extends Component {
 
     render() {
         return (
-            <div className="w-auto shadow rounded">
+            <div className="w-auto shadows-box-bimester rounded">
                 <button className="btn btn-outline-light btn-lg btn-block border-0" type="button" data-toggle="collapse" data-target={this.state.contentTarget} aria-expanded="false" aria-controls={this.state.contentId}>
                     <div className="d-flex align-items-center">
                         <img src={this.state.imageName} alt="bimester value" id={this.state.imageId} />

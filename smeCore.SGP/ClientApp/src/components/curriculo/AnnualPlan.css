@@ -5,3 +5,15 @@
     border-radius: 50%;
     display: inline-block;
 }
+
+.sem-border {
+    border: none !important;
+}
+
+.font-color-black {
+    color: #000;
+}
+
+.bg-azul-ux {
+    background-color: #10a3fb;
+}

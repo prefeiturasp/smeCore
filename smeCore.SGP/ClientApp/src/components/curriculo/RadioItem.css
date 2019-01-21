@@ -1,0 +1,90 @@
+﻿.container-radio-itens {
+    font-size: 0.8em;
+    margin-right: 30px;
+}
+
+.container-radio-itens label{
+    display:inline-block;
+   
+}
+
+.border-radio-itens{
+    border:solid 1px red;
+}
+
+/*Colocando Bordas de cores diferentes para cada radio*/
+.ciencias::after, .portugues::after, .hsitoria::after, .geografia::after, .matemativa::after {
+    content: " ";
+    width: 100%;
+    height: 8px;
+    display: inline-block;
+    text-align: center;
+    border-radius:2px;
+
+}
+
+.ciencias::after {
+    background-color: #FFD500;
+}
+.portugues::after {
+    background-color: #FB1616;
+}
+.hsitoria::after {
+    background-color: #10A3FB;
+}
+.geografia::after {
+    background-color: #280096;
+}
+.matemativa::after {
+    background-color: #009640;
+}
+
+
+.example {
+    margin-bottom: 1.5em;
+}
+
+input[type=checkbox]:not(old){
+    width: 2em;
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    opacity: 0;
+}
+
+    input[type=checkbox]:not(old) + label{
+        display: inline-block;
+        margin-left: -2em;
+        line-height: 1.5em;
+    }
+
+        input[type=checkbox]:not(old) + label > span {
+            display: inline-block;
+            width: 1.5em;
+            height: 1.5em;
+            margin: 0.25em 0.5em 0.25em 0.25em;
+            border: 0.0625em solid rgb(30,101,143);
+            border-radius: 0.2em;
+            background: rgb(255,255,255);
+
+            vertical-align: bottom;
+        }
+
+    input[type=checkbox]:not(old):checked + label > span {
+        background: #1e658f;
+    }
+
+        input[type=checkbox]:not(old):checked + label > span:before {
+            content: '✓';
+            /*content: "\2714";*/
+            display: block;
+            width: 1em;
+            color: #fff;
+            font-size: 1.2em;
+            line-height: 1em;
+            text-align: center;
+            text-shadow: 0 0 0.0714em rgb(115,153,77);
+            font-weight: bold;
+        }
+
+       
