@@ -2,6 +2,7 @@
 import './Home.css';
 import { CyclePlan } from './CyclePlan';
 import { AnnualPlan } from './AnnualPlan';
+import { ClassPlan } from './ClassPlan';
 
 export class Home extends Component {
     static displayName = Home.name;
