@@ -2,6 +2,7 @@
 import './Home.css';
 import { CyclePlan } from './CyclePlan';
 import { AnnualPlan } from './AnnualPlan';
+import { ClassPlan } from './ClassPlan';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -42,11 +43,7 @@ export class Home extends Component {
                         </li>
                     </ul>
                     <div className="tab-content" id="myTabContent">
-                        <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
-                            <div className="container-tabpanel">
-                                <h4 className="display-4">Em construção...</h4>
-                            </div>
-                        </div>
+                        <ClassPlan name="classPlan" />
 
                         <AnnualPlan name="annualPlan" />
 
