@@ -101,7 +101,7 @@ export class CyclePlan extends Component {
 
                         <div className="col-3">
                             <div className="d-flex">
-                                <h5 className="font-weight-light color-purple">Matriz de saberes</h5>
+                                <h5 className="font-weight-light text-color-purple">Matriz de saberes</h5>
                             </div>
 
                             <hr className="header-rule" />
@@ -115,7 +115,7 @@ export class CyclePlan extends Component {
 
                         <div className="col">
                             <div className="d-flex">
-                                <h5 className="font-weight-light color-purple">Objetivos de Desenvolvimento Sustentável (ODS)</h5>
+                                <h5 className="font-weight-light text-color-purple">Objetivos de Desenvolvimento Sustentável (ODS)</h5>
                             </div>
 
                             <hr className="header-rule" />

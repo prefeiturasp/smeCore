@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './ClassPlan.css';
 import { CalenderPlan } from './CalendarPlan';
+import { EditAppointment } from './EditAppointment';
 
 
 export class ClassPlan extends Component {
@@ -8,8 +9,17 @@ export class ClassPlan extends Component {
         super(props);
 
         this.state = {
-            id: props.name + "Item"
+            showEditAppointment: false
         };
+
+        // This binding is necessary to make `this` work in the callback
+        this.editAppointmentClick = this.editAppointmentClick.bind(this);
+    }
+
+    editAppointmentClick() {
+        this.setState(state => ({
+            showEditAppointment: !state.showEditAppointment
+        }));
     }
 
     render() {
@@ -17,7 +27,7 @@ export class ClassPlan extends Component {
             <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
                 <nav className="container-tabpanel navbar">
                     <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm">Hoje</button>
+                        <button className="btn btn-outline-primary btn-sm" onClick={this.editAppointmentClick}>Hoje</button>
 
                         <div className="spacing"></div>
 
@@ -54,7 +64,10 @@ export class ClassPlan extends Component {
                     </ul>
                 </nav>
 
-                <CalenderPlan name="calendarPlan" />
+                {this.state.showEditAppointment === false ?
+                    (<CalenderPlan name="calendarPlan" />) :
+                    (<EditAppointment color="red" time="7:30am" name="5° B" school="EMEF" />)
+                }
             </div>
         );
     }

@@ -94,7 +94,7 @@ export class Bimester extends Component {
                             <div className="col">
                                 <div id="myObjectives">
                                     <div className="d-flex">
-                                        <h5 className="font-weight-light color-purple">Meus Objetivos (Currículo)</h5>
+                                        <h5 className="font-weight-light text-color-purple">Meus Objetivos (Currículo)</h5>
 
                                         <div className="d-flex flex-fill flex-row-reverse">
                                             <span className="font-weight-lighter font-italic">Itens selecionados</span>
@@ -114,7 +114,7 @@ export class Bimester extends Component {
 
                                 <div id="annualPlanning">
                                     <div className="d-flex">
-                                        <h5 className="font-weight-light color-purple">Planejamento Anual</h5>
+                                        <h5 className="font-weight-light text-color-purple">Planejamento Anual</h5>
 
                                         <div className="d-flex flex-fill flex-row-reverse">
                                             <span className="font-weight-lighter font-italic">Itens autorais do professor</span>
