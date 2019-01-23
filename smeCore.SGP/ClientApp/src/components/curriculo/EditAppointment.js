@@ -44,9 +44,9 @@ export class EditAppointment extends Component {
                     </div>
 
                     <div className="ml-auto form-inline">
-                        <button className="btn btn-primary">Listão</button>
+                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Listao.aspx" role="button">Listão</a>
                         <div className="spacing"></div>
-                        <button className="btn btn-primary">Frequência</button>
+                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Frequencia.aspx" role="button">Frequência</a>
                     </div>
                 </div>
 
