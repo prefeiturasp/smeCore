@@ -20,5 +20,35 @@
             </summary>
             <param name="options">Dependência de configuração/inicialização do SMECore</param>
         </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.#ctor(smeCore.SGP.Contexts.SMEContext)">
+            <summary>
+            Construtor padrão para o PlanejamentoController, faz injeção de dependências do SMEContext.
+            </summary>
+            <param name="db">Depêndencia de dataContext (SMEContext)</param>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.ListarObjetivosAprendizagem(System.String)">
+            <summary>
+            Método para listar os objetivos de aprendizagem, podendo ser filtrado pelo ano desejado.
+            </summary>
+            <param name="ano">Valor opcional para filtrar os resultados</param>
+            <returns>Retorna a coleção de objetivos de aprendizagem em formato JSON</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.ListarMatrizSaberes">
+            <summary>
+            Método para listar os itens da matriz dos saberes.
+            </summary>
+            <returns>Retorna todos os elementos da matriz dos saberes em formato JSON.</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.ListarODS">
+            <summary>
+            Método para listar os Objetivos de Desenvolvimento Sustentável (ODS).
+            </summary>
+            <returns>Retorna todos os elementos dos objetivos de desenvolvimento sustentavel (ODS) em formato JSON.</returns>
+        </member>
+        <member name="M:smeCore.SGP.Models.Planning.LearningObjective.CleanCode">
+            <summary>
+            Limpa os caracteres indesejados do campo 'code'
+            </summary>
+        </member>
     </members>
 </doc>

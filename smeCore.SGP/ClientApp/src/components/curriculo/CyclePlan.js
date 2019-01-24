@@ -14,38 +14,17 @@ export class CyclePlan extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            SustainableDevItems: [
-                { number: "1", description: "Erradicação da Pobreza" },
-                { number: "2", description: "Fome zero e agricultura sustentável" },
-                { number: "3", description: "Saúde e Bem Estar" },
-                { number: "4", description: "Educação de Qualidade" },
-                { number: "5", description: "Igualdade de Gênero" },
-                { number: "6", description: "Água Potável e Saneamento" },
-                { number: "7", description: "Energia Limpa e Acessível" },
-                { number: "8", description: "Trabaljo decente e crescimento econômico" },
-                { number: "9", description: "Indústria, inovação e infraestrutura" },
-                { number: "10", description: "Redução das desigualdades" },
-                { number: "11", description: "Cidades e comunidades sustentáveis" },
-                { number: "12", description: "Consumo e produção responsáveis" },
-                { number: "13", description: "Ação contra a mudança global do clima" },
-                { number: "14", description: "Vida na água" },
-                { number: "15", description: "Vida terrestre" },
-                { number: "16", description: "Paz, justiça e instituições eficazes" },
-                { number: "17", description: "Parcerias e meios de implementação" }
-            ],
-            KnowledgeItems: [
-                { number: "1", description: "Pensamento Científico, Crítico e Criativo" },
-                { number: "2", description: "Resolução de Problemas" },
-                { number: "3", description: "Comunicação" },
-                { number: "4", description: "Autoconhecimento e Autocuidado" },
-                { number: "5", description: "Autonomia e Determinação" },
-                { number: "6", description: "Abertura à Diversidade" },
-                { number: "7", description: "Responsabilidade e Participação" },
-                { number: "8", description: "Empatia e Colaboração" },
-                { number: "9", description: "Repertório Cultural" },
-            ]
-        });
+        fetch('api/Planejamento/ListarODS')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ SustainableDevItems: data, loading: false });
+            });
+
+        fetch('api/Planejamento/ListarMatrizSaberes')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ KnowledgeItems: data, loading: false });
+            });
     }
 
     componentWillUnmount() {
@@ -108,7 +87,7 @@ export class CyclePlan extends Component {
 
                             <ul className="list-unstyled">
                                 {this.state.KnowledgeItems.map(knowledgeItem => (
-                                    <KnowledgeItem number={knowledgeItem.number} description={knowledgeItem.description} />
+                                    <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} />
                                 ))}
                             </ul>
                         </div>
@@ -122,7 +101,7 @@ export class CyclePlan extends Component {
 
                             <ul className="list-unstyled">
                                 {this.state.SustainableDevItems.map(sustainableDevItem => (
-                                    <SustainableDevItem number={sustainableDevItem.number} description={sustainableDevItem.description} />
+                                    <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} />
                                 ))}
                             </ul>
                         </div>
