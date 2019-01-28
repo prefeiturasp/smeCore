@@ -8,8 +8,52 @@ export class ClassPlan extends Component {
     constructor(props) {
         super(props);
 
+        let today = new Date();
+        let month = today.getMonth();
+
+        switch (month) {
+            default:
+            case "0":
+                month = "Janeiro";
+                break;
+            case "1":
+                month = "Fevereiro";
+                break;
+            case "2":
+                month = "Março";
+                break;
+            case "3":
+                month = "Abril";
+                break;
+            case "4":
+                month = "Maio";
+                break;
+            case "5":
+                month = "Junho";
+                break;
+            case "6":
+                month = "Julho";
+                break;
+            case "7":
+                month = "Agosto";
+                break;
+            case "8":
+                month = "Setembro";
+                break;
+            case "9":
+                month = "Outubro";
+                break;
+            case "10":
+                month = "Novembro";
+                break;
+            case "11":
+                month = "Dezembro";
+                break;
+        }
+
         this.state = {
-            showEditAppointment: false
+            showEditAppointment: false,
+            today: today.getDate() + " de " + month + " - " + today.getFullYear()
         };
 
         // This binding is necessary to make `this` work in the callback
@@ -27,41 +71,10 @@ export class ClassPlan extends Component {
             <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
                 <nav className="container-tabpanel navbar">
                     <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm" onClick={this.editAppointmentClick}>Hoje</button>
-
-                        <div className="spacing"></div>
-
-                        <div className="btn-group" role="group" arial-label="Change day control">
-                            <button type="button" className="btn btn-outline-secondary btn-sm">&lt;</button>
-                            <button type="button" className="btn btn-outline-secondary btn-sm">&gt;</button>
-                        </div>
-                        &nbsp;
-                        <button className="btn btn-sm">Março de 2019</button>
+                        <button className="btn btn-outline-primary btn-sm" onClick={this.editAppointmentClick}>{this.state.today}</button>
                     </div>
 
-                    <ul className="nav navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <div className="form-inline">
-                                <button className="btn"><i className="fas fa-cog"></i></button>
-
-                                <select className="form-control">
-                                    <option hidden disabled defaultValue value>Mês</option>
-                                    <option value="janeiro">Janeiro</option>
-                                    <option value="fevereiro">Fevereiro</option>
-                                    <option value="marco">Março</option>
-                                    <option value="abril">Abril</option>
-                                    <option value="maio">Maio</option>
-                                    <option value="junho">Junho</option>
-                                    <option value="julho">Julho</option>
-                                    <option value="agosto">Agosto</option>
-                                    <option value="setembro">Setembro</option>
-                                    <option value="outubro">Outubro</option>
-                                    <option value="novembro">Novembro</option>
-                                    <option value="dezembro">Dezembro</option>
-                                </select>
-                            </div>
-                        </li>
-                    </ul>
+                    
                 </nav>
 
                 {this.state.showEditAppointment === false ?

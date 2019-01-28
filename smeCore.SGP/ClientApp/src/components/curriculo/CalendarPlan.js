@@ -7,8 +7,57 @@ export class CalenderPlan extends Component {
         super(props);
 
         this.state = {
-            id: props.name + "Item"
+            id: props.name + "Item",
+            current_week: [],
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
         };
+    }
+
+    componentDidMount() {
+        let today = new Date();
+        let week_day = today.getDay();
+        today.setDate(today.getDate() - week_day);
+
+        function getWeek(sunday) {
+            let week = [];
+
+            for (var i = 0; i < 7; i++) {
+                let current = new Date();
+                current.setDate(sunday.getDate() + i);
+                week[i] = {};
+                week[i].day = current.getDate();
+
+                if (i === 0 || i === 6)
+                    week[i].workday = "false";
+                else
+                    week[i].workday = "true";
+
+                week[i].name = current.getDate() + "-" + current.getMonth() + "-" + i;
+            }
+
+            return (week);
+        }
+
+        this.setState({ current_week: getWeek(today) });
+
+        today.setDate(today.getDate() + 7);
+        this.setState({ week1: getWeek(today) });
+
+        today.setDate(today.getDate() + 7);
+        this.setState({ week2: getWeek(today) });
+
+        today.setDate(today.getDate() + 7);
+        this.setState({ week3: getWeek(today) });
+
+        today.setDate(today.getDate() + 7);
+        this.setState({ week4: getWeek(today) });
+    }
+
+    componentWillUnmount() {
+
     }
 
     render() {
@@ -28,53 +77,33 @@ export class CalenderPlan extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <CalenderDay day="27" workday="false" />
-                            <CalenderDay day="28" workday="true" />
-                            <CalenderDay day="29" workday="true" />
-                            <CalenderDay day="30" workday="true" />
-                            <CalenderDay day="31" workday="true" />
-                            <CalenderDay day="1" workday="true" />
-                            <CalenderDay day="2" workday="false" />
+                            {this.state.current_week.map(week_day => (
+                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                            ))}
                         </tr>
 
                         <tr>
-                            <CalenderDay day="3" workday="false" />
-                            <CalenderDay day="4" workday="true" />
-                            <CalenderDay day="5" workday="true" />
-                            <CalenderDay day="6" workday="true" />
-                            <CalenderDay day="7" workday="true" />
-                            <CalenderDay day="8" workday="true" />
-                            <CalenderDay day="9" workday="false" />
+                            {this.state.week1.map(week_day => (
+                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                            ))}
                         </tr>
 
                         <tr>
-                            <CalenderDay day="10" workday="false" />
-                            <CalenderDay day="11" workday="true" />
-                            <CalenderDay day="12" workday="true" />
-                            <CalenderDay day="13" workday="true" />
-                            <CalenderDay day="14" workday="true" />
-                            <CalenderDay day="15" workday="true" />
-                            <CalenderDay day="16" workday="false" />
+                            {this.state.week2.map(week_day => (
+                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                            ))}
                         </tr>
 
                         <tr>
-                            <CalenderDay day="17" workday="false" />
-                            <CalenderDay day="18" workday="true" />
-                            <CalenderDay day="19" workday="true" />
-                            <CalenderDay day="20" workday="true" />
-                            <CalenderDay day="21" workday="true" />
-                            <CalenderDay day="22" workday="true" />
-                            <CalenderDay day="23" workday="false" />
+                            {this.state.week3.map(week_day => (
+                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                            ))}
                         </tr>
 
                         <tr>
-                            <CalenderDay day="24" workday="false" />
-                            <CalenderDay day="25" workday="true" />
-                            <CalenderDay day="26" workday="true" />
-                            <CalenderDay day="27" workday="true" />
-                            <CalenderDay day="28" workday="true" />
-                            <CalenderDay day="1" workday="true" />
-                            <CalenderDay day="2" workday="false" />
+                            {this.state.week4.map(week_day => (
+                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                            ))}
                         </tr>
                     </tbody>
                 </table>

@@ -1,3 +1,8 @@
 ﻿.appointments {
     padding-top: 0.7em;
+    min-height: 8em;
+}
+
+.calendarDay-btn {
+    border-radius: 50px;
 }

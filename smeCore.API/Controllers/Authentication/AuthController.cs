@@ -88,6 +88,10 @@ namespace smeCore.API.Controllers.Authentication
                         return (null);
 
                     result = await postResponse.Content.ReadAsStringAsync();
+
+                    // Caso o usuário não seja autenticado, retorna 'null'
+                    if (result.StartsWith("<form method='post' action='http://coresso.sme.prefeitura.sp.gov.br/Login.ashx'>") == false)
+                        return (null);
                 }
 
                 // Cria o usuário
