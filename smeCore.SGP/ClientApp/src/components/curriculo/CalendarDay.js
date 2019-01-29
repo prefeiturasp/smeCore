@@ -57,11 +57,8 @@ export class CalenderDay extends Component {
     render() {
         console.log("render");
         return (
-            <td className="border">
-                {this.props.workday === "false" ?
-                    (<div className="day text-small text-info text-center font-weight-bold">{this.props.day}</div>) :
-                    (<div className="day text-small text-info text-center">{this.props.day}</div>)
-                }
+            <td className={this.props.workday === "true" ? "border" : "border not-workday"}>
+                {this.props.workday === "true" && (<div className="day text-small text-info text-center">{this.props.day}</div>)}
 
                 <div className="appointments">
                     {this.state.appointments.map(appointment => (

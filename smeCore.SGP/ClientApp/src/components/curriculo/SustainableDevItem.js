@@ -14,7 +14,7 @@ export class SustainableDevItem extends Component {
         return (
             <li className="d-flex align-items-center SustainableDev-item" id={this.state.id} onClick={this.props.buttonClick}>
                 <div className={this.props.selected === true ?
-                    "border border-primary rounded number-icon d-flex justify-content-center align-items-center SustainableDevItem-selected" :
+                    "border-0 border-primary rounded number-icon d-flex justify-content-center align-items-center SustainableDevItem-selected" :
                     "border border-primary rounded number-icon d-flex justify-content-center align-items-center"}>
                     <h5>{this.props.sequence}</h5>
                 </div>

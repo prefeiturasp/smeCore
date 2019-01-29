@@ -6,3 +6,7 @@
 .calendarDay-btn {
     border-radius: 50px;
 }
+
+.not-workday {
+    background-color: #D8F0FF;
+}
