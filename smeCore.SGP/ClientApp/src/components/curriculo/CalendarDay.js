@@ -1,12 +1,14 @@
 ﻿import React, { Component } from 'react';
 import './CalendarDay.css';
 import { Appointment } from './Appointment';
+import $ from 'jquery';
 
 export class CalenderDay extends Component {
     constructor(props) {
         super(props);
-
+     
         this.state = {
+           
             id: "Item" + props.name,
             dataTarget: "#Modal" + props.name,
             modalId: "Modal" + props.name,
@@ -16,8 +18,11 @@ export class CalenderDay extends Component {
             appointments: []
         };
 
+      
+
         // This binding is necessary to make `this` work in the callback
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
+     
     }
 
     addAppointmentClick() {
@@ -33,19 +38,24 @@ export class CalenderDay extends Component {
                 break;
             }
 
+
         this.setState({
             appointments: this.state.appointments.concat({
                 color: color,
                 time: time,
                 name: name,
                 school: school
-            })
+            }),
+
         });
-
-        //limpar modal
+      
+        radios[i].checked = false;
+        document.getElementById(this.state.modalHourId).value = '';
+        document.getElementById(this.state.modalMinuteId).value = '';
     }
-
+   
     render() {
+        console.log("render");
         return (
             <td className="border">
                 {this.props.workday === "false" ?
@@ -98,7 +108,7 @@ export class CalenderDay extends Component {
                                         </div>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-primary" onClick={this.addAppointmentClick}>SALVAR</button>
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.addAppointmentClick}>SALVAR</button>
                                     </div>
                                 </div>
                             </div>
