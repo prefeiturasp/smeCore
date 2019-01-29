@@ -12,8 +12,10 @@ export class KnowledgeItem extends Component {
 
     render() {
         return (
-            <li className="d-flex align-items-center knowledge-item" id={this.state.id}>
-                <div className="border border-primary rounded-circle number-icon d-flex justify-content-center align-items-center">
+            <li className="d-flex align-items-center knowledge-item" id={this.state.id} onClick={this.props.buttonClick}>
+                <div className={this.props.selected === true ?
+                    "border border-primary rounded-circle number-icon d-flex justify-content-center align-items-center knowledgeItem-selected" :
+                    "border border-primary rounded-circle number-icon d-flex justify-content-center align-items-center"}>
                     <h5>{this.props.sequence}</h5>
                 </div>
 

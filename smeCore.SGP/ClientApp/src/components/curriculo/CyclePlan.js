@@ -14,21 +14,51 @@ export class CyclePlan extends Component {
     }
 
     componentDidMount() {
-        fetch('api/Planejamento/ListarODS')
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ SustainableDevItems: data, loading: false });
-            });
-
         fetch('api/Planejamento/ListarMatrizSaberes')
             .then(response => response.json())
             .then(data => {
+                for (var i = 0; i < data.length; i++)
+                    data[i].selected = false;
+
                 this.setState({ KnowledgeItems: data, loading: false });
+            });
+
+        fetch('api/Planejamento/ListarODS')
+            .then(response => response.json())
+            .then(data => {
+                for (var i = 0; i < data.length; i++)
+                    data[i].selected = false;
+
+                this.setState({ SustainableDevItems: data, loading: false });
             });
     }
 
     componentWillUnmount() {
 
+    }
+
+    knowledgeItemClick(item, e) {
+        let data = this.state.KnowledgeItems;
+
+        for (var i = 0; i < data.length; i++)
+            if (data[i].sequence === item.sequence) {
+                data[i].selected = !data[i].selected;
+                break;
+            }
+
+        this.setState({ KnowledgeItems: data });
+    }
+
+    sustainableDevItemClick(item, e) {
+        let data = this.state.SustainableDevItems;
+
+        for (var i = 0; i < data.length; i++)
+            if (data[i].sequence === item.sequence) {
+                data[i].selected = !data[i].selected;
+                break;
+            }
+
+        this.setState({ SustainableDevItems: data });
     }
 
     render() {
@@ -87,7 +117,7 @@ export class CyclePlan extends Component {
 
                             <ul className="list-unstyled">
                                 {this.state.KnowledgeItems.map(knowledgeItem => (
-                                    <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} />
+                                    <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)}/>
                                 ))}
                             </ul>
                         </div>
@@ -101,7 +131,7 @@ export class CyclePlan extends Component {
 
                             <ul className="list-unstyled">
                                 {this.state.SustainableDevItems.map(sustainableDevItem => (
-                                    <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} />
+                                    <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} selected={sustainableDevItem.selected} buttonClick={this.sustainableDevItemClick.bind(this, sustainableDevItem)} />
                                 ))}
                             </ul>
                         </div>
