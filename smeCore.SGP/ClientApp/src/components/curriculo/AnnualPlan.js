@@ -6,8 +6,52 @@ export class AnnualPlan extends Component {
     constructor(props) {
         super(props);
 
+        let today = new Date();
+        let month = today.getMonth();
+
+        switch (month) {
+            default:
+            case "0":
+                month = "Janeiro";
+                break;
+            case "1":
+                month = "Fevereiro";
+                break;
+            case "2":
+                month = "Março";
+                break;
+            case "3":
+                month = "Abril";
+                break;
+            case "4":
+                month = "Maio";
+                break;
+            case "5":
+                month = "Junho";
+                break;
+            case "6":
+                month = "Julho";
+                break;
+            case "7":
+                month = "Agosto";
+                break;
+            case "8":
+                month = "Setembro";
+                break;
+            case "9":
+                month = "Outubro";
+                break;
+            case "10":
+                month = "Novembro";
+                break;
+            case "11":
+                month = "Dezembro";
+                break;
+        }
+
         this.state = {
-            id: props.name + "Item"
+            id: props.name + "Item",
+            today: today.getDate() + " de " + month + " - " + today.getFullYear()
         };
     }
 
@@ -16,23 +60,13 @@ export class AnnualPlan extends Component {
             <div className="tab-pane fade show active border-left border-right border-bottom" id="planoAnual" role="tabpanel" aria-labelledby="planoAnual-tab">
                 <nav className="container-tabpanel navbar">
                     <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm border-azul font-color-black">Hoje</button>
-
-                        <div className="spacing"></div>
-
-                        <div className="btn-group" role="group" arial-label="Change day control">
-                            <button type="button" className="btn btn-outline-secondary btn-sm sem-border">&lt;</button>
-                            <button type="button" className="btn btn-outline-secondary btn-sm sem-border">&gt;</button>
-                        </div>
-                        &nbsp;
-                        <button className="btn btn-sm">2019</button>
+                        <button className="btn btn-outline-primary btn-sm border-azul font-color-black">{this.state.today}</button>
                     </div>
 
                     <ul className="nav navbar-nav ml-auto">
                         <li className="nav-item">
                             <div className="form-inline">
                                 <a className="nav-link disabled">Salvamento automático...</a>
-                                <button className="btn">Pesquisar</button>
                             </div>
                         </li>
                     </ul>
@@ -42,21 +76,7 @@ export class AnnualPlan extends Component {
 
                 <div id="planoAnual-info" className="container-tabpanel-content">
                     <div className="form-inline">
-                        <span className="red-dot"></span>
-
-                        <div className="spacing"></div>
-
-                        <span>5° B</span>
-
-                        <div className="spacing"></div>
-                        -
-                        <div className="spacing"></div>
-
-                        <span><b>EMEF</b></span>
-                    </div>
-
-                    <div>
-                        <span>Plano de aula 5° B*</span>
+                        <h5>Plano anual 5°B</h5>
                     </div>
 
                     <div className="vertical-spacing"></div>

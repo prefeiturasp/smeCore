@@ -16,5 +16,6 @@
 
 .LearningObjective-item {
     padding-bottom: 0.5em;
+    cursor: pointer;
 }
 

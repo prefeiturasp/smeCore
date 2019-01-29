@@ -12,7 +12,7 @@ export class LearningObjectiveItem extends Component {
 
     render() {
         return (
-            <li className="d-flex align-items-center LearningObjective-item">
+            <li className="d-flex align-items-center LearningObjective-item" onClick={this.props.itemClick}>
                 <div className="LearningObjective-label">
                     <button className="btn rounded-pill border border-primary">
                         <span>{this.props.name}</span>

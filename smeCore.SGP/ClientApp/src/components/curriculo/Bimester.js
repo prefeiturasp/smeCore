@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { RadioItem } from './RadioItem';
 import { LearningObjectiveItem } from './LearningObjectiveItem';
-import { MyObjectiveItem } from './MyObjectiveItem';
+import { ObjectiveItem } from './ObjectiveItem';
 import './Bimester.css';
 
 export class Bimester extends Component {
@@ -17,7 +17,7 @@ export class Bimester extends Component {
             radioControlName: props.name + "RadioControl",
             subjects: [],
             learningObjectiveItems: [],
-            myObjectiveItems: []
+            objectiveItems: []
         };
     }
 
@@ -39,14 +39,38 @@ export class Bimester extends Component {
                 { name: "EF02M06", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
                 { name: "EF02M07", description: "Compor e decompor números naturais de diversas maneiras" },
             ],
-            myObjectiveItems: [
-                { name:"EF02M05", date:"04/03/2018" }
-            ]
+            objectiveItems: []
         });
     }
 
     componentWillUnmount() {
 
+    }
+
+    learningObjectiveItemClick(item, e) {
+        let data = this.state.objectiveItems;
+        let found = false;
+
+        for (var i = 0; i < data.length; i++)
+            if (data[i].name === item.name) {
+                found = true;
+                break;
+            }
+
+        if (found === false) {
+            data.push({ name: item.name });
+            this.setState({ objectiveItems: data });
+        }
+    }
+
+    objectiveItemClick(item, e) {
+        let data = [];
+
+        for (var i = 0; i < this.state.objectiveItems.length; i++)
+            if (this.state.objectiveItems[i].name !== item.name)
+                data.push({ name: this.state.objectiveItems[i].name });
+
+        this.setState({ objectiveItems: data });
     }
 
     render() {
@@ -62,10 +86,6 @@ export class Bimester extends Component {
 
                         <div className="d-flex flex-fill flex-row-reverse">
                             <img src="/img/Icon_editar.svg" alt="edit icon" id={this.state.editId} />
-
-                            <div className="spacing"></div>
-
-                            <span className="text-dark">0% completo</span>
                         </div>
                     </div>
                 </button>
@@ -86,7 +106,7 @@ export class Bimester extends Component {
 
                                 <ul className="list-unstyled">
                                     {this.state.learningObjectiveItems.map(learningObjectiveItem => (
-                                        <LearningObjectiveItem name={learningObjectiveItem.name} description={learningObjectiveItem.description} />
+                                        <LearningObjectiveItem name={learningObjectiveItem.name} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} />
                                     ))}
                                 </ul>
                             </div>
@@ -104,9 +124,9 @@ export class Bimester extends Component {
                                     <hr className="header-rule" />
 
                                     <div>
-                                        <ul className="list-unstyled">
-                                            {this.state.myObjectiveItems.map(myObjectiveItem => (
-                                                <MyObjectiveItem name={myObjectiveItem.name} date={myObjectiveItem.date} parent={this.props.name} />     
+                                        <ul className="list-unstyled form-inline">
+                                            {this.state.objectiveItems.map(objectiveItem => (
+                                                <ObjectiveItem name={objectiveItem.name} itemClick={this.objectiveItemClick.bind(this, objectiveItem)} />     
                                             ))}
                                         </ul>
                                     </div>
