@@ -71,7 +71,7 @@ export class ClassPlan extends Component {
             <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
                 <nav className="container-tabpanel navbar">
                     <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm" onClick={this.editAppointmentClick}>{this.state.today}</button>
+                        <button className="btn btn-outline-primary btn-sm border-azul btn-today" onClick={this.editAppointmentClick}>{this.state.today}</button>
                     </div>
 
                     

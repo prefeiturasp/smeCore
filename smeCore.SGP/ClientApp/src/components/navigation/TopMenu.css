@@ -7,7 +7,7 @@
     padding-right: 2.5em;
 }
 
-#townhallIcon {
+#townhallIcon, .townhallIcon {
     padding-left: 1.5em;
     padding-right: 1.5em;
     padding-top: 0.5em;
@@ -28,4 +28,15 @@
 
 .no-white-space {
     white-space: nowrap;
+}
+
+.sem-border{
+    border-radius: 0 !important;
+}
+
+@media (min-width: 992px) {
+    .icones-top-menu{
+        display: block;
+        margin: 0 auto;
+    }
 }

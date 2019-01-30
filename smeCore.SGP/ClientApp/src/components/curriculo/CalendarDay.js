@@ -57,7 +57,7 @@ export class CalenderDay extends Component {
     render() {
         console.log("render");
         return (
-            <td className={this.props.workday === "true" ? "border" : "border not-workday"}>
+            <td className={this.props.workday === "true" ? "border-calendar-day" : "border-calendar-day not-workday"}>
                 {this.props.workday === "true" && (<div className="day text-small text-info text-center">{this.props.day}</div>)}
 
                 <div className="appointments">
@@ -69,8 +69,6 @@ export class CalenderDay extends Component {
                 {this.props.workday === "true" &&
                     <div className="calendarDay-controls d-flex justify-content-end">
                     <button type="button" className="btn btn-danger btn-sm calendarDay-btn" data-toggle="modal" data-target={this.state.dataTarget}><i className="fas fa-plus text-white"></i></button>
-
-
                         <div className="modal fade" id={this.state.modalId} tabIndex="-1" role="dialog" aria-labelledby={this.state.modalTitle} aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered" role="document">
                                 <div className="modal-content">
@@ -87,6 +85,7 @@ export class CalenderDay extends Component {
                                                 <span>:</span>
                                                 &nbsp;
                                                 <input type="text" className="form-control form-control-sm" id={this.state.modalMinuteId} />
+                                                Formato 24 Horas
                                             </div>
                                         </div>
 

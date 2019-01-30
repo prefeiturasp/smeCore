@@ -5,8 +5,28 @@
 
 .calendarDay-btn {
     border-radius: 50px;
+    background-color: #ff5722 !important;
+    border: solid 1px #ff5722 !important;
+    margin-bottom: 5px;
+    margin-right: 5px;
 }
 
 .not-workday {
     background-color: #D8F0FF;
+}
+.border-calendar-day{
+    border: solid 1px #10a3fb;
+}
+
+#calendar > tbody > tr td:first-child{
+    border-left:  none !important;
+}
+
+#calendar > tbody > tr td:last-child{
+    border-right:  none !important;
+}
+
+.tab-pane{
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
 }

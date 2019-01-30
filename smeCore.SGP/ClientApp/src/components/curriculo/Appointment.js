@@ -17,12 +17,12 @@ export class Appointment extends Component {
     render() {
         return (
             <div className="appointment">
-                <div className="border-bottom form-inline d-flex justify-content-center">
+                <div className="border-bottom form-inline d-flex justify-content-center container-appointment">
                     <div className={this.state.color}></div>&nbsp;
-                    <div>{this.props.time}</div>&nbsp;
-                    <div>{this.props.name}</div>&nbsp;
-                    <div>-</div>&nbsp;
-                    <div className="font-weight-bold">{this.props.school}</div>
+                    <div className="appointment-hora">{this.props.time}</div>&nbsp;
+                    <div className="appointment-classe">{this.props.name}</div>&nbsp;
+                    <div className="appointment-separador">-</div>&nbsp;
+                    <div className="font-weight-bold appointment-escola">{this.props.school}</div>
                 </div>
             </div>
         );

@@ -101,7 +101,7 @@ export class Bimester extends Component {
                         <div className="vertical-spacing"></div>
 
                         <div className="w-auto row">
-                            <div className="col">
+                            <div className="col-12 col-md-6 col-lg-6 col-xl-6">
                                 <h5 className="">Objetivos de aprendizagem <img src="/img/Icon_duvida.svg" alt="help icon" id="helpIcon" data-toggle="tooltip" data-placement="top" title="Explicação sobre objetivos de aprendizagem" /></h5>
 
                                 <ul className="list-unstyled">
@@ -111,7 +111,7 @@ export class Bimester extends Component {
                                 </ul>
                             </div>
 
-                            <div className="col">
+                            <div className="col-12 col-md-6 col-lg-6 col-xl-6">
                                 <div id="myObjectives">
                                     <div className="d-flex">
                                         <h5 className="font-weight-light text-color-purple">Meus Objetivos (Currículo)</h5>

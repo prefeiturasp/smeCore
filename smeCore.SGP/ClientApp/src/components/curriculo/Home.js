@@ -22,7 +22,6 @@ export class Home extends Component {
                 <div id="changeClass">
                     <form className="form form-inline">
                         <input id="changeClassTextBox" className="form-control form-control-sm border border-azul-2px" type="text" />
-                        &nbsp;
                         <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul">Alterar turma</button>
                     </form>
                 </div>
