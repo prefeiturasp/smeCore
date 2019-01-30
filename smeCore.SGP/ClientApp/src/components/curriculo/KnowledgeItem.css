@@ -11,4 +11,14 @@
 .knowledgeItem-selected {
     background-color: #92D6FF;
     color: white;
+    min-width: 2.3em !important;
+    min-height: 2.3em !important;
+}
+
+.round-icon{
+    min-height: 2.5em;
+}
+
+.border-knowledgeItem-selected{
+    border: solid 1px #92D6FF !important;
 }

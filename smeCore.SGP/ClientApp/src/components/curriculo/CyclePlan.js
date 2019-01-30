@@ -130,46 +130,72 @@ export class CyclePlan extends Component {
                         <h5 className="">Plano de Ciclo</h5>
                     </div>
 
-                    <div className="vertical-spacing" />
-
-                    <span className="small-text">Este é um espaço para construção coletiva</span>
-                    <br />
-                    <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
 
                     <div className="vertical-spacing-2" />
 
                     <div className="row">
-                        <div className="col">
+
+                        <div className="col-12 col-md-6 col-lg-6 col-xl-6">
+
+                            <div className="col-12">
+                                <div className="row">
+                                    <span className="small-text">Este é um espaço para construção coletiva</span>
+                                    <br />
+                                    <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
+                                </div>
+                            </div>
+                            <div className="vertical-spacing" />
                             <textarea className="form-control" rows="5" id="cyclePlanning-textarea"></textarea>
                         </div>
 
-                        <div className="col-3">
-                            <div className="d-flex">
-                                <h5 className="font-weight-light text-color-purple">Matriz de saberes</h5>
+                        <div className="col-12 col-md-6 col-lg-6 col-xl-6">
+
+                            <div className="row">
+
+                                <div className="col-12">
+
+                                    <span className="small-text">Este é um espaço para construção coletiva</span>
+                                    <br />
+                                    <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
+
+
+                                </div>
+
+                                <div className="col-12">
+                                    <div className="vertical-spacing" />
+                                </div>
+
+                                <div className="col-6 col-md-12 col-lg-6 col-xl-6">
+                                    <div className="d-flex">
+                                        <h5 className="font-weight-light text-color-purple">Matriz de saberes</h5>
+                                    </div>
+
+                                    <hr className="header-rule" />
+
+                                    <ul className="list-unstyled">
+                                        {this.state.KnowledgeItems.map(knowledgeItem => (
+                                            <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)}/>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="col-6 col-md-12 col-lg-6 col-xl-6">
+                                    <div className="d-flex">
+                                        <h5 className="font-weight-light text-color-purple">Objetivos de Desenvolvimento Sustentável (ODS)</h5>
+                                    </div>
+
+                                    <hr className="header-rule" />
+
+                                    <ul className="list-unstyled">
+                                        {this.state.SustainableDevItems.map(sustainableDevItem => (
+                                            <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} selected={sustainableDevItem.selected} buttonClick={this.sustainableDevItemClick.bind(this, sustainableDevItem)} />
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
-
-                            <hr className="header-rule" />
-
-                            <ul className="list-unstyled">
-                                {this.state.KnowledgeItems.map(knowledgeItem => (
-                                    <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)}/>
-                                ))}
-                            </ul>
                         </div>
 
-                        <div className="col">
-                            <div className="d-flex">
-                                <h5 className="font-weight-light text-color-purple">Objetivos de Desenvolvimento Sustentável (ODS)</h5>
-                            </div>
 
-                            <hr className="header-rule" />
-
-                            <ul className="list-unstyled">
-                                {this.state.SustainableDevItems.map(sustainableDevItem => (
-                                    <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} selected={sustainableDevItem.selected} buttonClick={this.sustainableDevItemClick.bind(this, sustainableDevItem)} />
-                                ))}
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>

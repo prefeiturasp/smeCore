@@ -7,8 +7,8 @@
 }
 
 .number-icon {
-    width: 2em;
-    height: 2em;
+    min-width: 2.3em;
+    min-height: 2.3em;
 }
 
     .number-icon > h5 {

@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+import {Footer} from "../navigation/Footer";
 
 export class Home extends Component {
     constructor(props) {
@@ -38,33 +39,46 @@ export class Home extends Component {
 
     render() {
         return (
-            <div className="d-flex justify-content-center align-items-center login-background">
-                <div id="login-logo" className="shadow d-flex justify-content-center align-items-center">
-                    <img src="/img/LogoSGP.svg" alt="sgp icon" id="sgpIcon" />
-                </div>
+            <div>
 
-                <div id="white-board" className="d-flex justify-content-center">
-                    <div id="form">
-                        <div className="d-flex align-items-center">
-                            <i className="fas fa-user login-icon"></i>&nbsp;
-                            <input id="usernameTB" className="form-control login-control" type="text" placeholder="Usuário" />
-                        </div>
+                <div className="d-flex justify-content-center align-items-center login-background">
+                    <div id="login-logo" className="d-flex justify-content-center align-items-center">
+                        <img src="/img/Logotipo_SGP_V2.svg" alt="sgp icon" id="sgpIcon" />
+                    </div>
 
-                        <div className="vertical-spacing"></div>
+                    <div id="white-board" className="d-flex justify-content-center">
+                        <div id="form">
+                            <div className="d-flex align-items-center">
+                                <i className="fas fa-user login-icon"></i>&nbsp;
+                                <input id="usernameTB" className="form-control login-control border-top-0 border-right-0 border-left-0" type="text" placeholder="Usuário" />
+                            </div>
 
-                        <div className="d-flex align-items-center">
-                            <i className="fas fa-lock login-icon"></i>&nbsp;
-                            <input id="passwordTB" className="form-control login-control" type="password" placeholder="Senha" />
-                        </div>
+                            <div className="vertical-spacing"></div>
 
-                        <div className="vertical-spacing"></div>
+                            <div className="d-flex align-items-center">
+                                <i className="fas fa-lock login-icon"></i>&nbsp;
+                                <input id="passwordTB" className="form-control login-control border-top-0 border-right-0 border-left-0" type="password" placeholder="Senha" />
+                            </div>
 
-                        <div className="d-flex justify-content-center">
-                            <button type="submit" className="btn btn-warning text-white" onClick={this.submitButtonClick}>Entrar</button>
+                            <div className="vertical-spacing"></div>
+
+                            <div className="d-flex justify-content-center">
+                                <button type="submit" className="btn btn-warning text-white" onClick={this.submitButtonClick}>Entrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+
+                    <Footer/>
+
+
+                </div>
+
+
+
+
+
         );
     }
 }

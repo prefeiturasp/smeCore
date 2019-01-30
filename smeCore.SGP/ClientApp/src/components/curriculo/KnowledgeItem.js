@@ -14,7 +14,7 @@ export class KnowledgeItem extends Component {
         return (
             <li className="d-flex align-items-center knowledge-item" id={this.state.id} onClick={this.props.buttonClick}>
                 <div className={this.props.selected === true ?
-                    "border-0 border-primary rounded-circle number-icon d-flex justify-content-center align-items-center knowledgeItem-selected" :
+                    "border-knowledgeItem-selected border-primary rounded-circle number-icon d-flex justify-content-center align-items-center knowledgeItem-selected" :
                     "border border-primary rounded-circle number-icon d-flex justify-content-center align-items-center"}>
                     <h5>{this.props.sequence}</h5>
                 </div>

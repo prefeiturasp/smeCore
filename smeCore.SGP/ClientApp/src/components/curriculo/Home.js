@@ -3,6 +3,7 @@ import './Home.css';
 import { CyclePlan } from './CyclePlan';
 import { AnnualPlan } from './AnnualPlan';
 import { ClassPlan } from './ClassPlan';
+import { Footer} from "../navigation/Footer";
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -55,6 +56,8 @@ export class Home extends Component {
                         </div>
                     </div>
                 </div>
+
+                <Footer/>
 
             </div>
         );

@@ -5,23 +5,23 @@ export class TopMenu extends Component {
     render() {
         return (
             <header>
-                <nav className="navbar navbar-expand-lg navbar-light navbar-white" id="topMenu">
-                    <ul className="nav navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <div className="form-inline">
-                                <img src="/img/Icon_id professor.svg" alt="user icon" id="userIcon"/>
-                                <a className="nav-link font-weight-light">Nome do professor</a>
-                            </div>
-                        </li>
-                        <li className="nav-item">
-                            <form className="form-inline">
-                                <button className="btn font-weight-light">
-                                    <img src="/img/Icon_sair.svg" alt="logout icon" id="logoutIcon"/> Sair
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </nav>
+
+                <div className="w-auto container-content">
+                    <div className="d-flex flex-row-reverse">
+
+
+                        <div className="pb-2 container-sair">
+                            <button className="btn font-weight-light">
+                                <img src="/img/Icon_sair.svg" alt="logout icon" id="logoutIcon"/> Sair
+                            </button>
+                        </div>
+
+                        <div className="pb-2 mt-2 container-nome-professor">
+                            <img src="/img/Icon_id professor.svg" alt="user icon" id="userIcon"/>
+                            <a className="nav-link font-weight-light">Nome do professor</a>
+                        </div>
+                    </div>
+                </div>
 
                 <div className="w-auto container-content">
                     <div className="row w-100 ml-0 mr-0">

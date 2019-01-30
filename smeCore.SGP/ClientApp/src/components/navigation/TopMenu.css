@@ -34,6 +34,14 @@
     border-radius: 0 !important;
 }
 
+.container-sair, .container-nome-professor{
+
+}
+
+.container-nome-professor a{
+    display: inline;
+}
+
 @media (min-width: 992px) {
     .icones-top-menu{
         display: block;
