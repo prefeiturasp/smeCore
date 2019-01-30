@@ -14,7 +14,7 @@ export class ObjectiveItem extends Component {
         return (
             <li className="objective-item" id={this.state.id} onClick={this.props.itemClick}>
                 <div className="objectiveItem-label d-flex">
-                    <div className="rounded-pill border border-primary d-flex align-items-center" >
+                    <div className="rounded-pill border-0 d-flex align-items-center objectiveItem" >
                         <span className="objective-item-span">{this.props.name}</span>
                     </div>
                 </div>

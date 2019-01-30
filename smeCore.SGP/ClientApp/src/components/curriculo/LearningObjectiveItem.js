@@ -14,9 +14,9 @@ export class LearningObjectiveItem extends Component {
         return (
             <li className="d-flex align-items-center LearningObjective-item" onClick={this.props.itemClick}>
                 <div className="LearningObjective-label">
-                    <button className="btn rounded-pill border border-primary">
+                    <div className={this.props.selected === false ? "btn rounded-pill border border-primary" : "btn rounded-pill border-0 border-primary LearningObjectiveItem-selected"}>
                         <span>{this.props.name}</span>
-                    </button>
+                    </div>
                 </div>
 
                 <div className="LearningObjective-item-description">

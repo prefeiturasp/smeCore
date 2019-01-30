@@ -19,3 +19,7 @@
     cursor: pointer;
 }
 
+.LearningObjectiveItem-selected {
+    background-color: #92D6FF;
+    color: white;
+}

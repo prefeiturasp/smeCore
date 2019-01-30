@@ -20,3 +20,8 @@
 .MyObjective-label > img {
     padding-left: 0.5em;
 }
+
+.objectiveItem {
+    background-color: #92D6FF;
+    color: white;
+}

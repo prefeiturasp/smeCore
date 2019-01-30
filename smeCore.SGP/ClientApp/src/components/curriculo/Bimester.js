@@ -22,25 +22,31 @@ export class Bimester extends Component {
     }
 
     componentDidMount() {
+        let subjectsData = [
+            { label: "Ciências", value: "ciencias" },
+            { label: "Ling. Port.", value: "portugues" },
+            { label: "História", value: "hsitoria" },
+            { label: "Geografia", value: "geografia" },
+            { label: "Matemática", value: "matemativa" },
+        ];
+        let learningObjectiveData = [
+            { name: "EF02M01", description: "Explorar números no contexto diário como indicadores de quantidade, ordem, medida e código; ler e produzir escritas numéricas, identificando algumas regularidades do sistema de numeração decimal" },
+            { name: "EF02M02", description: "Compor e decompor números naturais de diversas maneiras" },
+            { name: "EF02M03", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
+            { name: "EF02M04", description: "Explorar números no contexto diário como indicadores de quantidade, ordem, medida e código; ler e produzir escritas numéricas, identificando algumas regularidades do sistema de numeração decimal" },
+            { name: "EF02M05", description: "Compor e decompor números naturais de diversas maneiras" },
+            { name: "EF02M06", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
+            { name: "EF02M07", description: "Compor e decompor números naturais de diversas maneiras" },
+        ];
+
+        // Adiciona informação de selecão dentro dos learningObjectiveItems
+        for (var i = 0; i < learningObjectiveData.length; i++)
+            learningObjectiveData[i].selected = false;
+
         this.setState({
-            subjects: [
-                { label: "Ciências", value: "ciencias" },
-                { label: "Ling. Port.", value: "portugues" },
-                { label: "História", value: "hsitoria" },
-                { label: "Geografia", value: "geografia" },
-                { label: "Matemática", value: "matemativa" },
-            ],
-            learningObjectiveItems: [
-                { name: "EF02M01", description: "Explorar números no contexto diário como indicadores de quantidade, ordem, medida e código; ler e produzir escritas numéricas, identificando algumas regularidades do sistema de numeração decimal" },
-                { name: "EF02M02", description: "Compor e decompor números naturais de diversas maneiras" },
-                { name: "EF02M03", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
-                { name: "EF02M04", description: "Explorar números no contexto diário como indicadores de quantidade, ordem, medida e código; ler e produzir escritas numéricas, identificando algumas regularidades do sistema de numeração decimal" },
-                { name: "EF02M05", description: "Compor e decompor números naturais de diversas maneiras" },
-                { name: "EF02M06", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
-                { name: "EF02M07", description: "Compor e decompor números naturais de diversas maneiras" },
-            ],
-            objectiveItems: []
-        });
+            subjects: subjectsData,
+            learningObjectiveItems: learningObjectiveData
+        });        
     }
 
     componentWillUnmount() {
@@ -59,7 +65,15 @@ export class Bimester extends Component {
 
         if (found === false) {
             data.push({ name: item.name });
-            this.setState({ objectiveItems: data });
+
+            let learningObjectiveData = this.state.learningObjectiveItems;
+            for (var j = 0; j < learningObjectiveData.length; j++)
+                if (learningObjectiveData[j].name === item.name) {
+                    learningObjectiveData[j].selected = true;
+                    break;
+                }
+
+            this.setState({ learningObjectiveItems: learningObjectiveData, objectiveItems: data });
         }
     }
 
@@ -70,7 +84,14 @@ export class Bimester extends Component {
             if (this.state.objectiveItems[i].name !== item.name)
                 data.push({ name: this.state.objectiveItems[i].name });
 
-        this.setState({ objectiveItems: data });
+        let learningObjectiveData = this.state.learningObjectiveItems;
+        for (var j = 0; j < learningObjectiveData.length; j++)
+            if (learningObjectiveData[j].name === item.name) {
+                learningObjectiveData[j].selected = false;
+                break;
+            }
+
+        this.setState({ learningObjectiveItems: learningObjectiveData, objectiveItems: data });
     }
 
     render() {
@@ -106,7 +127,7 @@ export class Bimester extends Component {
 
                                 <ul className="list-unstyled">
                                     {this.state.learningObjectiveItems.map(learningObjectiveItem => (
-                                        <LearningObjectiveItem name={learningObjectiveItem.name} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} />
+                                        <LearningObjectiveItem name={learningObjectiveItem.name} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} selected={learningObjectiveItem.selected} />
                                     ))}
                                 </ul>
                             </div>
