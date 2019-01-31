@@ -76,7 +76,7 @@ export class AnnualPlan extends Component {
 
                 <div id="planoAnual-info" className="container-tabpanel-content">
                     <div className="form-inline">
-                        <h5>Plano anual 5°B</h5>
+                        <h5>Plano anual {this.props.year}°{this.props.classroom}</h5>
                     </div>
 
                     <div className="vertical-spacing"></div>

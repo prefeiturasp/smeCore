@@ -7,13 +7,6 @@ import { ClassPlan } from './ClassPlan';
 import { Footer } from "../navigation/Footer";
 import Select from 'react-select';
 
-
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-];
-
 export class Home extends Component {
     static displayName = Home.name;
 
@@ -22,8 +15,10 @@ export class Home extends Component {
         this.state = {
             options: [],
             selectedOption: null,
+            year: 0,
+            classroom: "",
+            school: "",
         }
-
 
         if (sessionStorage.getItem("token") === "null" || sessionStorage.getItem("token") === null
             || sessionStorage.getItem("refreshToken") === "null" || sessionStorage.getItem("refreshToken") === null) {
@@ -36,9 +31,9 @@ export class Home extends Component {
             this.state = {
                 logged: true
             };
-
-            //document.getElementById("usernameLabel").text = sessionStorage.getItem("username");
         }
+
+        this.changeClass = this.changeClass.bind(this);
     }
 
     handleChange = (selectedOption) => {
@@ -55,8 +50,25 @@ export class Home extends Component {
             .then(data => {
                 this.setState({ options: data, loading: false });
             });
-       // this.setState({ options: options });
     }
+
+    changeClass() {
+        var index = this.state.selectedOption.value.indexOf("-", 7) + 1;
+        var year = this.state.selectedOption.value.substring(index, index + 1);
+        ++index;
+        var classroom = this.state.selectedOption.value.substring(index, index + 1);
+        index = this.state.selectedOption.value.indexOf("-", 15) + 2;
+        var school = this.state.selectedOption.value.substring(index, this.state.selectedOption.value.indexOf(","));
+        index = this.state.selectedOption.value.indexOf(",") + 2;
+        school = this.state.selectedOption.value.substring(index) + " " + school;
+
+        this.setState({
+            year: year,
+            classroom: classroom,
+            school: school,
+        })
+    }
+
     render() {
 
         const { selectedOption } = this.state;
@@ -75,7 +87,7 @@ export class Home extends Component {
                     </div>
 
                     <div id="changeClass">
-                        <form className="form form-inline">
+                        <div className="form-inline">
 
                             <Select id="changeClassTextBox" type="text" className= "border-azul-2px"
                                 value={selectedOption}
@@ -84,9 +96,9 @@ export class Home extends Component {
                             />
 
 
-                           
-                            <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul">Alterar turma</button>
-                        </form>
+
+                            <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul" onClick={this.changeClass} > Alterar turma</button>
+                        </div>
                     </div>
 
                     <div id="curriculoContent">
@@ -105,11 +117,11 @@ export class Home extends Component {
                             </li>
                         </ul>
                         <div className="tab-content border-azul" id="myTabContent">
-                            <ClassPlan name="classPlan" />
+                            <ClassPlan name="classPlan" year={this.state.year} classroom={this.state.classroom} school={this.state.school} />
 
-                            <AnnualPlan name="annualPlan" />
+                            <AnnualPlan name="annualPlan" year={this.state.year} classroom={this.state.classroom} school={this.state.school} />
 
-                            <CyclePlan name="cyclePlan" />
+                            <CyclePlan name="cyclePlan" year={this.state.year} classroom={this.state.classroom} school={this.state.school} />
 
                             <div className="tab-pane fade border-left border-right border-bottom" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
                                 <div className="container-tabpanel">
