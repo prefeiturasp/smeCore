@@ -41,6 +41,9 @@ namespace smeCore.SGP
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+
+
+
             // JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

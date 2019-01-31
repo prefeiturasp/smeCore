@@ -5,17 +5,31 @@ import { CyclePlan } from './CyclePlan';
 import { AnnualPlan } from './AnnualPlan';
 import { ClassPlan } from './ClassPlan';
 import { Footer } from "../navigation/Footer";
+import Select from 'react-select';
+
+
+const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+];
 
 export class Home extends Component {
     static displayName = Home.name;
 
     constructor(props) {
         super(props);
+        this.state = {
+            options: [],
+            selectedOption: null,
+        }
+
 
         if (sessionStorage.getItem("token") === "null" || sessionStorage.getItem("token") === null
             || sessionStorage.getItem("refreshToken") === "null" || sessionStorage.getItem("refreshToken") === null) {
             this.state = {
                 logged: false
+
             };
         }
         else {
@@ -27,8 +41,25 @@ export class Home extends Component {
         }
     }
 
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+    }
 
+
+    componentDidMount() {
+        var url = '/api/TurmaProfessor/' + sessionStorage.getItem('username');  //8441006' ;//
+          
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ options: data, loading: false });
+            });
+       // this.setState({ options: options });
+    }
     render() {
+
+        const { selectedOption } = this.state;
         if (this.state.logged === false)
             return (<Redirect to='/Login' />);
         else
@@ -45,7 +76,15 @@ export class Home extends Component {
 
                     <div id="changeClass">
                         <form className="form form-inline">
-                            <input id="changeClassTextBox" className="form-control form-control-sm border border-azul-2px" type="text" />
+
+                            <Select id="changeClassTextBox" type="text" className= "border-azul-2px"
+                                value={selectedOption}
+                                onChange={this.handleChange}
+                                options={this.state.options}
+                            />
+
+
+                           
                             <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul">Alterar turma</button>
                         </form>
                     </div>
