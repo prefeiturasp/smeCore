@@ -80,11 +80,11 @@ export class CalenderDay extends Component {
                                         <div>
                                             <h6>Horário</h6>
                                             <div className="form-inline">
-                                                <input type="text" className="form-control form-control-sm" id={this.state.modalHourId} />
+                                            <input type="number" min="0" max="23" className="form-control form-control-sm" id={this.state.modalHourId} />
                                                 &nbsp;
                                                 <span>:</span>
                                                 &nbsp;
-                                                <input type="text" className="form-control form-control-sm" id={this.state.modalMinuteId} />
+                                                <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} />
                                                 Formato 24 Horas
                                             </div>
                                         </div>

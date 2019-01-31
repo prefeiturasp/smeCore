@@ -8,11 +8,6 @@ import { Footer } from "../navigation/Footer";
 import Select from 'react-select';
 
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-];
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -76,15 +71,11 @@ export class Home extends Component {
 
                     <div id="changeClass">
                         <form className="form form-inline">
-
                             <Select id="changeClassTextBox" type="text" className= "border-azul-2px"
                                 value={selectedOption}
                                 onChange={this.handleChange}
                                 options={this.state.options}
                             />
-
-
-                           
                             <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul">Alterar turma</button>
                         </form>
                     </div>
