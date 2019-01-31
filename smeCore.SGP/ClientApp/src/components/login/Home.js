@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import './Home.css';
 import {Footer} from "../navigation/Footer";
 
@@ -41,11 +41,15 @@ export class HomeLogin extends Component {
                     txt += key + ": " + data[key] + "\n";
 
                 if (data.status === 401)
-                    alert("Usuário s/ou senha incorretos");
+                    alert("Usuário e/ou senha incorretos");
                 else {
                     // Salvar o token de acesso na memoria
-                    // Desenvolver rotina para redirecionar o usuário para a página do curriculo/Home.js
-                    alert(data.token);
+                    sessionStorage.setItem("token", data.token);
+                    sessionStorage.setItem("refreshToken", data.refreshToken);
+                    sessionStorage.setItem("username", credential.username);
+
+                    window.location.href = "/";
+                    //this.props.history.push('/');
                 }
             });
     }
