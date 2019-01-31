@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 import {Footer} from "../navigation/Footer";
 
-export class Home extends Component {
+export class HomeLogin extends Component {
     constructor(props) {
         super(props);
 
@@ -27,14 +27,27 @@ export class Home extends Component {
             password: document.getElementById("passwordTB").value
         };
 
-        alert("Username: " + credential.username + "\nSenha: " + credential.password);
+        //alert("Username: " + credential.username + "\nSenha: " + credential.password);
 
-        //fetch('http://smecore.sme.prefeitura.sp.gov.br/api/Auth/LoginJWT')
-        //    .then(response => response.json())
-        //    .then(data => {
-        //        alert(data);
-        //        // Desenvolver rotina para redirecionar o usuário para a página do curriculo/Home.js
-        //    });
+        fetch('/api/Auth/Login', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credential)
+        })
+            .then(response => response.json())
+            .then(data => {
+                var txt = "";
+                for (var key in data)
+                    txt += key + ": " + data[key] + "\n";
+
+                if (data.status === 401)
+                    alert("Usuário s/ou senha incorretos");
+                else {
+                    // Salvar o token de acesso na memoria
+                    // Desenvolver rotina para redirecionar o usuário para a página do curriculo/Home.js
+                    alert(data.token);
+                }
+            });
     }
 
     render() {
