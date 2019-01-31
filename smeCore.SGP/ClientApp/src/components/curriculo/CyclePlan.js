@@ -139,7 +139,7 @@ export class CyclePlan extends Component {
 
                             <div className="col-12">
                                 <div className="row">
-                                    <span className="small-text">Este é um espaço para construção coletiva</span>
+                                    <span className="small-text">Este é um espaço para construção coletiva.</span>
                                     <br />
                                     <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
                                 </div>
@@ -154,10 +154,11 @@ export class CyclePlan extends Component {
 
                                 <div className="col-12">
 
-                                    <span className="small-text">Este é um espaço para construção coletiva</span>
-                                    <br />
-                                    <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
 
+
+                                    <span className="small-text">Considerando as especificidades de cada Ciclo dessa Unidade Escolar e o Currículo da Cidade, selecione os itens da Matriz do Saber e dos Objetivos de Desenvolvimento e Sustentabilidade
+                                    que contemplam as propostas que planejaram:</span>
+                                    <br />
 
                                 </div>
 

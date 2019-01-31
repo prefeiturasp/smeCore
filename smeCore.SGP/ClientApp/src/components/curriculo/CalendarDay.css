@@ -9,6 +9,13 @@
     border: solid 1px #ff5722 !important;
     margin-bottom: 5px;
     margin-right: 5px;
+    width: 1.7em;
+    height: 1.7em;
+}
+
+.calendarDay-btn svg{
+    margin: 0 5px 5px -4px;
+
 }
 
 .not-workday {

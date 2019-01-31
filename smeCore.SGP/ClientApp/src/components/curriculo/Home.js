@@ -89,13 +89,11 @@ export class Home extends Component {
                     <div id="changeClass">
                         <div className="form-inline">
 
-                            <Select id="changeClassTextBox" type="text" className= "border-azul-2px"
+                            <Select id="changeClassTextBox" type="text"
                                 value={selectedOption}
                                 onChange={this.handleChange}
                                 options={this.state.options}
                             />
-
-
 
                             <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul" onClick={this.changeClass} > Alterar turma</button>
                         </div>
