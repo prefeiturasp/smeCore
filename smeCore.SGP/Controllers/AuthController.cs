@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using smeCore.Models.Authentication;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using smeCore.Models.Authentication;
 
 namespace smeCore.SGP.Controllers
 {
@@ -15,21 +12,12 @@ namespace smeCore.SGP.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        #region ==================== ATTRIBUTES ====================
-        #endregion
-
-
-
-        #region ==================== CONSTRUCTORS ====================
-        #endregion
-
-
-
         #region ==================== METHODS ====================
-        #region -------------------- PRIVATE --------------------
-        #endregion
+
+
 
         #region -------------------- PUBLIC --------------------
+
         [HttpPost]
         public async Task<ActionResult<string>> Login([FromBody]Credential credential)
         {
@@ -54,7 +42,9 @@ namespace smeCore.SGP.Controllers
 
             return (Unauthorized());
         }
-        #endregion
-        #endregion
+
+        #endregion -------------------- PUBLIC --------------------
+
+        #endregion ==================== METHODS ====================
     }
 }

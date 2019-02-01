@@ -26,7 +26,6 @@ export class EditAppointment extends Component {
     }
 
     componentWillUnmount() {
-
     }
 
     render() {

@@ -65,7 +65,6 @@
 #breadcrumb {
     font-size: 0.9em;
     color: #000;
-
 }
 
 .bt-breadcrumb {
@@ -148,9 +147,7 @@
     #changeClassTextBox {
         margin-right: 5px;
     }
-
 }
-
 
 @media (max-width: 768px) {
     #changeClassTextBox {
@@ -161,9 +158,5 @@
         font-size: 0.7em;
         padding-left: 3px !important;
         padding-right: 3px !important;
-
     }
-
-
 }
-

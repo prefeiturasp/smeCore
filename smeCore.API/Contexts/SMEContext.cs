@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace smeCore.API.Contexts
 {
@@ -13,15 +8,16 @@ namespace smeCore.API.Contexts
     public class SMEContext : DbContext
     {
         #region ==================== ATTRIBUTES ====================
+
         /// <summary>
         /// DbSet para mapear os usuários logados no sistema.
         /// </summary>
         public DbSet<smeCore.Models.Authentication.LoggedUser> LoggedUsers { get; set; }
-        #endregion
 
-
+        #endregion ==================== ATTRIBUTES ====================
 
         #region ==================== CONSTRUCTORS ====================
+
         /// <summary>
         /// Construtor padrão do SMEContext
         /// </summary>
@@ -29,6 +25,7 @@ namespace smeCore.API.Contexts
         public SMEContext(DbContextOptions<SMEContext> options)
             : base(options)
         { }
-        #endregion
+
+        #endregion ==================== CONSTRUCTORS ====================
     }
 }

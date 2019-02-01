@@ -27,13 +27,14 @@ namespace smeCore.API.Controllers.Authentication
     public class AuthController : ControllerBase
     {
         #region ==================== ATTRIBUTES ====================
+
         private IConfiguration _config; // Objeto para recuperar informações de configuração do arquivo appsettings.json
         private readonly SMEContext _db; // Objeto context referente ao banco smeCoreDB
-        #endregion
 
-
+        #endregion ==================== ATTRIBUTES ====================
 
         #region ==================== CONSTRUCTORS ====================
+
         /// <summary>
         /// Construtor padrão para o AuthController, faz injeção de dependências de IConfiguration e SMEContext.
         /// </summary>
@@ -44,12 +45,13 @@ namespace smeCore.API.Controllers.Authentication
             _config = config;
             _db = db;
         }
-        #endregion
 
-
+        #endregion ==================== CONSTRUCTORS ====================
 
         #region ==================== METHODS ====================
+
         #region -------------------- PRIVATE --------------------
+
         /// <summary>
         /// Método para validar as credenciais de login do usuário.
         /// </summary>
@@ -220,9 +222,11 @@ namespace smeCore.API.Controllers.Authentication
 
             return (data);
         }
-        #endregion
+
+        #endregion -------------------- PRIVATE --------------------
 
         #region -------------------- PUBLIC --------------------
+
         /// <summary>
         /// Método para efetuar o login do usuário utilizando o sistema http://identity.sme.prefeitura.sp.gov.br para validar o usuário e receber um token JWT.
         /// </summary>
@@ -360,7 +364,9 @@ namespace smeCore.API.Controllers.Authentication
                     return (Ok());
             }
         }
-        #endregion
-        #endregion
+
+        #endregion -------------------- PUBLIC --------------------
+
+        #endregion ==================== METHODS ====================
     }
 }

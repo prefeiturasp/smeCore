@@ -12,40 +12,40 @@ export class CyclePlan extends Component {
 
         switch (month) {
             default:
-            case "0":
+            case 0:
                 month = "Janeiro";
                 break;
-            case "1":
+            case 1:
                 month = "Fevereiro";
                 break;
-            case "2":
-                month = "Março";
+            case 2:
+                month = "MarĂ§o";
                 break;
-            case "3":
+            case 3:
                 month = "Abril";
                 break;
-            case "4":
+            case 4:
                 month = "Maio";
                 break;
-            case "5":
+            case 5:
                 month = "Junho";
                 break;
-            case "6":
+            case 6:
                 month = "Julho";
                 break;
-            case "7":
+            case 7:
                 month = "Agosto";
                 break;
-            case "8":
+            case 8:
                 month = "Setembro";
                 break;
-            case "9":
+            case 9:
                 month = "Outubro";
                 break;
-            case "10":
+            case 10:
                 month = "Novembro";
                 break;
-            case "11":
+            case 11:
                 month = "Dezembro";
                 break;
         }
@@ -78,19 +78,6 @@ export class CyclePlan extends Component {
 
                 this.setState({ SustainableDevItems: data, loading: false });
             });
-
-        //var title = this.props.year;
-
-        //if (title !== undefined) {
-        //    if (title === "1" || title === "2" || title === "3")
-        //        title = "Alfabetização";
-        //    else if (title === "4" || title === "5" || title === "6")
-        //        title = "Interdiciplinar";
-        //    else if (title === "7" || title === "8" || title === "9")
-        //        title = "Autoral";
-
-        //    this.setState({ title: title });
-        //}
     }
 
     componentWillUnmount() {
@@ -121,7 +108,58 @@ export class CyclePlan extends Component {
     }
 
     saveClick() {
-        alert(this.props.year !== undefined);
+        if (this.props.year !== undefined) {
+            var type = sessionStorage.getItem("cycleName");
+
+            if (type === "Alfabetização")
+                type = 0;
+            else if (type === "Alfabetização")
+                type = 1;
+            else
+                type = 2;
+
+            var cycle = {
+                school: this.props.school,
+                userId: sessionStorage.getItem("username"),
+                type: type,
+                description: document.getElementById("cyclePlanning-textarea").value,
+                selectedKnowledgeMatrix: "",
+                selectedODS: "",
+                modifiedBy: sessionStorage.getItem("username")
+            };
+
+            for (var i = 0; i < this.state.KnowledgeItems.length; i++)
+                if (this.state.KnowledgeItems[i].selected === true) {
+                    if (i === 0 || cycle.selectedKnowledgeMatrix === "")
+                        cycle.selectedKnowledgeMatrix += "" + this.state.KnowledgeItems[i].sequence;
+                    else
+                        cycle.selectedKnowledgeMatrix += "," + this.state.KnowledgeItems[i].sequence;
+                }
+
+            for (var i = 0; i < this.state.SustainableDevItems.length; i++)
+                if (this.state.SustainableDevItems[i].selected === true) {
+                    if (i === 0 || cycle.selectedODS === "")
+                        cycle.selectedODS += "" + this.state.SustainableDevItems[i].sequence;
+                    else
+                        cycle.selectedODS += "," + this.state.SustainableDevItems[i].sequence;
+                }
+
+            fetch('/api/Planejamento/SalvarPlanoCiclo', {
+                method: "post",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cycle)
+            })
+                //.then(response => response.json())
+                .then(data => {
+                    //var txt = "";
+                    //for (var key in data)
+                    //    txt += key + ": " + data[key] + "\n";
+                    //alert(txt);
+
+                    if (data.status === 200)
+                        alert("Plano de Ciclo salvo com sucesso!");
+                });
+        }
     }
 
     render() {
@@ -162,7 +200,6 @@ export class CyclePlan extends Component {
                         <h5 className="">Plano de Ciclo | {title}</h5>
                     </div>
 
-
                     <div className="vertical-spacing-2" />
 
                     <div className="row">
@@ -186,8 +223,6 @@ export class CyclePlan extends Component {
 
                                 <div className="col-12">
 
-
-
                                     <span className="small-text">Considerando as especificidades de cada Ciclo dessa Unidade Escolar e o Currículo da Cidade, selecione os itens da Matriz do Saber e dos Objetivos de Desenvolvimento e Sustentabilidade
                                     que contemplam as propostas que planejaram:</span>
                                     <br />
@@ -207,7 +242,7 @@ export class CyclePlan extends Component {
 
                                     <ul className="list-unstyled">
                                         {this.state.KnowledgeItems.map(knowledgeItem => (
-                                            <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)}/>
+                                            <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)} />
                                         ))}
                                     </ul>
                                 </div>
@@ -227,7 +262,6 @@ export class CyclePlan extends Component {
                                 </div>
                             </div>
                         </div>
-
 
                     </div>
                 </div>

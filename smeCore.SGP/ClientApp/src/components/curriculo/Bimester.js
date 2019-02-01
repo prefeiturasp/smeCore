@@ -18,43 +18,19 @@ export class Bimester extends Component {
             radioControlName: props.name + "RadioControl",
             subjects: [],
             learningObjectiveItems: [],
-            objectiveItems: []
+            objectiveItems: [],
+            lastYearValue: "0",
+            textareaName: "annualPlanning-textarea" + props.name,
+            objectivesId: "myObjectives" + props.name
         };
 
         this.changeIconEditar = this.changeIconEditar.bind(this);
     }
 
     componentDidMount() {
-        let subjectsData = [
-            { label: "Ciências", value: "ciencias" },
-            { label: "Ling. Port.", value: "portugues" },
-            { label: "História", value: "hsitoria" },
-            { label: "Geografia", value: "geografia" },
-            { label: "Matemática", value: "matemativa" },
-        ];
-        let learningObjectiveData = [
-            { name: "EF02M01", description: "Explorar números no contexto diário como indicadores de quantidade, ordem, medida e código; ler e produzir escritas numéricas, identificando algumas regularidades do sistema de numeração decimal" },
-            { name: "EF02M02", description: "Compor e decompor números naturais de diversas maneiras" },
-            { name: "EF02M03", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
-            { name: "EF02M04", description: "Explorar números no contexto diário como indicadores de quantidade, ordem, medida e código; ler e produzir escritas numéricas, identificando algumas regularidades do sistema de numeração decimal" },
-            { name: "EF02M05", description: "Compor e decompor números naturais de diversas maneiras" },
-            { name: "EF02M06", description: "Explorar diferentes estratégias para quantificar elementos de uma coleção: contagem uma um, formação de pares, agrupamentos e estimativas" },
-            { name: "EF02M07", description: "Compor e decompor números naturais de diversas maneiras" },
-        ];
-
-        // Adiciona informação de selecão dentro dos learningObjectiveItems
-        for (var i = 0; i < learningObjectiveData.length; i++)
-            learningObjectiveData[i].selected = false;
-
-        this.setState({
-            subjects: subjectsData,
-            learningObjectiveItems: learningObjectiveData
-        });
-
     }
 
     componentWillUnmount() {
-
     }
 
     learningObjectiveItemClick(item, e) {
@@ -62,17 +38,17 @@ export class Bimester extends Component {
         let found = false;
 
         for (var i = 0; i < data.length; i++)
-            if (data[i].name === item.name) {
+            if (data[i].name === item.code) {
                 found = true;
                 break;
             }
 
         if (found === false) {
-            data.push({ name: item.name });
+            data.push({ name: item.code });
 
             let learningObjectiveData = this.state.learningObjectiveItems;
             for (var j = 0; j < learningObjectiveData.length; j++)
-                if (learningObjectiveData[j].name === item.name) {
+                if (learningObjectiveData[j].code === item.code) {
                     learningObjectiveData[j].selected = true;
                     break;
                 }
@@ -90,7 +66,7 @@ export class Bimester extends Component {
 
         let learningObjectiveData = this.state.learningObjectiveItems;
         for (var j = 0; j < learningObjectiveData.length; j++)
-            if (learningObjectiveData[j].name === item.name) {
+            if (learningObjectiveData[j].code === item.name) {
                 learningObjectiveData[j].selected = false;
                 break;
             }
@@ -98,16 +74,30 @@ export class Bimester extends Component {
         this.setState({ learningObjectiveItems: learningObjectiveData, objectiveItems: data });
     }
 
-    changeIconEditar(){
+    changeIconEditar() {
         let imgSrc = this.state.imageSrc;
-        if (imgSrc === '/img/Icon_editar.svg'){
-            this.setState({imageSrc: '/img/Icon_editar_outline.svg'})
-        }else if (imgSrc === '/img/Icon_editar_outline.svg'){
-            this.setState({imageSrc: '/img/Icon_editar.svg'})
+        if (imgSrc === '/img/Icon_editar.svg') {
+            this.setState({ imageSrc: '/img/Icon_editar_outline.svg' })
+        } else if (imgSrc === '/img/Icon_editar_outline.svg') {
+            this.setState({ imageSrc: '/img/Icon_editar.svg' })
         }
     }
 
     render() {
+        var year = this.props.year;
+
+        if (year !== undefined && this.state.lastYearValue !== year) {
+            var url = "api/Planejamento/ListarObjetivosAprendizagem?ano=" + year;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    for (var i = 0; i < data.length; i++)
+                        data[i].selected = false;
+
+                    this.setState({ learningObjectiveItems: data, lastYearValue: year });
+                });
+        }
+
         return (
             <div className="w-auto shadows-box-bimester rounded">
                 <button className="btn btn-outline-light btn-lg btn-block border-0" type="button" data-toggle="collapse" data-target={this.state.contentTarget} aria-expanded="false" aria-controls={this.state.contentId}>
@@ -126,27 +116,19 @@ export class Bimester extends Component {
 
                 <div className="collapse" id={this.state.contentId}>
                     <div className="card card-body border-0">
-                        <div className="form-inline">
-                            {this.state.subjects.map(subjectItem => (
-                                <RadioItem name={this.props.name} label={subjectItem.label} value={subjectItem.value} />
-                            ))}
-                        </div>
-
-                        <div className="vertical-spacing"></div>
-
                         <div className="w-auto row">
                             <div className="col-12 col-md-6 col-lg-6 col-xl-6">
                                 <h5 className="">Objetivos de aprendizagem <img src="/img/Icon_duvida.svg" alt="help icon" id="helpIcon" data-toggle="tooltip" data-placement="top" title="Explicação sobre objetivos de aprendizagem" /></h5>
 
                                 <ul className="list-unstyled">
                                     {this.state.learningObjectiveItems.map(learningObjectiveItem => (
-                                        <LearningObjectiveItem name={learningObjectiveItem.name} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} selected={learningObjectiveItem.selected} />
+                                        <LearningObjectiveItem name={learningObjectiveItem.code} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} selected={learningObjectiveItem.selected} />
                                     ))}
                                 </ul>
                             </div>
 
                             <div className="col-12 col-md-6 col-lg-6 col-xl-6">
-                                <div id="myObjectives">
+                                <div id={this.state.objectivesId}>
                                     <div className="d-flex">
                                         <h5 className="font-weight-light text-color-purple">Meus Objetivos (Currículo)</h5>
 
@@ -160,7 +142,7 @@ export class Bimester extends Component {
                                     <div>
                                         <ul className="list-unstyled form-inline">
                                             {this.state.objectiveItems.map(objectiveItem => (
-                                                <ObjectiveItem name={objectiveItem.name} itemClick={this.objectiveItemClick.bind(this, objectiveItem)} />     
+                                                <ObjectiveItem name={objectiveItem.name} itemClick={this.objectiveItemClick.bind(this, objectiveItem)} />
                                             ))}
                                         </ul>
                                     </div>
@@ -186,7 +168,7 @@ export class Bimester extends Component {
                                             <li>Avaliação</li>
                                         </ul>
 
-                                        <textarea className="form-control" rows="5" id="annualPlanning-textarea"></textarea>
+                                        <textarea className="form-control" rows="5" id={this.state.textareaName}></textarea>
                                     </div>
                                 </div>
                             </div>

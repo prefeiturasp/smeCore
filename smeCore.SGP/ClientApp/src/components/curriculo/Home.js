@@ -24,7 +24,6 @@ export class Home extends Component {
             || sessionStorage.getItem("refreshToken") === "null" || sessionStorage.getItem("refreshToken") === null) {
             this.state = {
                 logged: false
-
             };
         }
         else {
@@ -41,10 +40,9 @@ export class Home extends Component {
         console.log(`Option selected:`, selectedOption);
     }
 
-
     componentDidMount() {
         var url = '/api/TurmaProfessor/' + sessionStorage.getItem('username');  //8441006' ;//
-          
+
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -74,7 +72,6 @@ export class Home extends Component {
     }
 
     render() {
-
         const { selectedOption } = this.state;
         if (this.state.logged === false)
             return (<Redirect to='/Login' />);

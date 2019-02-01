@@ -57,57 +57,106 @@ export class CalenderPlan extends Component {
     }
 
     componentWillUnmount() {
-
     }
 
     render() {
-        return (
-            <div className="d-flex w-auto" id={this.props.name}>
-                <table id="calendar" className="">
-                    <thead>
-                        <tr>
-                            <th className="text-small text-info text-center calendar-col" scope="col">DOM</th>
-                            <th className="text-small text-info text-center calendar-col" scope="col">SEG</th>
-                            <th className="text-small text-info text-center calendar-col" scope="col">TER</th>
-                            <th className="text-small text-info text-center calendar-col" scope="col">QUA</th>
-                            <th className="text-small text-info text-center calendar-col" scope="col">QUI</th>
-                            <th className="text-small text-info text-center calendar-col" scope="col">SEX</th>
-                            <th className="text-small text-info text-center calendar-col" scope="col">SAB</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            {this.state.current_week.map(week_day => (
-                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
-                            ))}
-                        </tr>
+        if (this.props.year !== undefined)
+            return (
+                <div className="d-flex w-auto" id={this.props.name}>
+                    <table id="calendar" className="">
+                        <thead>
+                            <tr>
+                                <th className="text-small text-info text-center calendar-col" scope="col">DOM</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">SEG</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">TER</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">QUA</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">QUI</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">SEX</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">SAB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {this.state.current_week.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
+                                ))}
+                            </tr>
 
-                        <tr>
-                            {this.state.week1.map(week_day => (
-                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
-                            ))}
-                        </tr>
+                            <tr>
+                                {this.state.week1.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
+                                ))}
+                            </tr>
 
-                        <tr>
-                            {this.state.week2.map(week_day => (
-                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
-                            ))}
-                        </tr>
+                            <tr>
+                                {this.state.week2.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
+                                ))}
+                            </tr>
 
-                        <tr>
-                            {this.state.week3.map(week_day => (
-                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
-                            ))}
-                        </tr>
+                            <tr>
+                                {this.state.week3.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
+                                ))}
+                            </tr>
 
-                        <tr>
-                            {this.state.week4.map(week_day => (
-                                <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
-                            ))}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        );
+                            <tr>
+                                {this.state.week4.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
+                                ))}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            );
+        else
+            return (
+                <div className="d-flex w-auto" id={this.props.name}>
+                    <table id="calendar" className="">
+                        <thead>
+                            <tr>
+                                <th className="text-small text-info text-center calendar-col" scope="col">DOM</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">SEG</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">TER</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">QUA</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">QUI</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">SEX</th>
+                                <th className="text-small text-info text-center calendar-col" scope="col">SAB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {this.state.current_week.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                                ))}
+                            </tr>
+
+                            <tr>
+                                {this.state.week1.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                                ))}
+                            </tr>
+
+                            <tr>
+                                {this.state.week2.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                                ))}
+                            </tr>
+
+                            <tr>
+                                {this.state.week3.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                                ))}
+                            </tr>
+
+                            <tr>
+                                {this.state.week4.map(week_day => (
+                                    <CalenderDay day={week_day.day} workday={week_day.workday} name={week_day.name} />
+                                ))}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            );
     }
 }

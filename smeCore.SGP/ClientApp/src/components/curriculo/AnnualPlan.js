@@ -11,40 +11,40 @@ export class AnnualPlan extends Component {
 
         switch (month) {
             default:
-            case "0":
+            case 0:
                 month = "Janeiro";
                 break;
-            case "1":
+            case 1:
                 month = "Fevereiro";
                 break;
-            case "2":
-                month = "Março";
+            case 2:
+                month = "MarĂ§o";
                 break;
-            case "3":
+            case 3:
                 month = "Abril";
                 break;
-            case "4":
+            case 4:
                 month = "Maio";
                 break;
-            case "5":
+            case 5:
                 month = "Junho";
                 break;
-            case "6":
+            case 6:
                 month = "Julho";
                 break;
-            case "7":
+            case 7:
                 month = "Agosto";
                 break;
-            case "8":
+            case 8:
                 month = "Setembro";
                 break;
-            case "9":
+            case 9:
                 month = "Outubro";
                 break;
-            case "10":
+            case 10:
                 month = "Novembro";
                 break;
-            case "11":
+            case 11:
                 month = "Dezembro";
                 break;
         }
@@ -53,6 +53,80 @@ export class AnnualPlan extends Component {
             id: props.name + "Item",
             today: today.getDate() + " de " + month + " - " + today.getFullYear()
         };
+
+        this.saveButtonClick = this.saveButtonClick.bind(this);
+    }
+
+    saveButtonClick() {
+        if (this.props.year !== undefined) {
+            var annual = {
+                schoolYear: this.props.year,
+                classroom: this.classroom,
+                school: this.props.school,
+                userId: sessionStorage.getItem("username"),
+                selectedLearningObjectivesB1: "",
+                selectedLearningObjectivesB2: "",
+                selectedLearningObjectivesB3: "",
+                selectedLearningObjectivesB4: "",
+                descriptionB1: document.getElementById("annualPlanning-textareaB1").value,
+                descriptionB2: document.getElementById("annualPlanning-textareaB2").value,
+                descriptionB3: document.getElementById("annualPlanning-textareaB3").value,
+                descriptionB4: document.getElementById("annualPlanning-textareaB4").value
+            };
+
+            var bimenster = document.getElementById("myObjectivesB1");
+            var elements = bimenster.getElementsByClassName("objective-item-span");
+
+            for (var i = 0; i < elements.length; i++)
+                if (i === 0 || annual.selectedLearningObjectivesB1 === "")
+                    annual.selectedLearningObjectivesB1 += "" + elements[i].innerHTML;
+                else
+                    annual.selectedLearningObjectivesB1 += "," + elements[i].innerHTML;
+
+            bimenster = document.getElementById("myObjectivesB2");
+            elements = bimenster.getElementsByClassName("objective-item-span");
+
+            for (var i = 0; i < elements.length; i++)
+                if (i === 0 || annual.selectedLearningObjectivesB2 === "")
+                    annual.selectedLearningObjectivesB2 += "" + elements[i].innerHTML;
+                else
+                    annual.selectedLearningObjectivesB2 += "," + elements[i].innerHTML;
+
+            bimenster = document.getElementById("myObjectivesB3");
+            elements = bimenster.getElementsByClassName("objective-item-span");
+
+            for (var i = 0; i < elements.length; i++)
+                if (i === 0 || annual.selectedLearningObjectivesB3 === "")
+                    annual.selectedLearningObjectivesB3 += "" + elements[i].innerHTML;
+                else
+                    annual.selectedLearningObjectivesB3 += "," + elements[i].innerHTML;
+
+            bimenster = document.getElementById("myObjectivesB4");
+            elements = bimenster.getElementsByClassName("objective-item-span");
+
+            for (var i = 0; i < elements.length; i++)
+                if (i === 0 || annual.selectedLearningObjectivesB4 === "")
+                    annual.selectedLearningObjectivesB4 += "" + elements[i].innerHTML;
+                else
+                    annual.selectedLearningObjectivesB4 += "," + elements[i].innerHTML;
+
+            fetch('/api/Planejamento/SalvarPlanoAnual', {
+                method: "post",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(annual)
+            })
+                //.then(response => response.json())
+                .then(data => {
+                    //var txt = "";
+                    //for (var key in data)
+                    //    txt += key + ": " + data[key] + "\n";
+                    //alert(txt);
+
+                    if (data.status === 200)
+                        alert("Plano de Ciclo salvo com sucesso!");
+                });
+
+        }
     }
 
     render() {
@@ -66,7 +140,7 @@ export class AnnualPlan extends Component {
                     <ul className="nav navbar-nav ml-auto">
                         <li className="nav-item">
                             <div className="form-inline">
-                                <a className="nav-link disabled">Salvamento automático...</a>
+                                <button className="btn btn-warning" onClick={this.saveButtonClick}>Salvar</button>
                             </div>
                         </li>
                     </ul>
@@ -81,19 +155,19 @@ export class AnnualPlan extends Component {
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B1" image="1bimestre" />
+                    <Bimester name="B1" image="1bimestre" year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B2" image="2bimestre" />
+                    <Bimester name="B2" image="2bimestre" year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B3" image="3bimestre" />
+                    <Bimester name="B3" image="3bimestre" year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B4" image="4bimestre" />
+                    <Bimester name="B4" image="4bimestre" year={this.props.year} classroom={this.props.classroom} school={this.props.school} />
                 </div>
             </div>
         );

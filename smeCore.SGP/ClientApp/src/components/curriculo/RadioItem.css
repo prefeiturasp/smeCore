@@ -5,7 +5,6 @@
 
 .container-radio-itens label{
     display:inline-block;
-   
 }
 
 .border-radio-itens{
@@ -20,7 +19,6 @@
     display: inline-block;
     text-align: center;
     border-radius:2px;
-
 }
 
 .ciencias::after {
@@ -38,7 +36,6 @@
 .matemativa::after {
     background-color: #009640;
 }
-
 
 .example {
     margin-bottom: 1.5em;
@@ -86,5 +83,3 @@ input[type=checkbox]:not(old){
             text-shadow: 0 0 0.0714em rgb(115,153,77);
             font-weight: bold;
         }
-
-       

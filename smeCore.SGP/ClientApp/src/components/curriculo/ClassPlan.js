@@ -3,7 +3,6 @@ import './ClassPlan.css';
 import { CalenderPlan } from './CalendarPlan';
 import { EditAppointment } from './EditAppointment';
 
-
 export class ClassPlan extends Component {
     constructor(props) {
         super(props);
@@ -13,40 +12,40 @@ export class ClassPlan extends Component {
 
         switch (month) {
             default:
-            case "0":
+            case 0:
                 month = "Janeiro";
                 break;
-            case "1":
+            case 1:
                 month = "Fevereiro";
                 break;
-            case "2":
-                month = "Março";
+            case 2:
+                month = "MarĂ§o";
                 break;
-            case "3":
+            case 3:
                 month = "Abril";
                 break;
-            case "4":
+            case 4:
                 month = "Maio";
                 break;
-            case "5":
+            case 5:
                 month = "Junho";
                 break;
-            case "6":
+            case 6:
                 month = "Julho";
                 break;
-            case "7":
+            case 7:
                 month = "Agosto";
                 break;
-            case "8":
+            case 8:
                 month = "Setembro";
                 break;
-            case "9":
+            case 9:
                 month = "Outubro";
                 break;
-            case "10":
+            case 10:
                 month = "Novembro";
                 break;
-            case "11":
+            case 11:
                 month = "Dezembro";
                 break;
         }
@@ -67,21 +66,39 @@ export class ClassPlan extends Component {
     }
 
     render() {
-        return (
-            <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
-                <nav className="container-tabpanel navbar">
-                    <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm border-azul btn-today" onClick={this.editAppointmentClick}>{this.state.today}</button>
-                    </div>
+        var year = this.props.year;
 
-                    
-                </nav>
+        if (year !== undefined)
+            return (
+                <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
+                    <nav className="container-tabpanel navbar">
+                        <div className="form-inline">
+                            <button className="btn btn-outline-primary btn-sm border-azul btn-today" onClick={this.editAppointmentClick}>{this.state.today}</button>
+                        </div>
 
-                {this.state.showEditAppointment === false ?
-                    (<CalenderPlan name="calendarPlan" />) :
-                    (<EditAppointment color="red" time="7:30am" name="5° B" school="EMEF" />)
-                }
-            </div>
-        );
+                    </nav>
+
+                    {this.state.showEditAppointment === false ?
+                        (<CalenderPlan name="calendarPlan" year={this.props.year} classroom={this.props.classroom} school={this.props.school} />) :
+                        (<EditAppointment color="red" time="7:30am" name="5° B" school="EMEF" />)
+                    }
+                </div>
+            );
+        else
+            return (
+                <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
+                    <nav className="container-tabpanel navbar">
+                        <div className="form-inline">
+                            <button className="btn btn-outline-primary btn-sm border-azul btn-today" onClick={this.editAppointmentClick}>{this.state.today}</button>
+                        </div>
+
+                    </nav>
+
+                    {this.state.showEditAppointment === false ?
+                        (<CalenderPlan name="calendarPlan" />) :
+                        (<EditAppointment color="red" time="7:30am" name="5° B" school="EMEF" />)
+                    }
+                </div>
+            );
     }
 }

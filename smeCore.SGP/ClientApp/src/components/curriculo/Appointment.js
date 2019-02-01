@@ -11,7 +11,6 @@ export class Appointment extends Component {
     }
 
     abrirModal() {
-
     }
 
     render() {

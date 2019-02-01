@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace smeCore.XUnitTest
@@ -8,7 +7,6 @@ namespace smeCore.XUnitTest
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

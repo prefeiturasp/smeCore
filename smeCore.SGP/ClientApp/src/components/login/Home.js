@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Home.css';
-import {Footer} from "../navigation/Footer";
+import { Footer } from "../navigation/Footer";
 
 export class HomeLogin extends Component {
     constructor(props) {
@@ -86,15 +86,9 @@ export class HomeLogin extends Component {
                     </div>
                 </div>
 
+                <Footer />
 
-                    <Footer/>
-
-
-                </div>
-
-
-
-
+            </div>
 
         );
     }

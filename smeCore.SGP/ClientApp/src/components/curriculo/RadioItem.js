@@ -17,17 +17,15 @@ export class RadioItem extends Component {
         return (
             <div className="form-check form-check-inline container-radio-itens example">
                 <div>
-                <span className={this.state.value}>
+                    <span className={this.state.value}>
 
-                <input className="form-check-input border-radio-itens" type="checkbox" name={this.state.controlGroup} id={this.state.id} value={this.state.value} />
+                        <input className="form-check-input border-radio-itens" type="checkbox" name={this.state.controlGroup} id={this.state.id} value={this.state.value} />
 
-                <label className="form-check-label" htmlFor={this.state.id}> <span></span> {this.state.label} </label>&nbsp;
+                        <label className="form-check-label" htmlFor={this.state.id}> <span></span> {this.state.label} </label>&nbsp;
 
                 </span>
 
-
-
-                    </div>
+                </div>
 
             </div>
 

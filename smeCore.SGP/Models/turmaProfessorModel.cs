@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace smeCore.SGP.Models
+﻿namespace smeCore.SGP.Models
 {
     public class turmaProfessorModel
     {
