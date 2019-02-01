@@ -10,6 +10,7 @@ export class CalenderDay extends Component {
         this.state = {
            
             id: "Item" + props.name,
+            classeCss: '',
             dataTarget: "#Modal" + props.name,
             modalId: "Modal" + props.name,
             modalTitle: "ModalTitle" + props.name,
@@ -20,6 +21,9 @@ export class CalenderDay extends Component {
 
         // This binding is necessary to make `this` work in the callback
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
+
+        this.handleRadio = this.handleRadio.bind(this);
+
     }
 
     addAppointmentClick() {
@@ -54,6 +58,23 @@ export class CalenderDay extends Component {
         } else {
             alert('Todos os campos são obrigatórios! Os dados não serão salvos.');
         }
+    }
+
+    handleRadio(event){
+
+        let radioClicadoValue =  event.target.value;
+        let radioClicadoId =  event.target.id;
+
+        console.log('Ollyver Value |' + radioClicadoValue);
+        console.log('Ollyver Id |' + radioClicadoId);
+
+        this.setState({classeCss: 'lilac'});
+
+       // debugger;
+
+        var element = document.getElementById(radioClicadoValue);
+        //element.classList.add("lilac");
+
     }
 
 
@@ -98,22 +119,22 @@ export class CalenderDay extends Component {
                                             <h6>Marcador</h6>
                                             <div className="form-inline">
 
-                                                <input type="radio" id="lilac" name="colors" value="lilac"  />&nbsp;
+                                                <input className={this.state.classeCss} type="radio" id="lilac" name="colors" value="lilac" onChange={this.handleRadio}  />&nbsp;
                                                 <label id="label-lilac" htmlFor="lilac"><span></span></label>
 
-                                                <input type="radio" id="purple" name="colors" value="purple"  />&nbsp;
+                                                <input type="radio" id="purple" name="colors" value="purple" onChange={this.handleRadio} />&nbsp;
                                                 <label id="label-purple" htmlFor="purple"><span></span></label>
 
-                                                <input type="radio" id="blue" name="colors" value="blue"  />&nbsp;
+                                                <input type="radio" id="blue" name="colors" value="blue" onChange={this.handleRadio} />&nbsp;
                                                 <label id="label-blue" htmlFor="blue"><span></span></label>
 
-                                                <input type="radio" id="green" name="colors" value="green"  />&nbsp;
+                                                <input type="radio" id="green" name="colors" value="green" onChange={this.handleRadio} />&nbsp;
                                                 <label id="label-green" htmlFor="green"><span></span></label>
 
-                                                <input type="radio" id="yellow" name="colors" value="yellow"  />&nbsp;
+                                                <input type="radio" id="yellow" name="colors" value="yellow" onChange={this.handleRadio} />&nbsp;
                                                 <label id="label-yellow" htmlFor="yellow"><span></span></label>
 
-                                                <input type="radio" id="red" name="colors" value="red"  />&nbsp;
+                                                <input type="radio" id="red" name="colors" value="red" onChange={this.handleRadio}/>&nbsp;
                                                 <label id="label-red" htmlFor="red"><span></span></label>
 
 
