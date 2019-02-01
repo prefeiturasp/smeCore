@@ -17,6 +17,8 @@ export class TopMenu extends Component {
             this.state = {
                 logged: false
             };
+
+        this.loggoutButtonClick = this.loggoutButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -47,14 +49,14 @@ export class TopMenu extends Component {
 
 
                             <div className="pb-2 container-sair">
-                                <button className="btn font-weight-light">
+                                <button className="btn font-weight-light" onClick={this.loggoutButtonClick}>
                                     <img src="/img/Icon_sair.svg" alt="logout icon" id="logoutIcon"/> Sair
                                 </button>
                             </div>
 
                             <div className="pb-2 mt-2 container-nome-professor">
-                                <img src="/img/Icon_id professor.svg" alt="user icon" id="userIcon"/>
-                                <a className="nav-link font-weight-light">Nome do professor</a>
+                                <img src="/img/Icon_id professor.svg" alt="user icon" id="userIcon" />
+                                <a className="nav-link font-weight-light">{this.state.username}</a>
                             </div>
                         </div>
                     </div>
