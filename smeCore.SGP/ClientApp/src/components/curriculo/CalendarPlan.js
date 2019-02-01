@@ -25,7 +25,7 @@ export class CalenderPlan extends Component {
             let week = [];
 
             for (var i = 0; i < 7; i++) {
-                let current = new Date();
+                let current = new Date(sunday);
                 current.setDate(sunday.getDate() + i);
                 week[i] = {};
                 week[i].day = current.getDate();
