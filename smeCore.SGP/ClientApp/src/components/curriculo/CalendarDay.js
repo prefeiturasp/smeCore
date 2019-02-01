@@ -22,6 +22,8 @@ export class CalenderDay extends Component {
 
         // This binding is necessary to make `this` work in the callback
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
+
+        this.clickRadioHora = this.clickRadioHora.bind(this);
      
     }
 
@@ -52,6 +54,13 @@ export class CalenderDay extends Component {
         radios[i].checked = false;
         document.getElementById(this.state.modalHourId).value = '';
         document.getElementById(this.state.modalMinuteId).value = '';
+    }
+
+    clickRadioHora(e){
+
+        console.log('Ollyver ' + e.target.value);
+        console.log('Ollyver ' + this.props.checked);
+
     }
    
     render() {
@@ -84,8 +93,8 @@ export class CalenderDay extends Component {
                                                 &nbsp;
                                                 <span>:</span>
                                                 &nbsp;
-                                                <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} />
-                                                Formato 24 Horas
+                                                <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} /> Formato 24 Horas
+
                                             </div>
                                         </div>
 
@@ -94,7 +103,7 @@ export class CalenderDay extends Component {
                                         <div>
                                             <h6>Marcador</h6>
                                             <div className="form-inline">
-                                                <input type="radio" name="colors" value="lilac" />&nbsp;
+                                                <input type="radio" name="colors" value="lilac" onClick={this.clickRadioHora} />&nbsp;
                                                 <input type="radio" name="colors" value="purple" />&nbsp;
                                                 <input type="radio" name="colors" value="blue" />&nbsp;
                                                 <input type="radio" name="colors" value="green" />&nbsp;

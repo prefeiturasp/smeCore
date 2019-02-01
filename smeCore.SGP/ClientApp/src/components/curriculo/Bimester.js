@@ -10,6 +10,7 @@ export class Bimester extends Component {
 
         this.state = {
             imageName: "/img/Icon_" + props.image + ".svg",
+            imageSrc: "/img/Icon_editar.svg",
             imageId: props.image + "Icon",
             editId: props.name + "Edit",
             contentId: "collapse" + props.name,
@@ -19,6 +20,8 @@ export class Bimester extends Component {
             learningObjectiveItems: [],
             objectiveItems: []
         };
+
+        this.changeIconEditar = this.changeIconEditar.bind(this);
     }
 
     componentDidMount() {
@@ -46,7 +49,8 @@ export class Bimester extends Component {
         this.setState({
             subjects: subjectsData,
             learningObjectiveItems: learningObjectiveData
-        });        
+        });
+
     }
 
     componentWillUnmount() {
@@ -94,6 +98,15 @@ export class Bimester extends Component {
         this.setState({ learningObjectiveItems: learningObjectiveData, objectiveItems: data });
     }
 
+    changeIconEditar(){
+        let imgSrc = this.state.imageSrc;
+        if (imgSrc === '/img/Icon_editar.svg'){
+            this.setState({imageSrc: '/img/Icon_editar_outline.svg'})
+        }else if (imgSrc === '/img/Icon_editar_outline.svg'){
+            this.setState({imageSrc: '/img/Icon_editar.svg'})
+        }
+    }
+
     render() {
         return (
             <div className="w-auto shadows-box-bimester rounded">
@@ -106,7 +119,7 @@ export class Bimester extends Component {
                         <span className="text-dark"><b>Bimestre</b></span>
 
                         <div className="d-flex flex-fill flex-row-reverse">
-                            <img src="/img/Icon_editar.svg" alt="edit icon" id={this.state.editId} />
+                            <img src={this.state.imageSrc} alt="edit icon" id={this.state.editId} onClick={this.changeIconEditar} />
                         </div>
                     </div>
                 </button>
