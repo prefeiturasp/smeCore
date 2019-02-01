@@ -18,13 +18,8 @@ export class CalenderDay extends Component {
             appointments: []
         };
 
-      
-
         // This binding is necessary to make `this` work in the callback
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
-
-        this.clickRadioHora = this.clickRadioHora.bind(this);
-     
     }
 
     addAppointmentClick() {
@@ -33,36 +28,35 @@ export class CalenderDay extends Component {
         let radios = document.getElementsByName('colors');
         let name = "5° B";
         let school = "EMEF";
+        let controleChecked = false;
 
         for (var i = 0, length = radios.length; i < length; i++)
             if (radios[i].checked) {
                 color = radios[i].value;
+                controleChecked = true;
                 break;
             }
 
 
-        this.setState({
-            appointments: this.state.appointments.concat({
-                color: color,
-                time: time,
-                name: name,
-                school: school
-            }),
+        if (controleChecked == true && time != ":") {
 
-        });
-      
-        radios[i].checked = false;
-        document.getElementById(this.state.modalHourId).value = '';
-        document.getElementById(this.state.modalMinuteId).value = '';
+            this.setState({
+                appointments: this.state.appointments.concat({
+                    color: color,
+                    time: time,
+                    name: name,
+                    school: school
+                }),
+            });
+            radios[i].checked = false;
+            document.getElementById(this.state.modalHourId).value = '';
+            document.getElementById(this.state.modalMinuteId).value = '';
+        } else {
+            alert('Todos os campos são obrigatórios! Os dados não serão salvos.');
+        }
     }
 
-    clickRadioHora(e){
 
-        console.log('Ollyver ' + e.target.value);
-        console.log('Ollyver ' + this.props.checked);
-
-    }
-   
     render() {
         console.log("render");
         return (
@@ -93,7 +87,7 @@ export class CalenderDay extends Component {
                                                 &nbsp;
                                                 <span>:</span>
                                                 &nbsp;
-                                                <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} /> Formato 24 Horas
+                                                <input type="number" min="0" max="59" className="form-control form-control-sm input-minute" id={this.state.modalMinuteId} /> Formato 24 Horas
 
                                             </div>
                                         </div>
@@ -103,12 +97,26 @@ export class CalenderDay extends Component {
                                         <div>
                                             <h6>Marcador</h6>
                                             <div className="form-inline">
-                                                <input type="radio" name="colors" value="lilac" onClick={this.clickRadioHora} />&nbsp;
-                                                <input type="radio" name="colors" value="purple" />&nbsp;
-                                                <input type="radio" name="colors" value="blue" />&nbsp;
-                                                <input type="radio" name="colors" value="green" />&nbsp;
-                                                <input type="radio" name="colors" value="yellow" />&nbsp;
-                                                <input type="radio" name="colors" value="red" />
+
+                                                <input type="radio" id="lilac" name="colors" value="lilac"  />&nbsp;
+                                                <label id="label-lilac" htmlFor="lilac"><span></span></label>
+
+                                                <input type="radio" id="purple" name="colors" value="purple"  />&nbsp;
+                                                <label id="label-purple" htmlFor="purple"><span></span></label>
+
+                                                <input type="radio" id="blue" name="colors" value="blue"  />&nbsp;
+                                                <label id="label-blue" htmlFor="blue"><span></span></label>
+
+                                                <input type="radio" id="green" name="colors" value="green"  />&nbsp;
+                                                <label id="label-green" htmlFor="green"><span></span></label>
+
+                                                <input type="radio" id="yellow" name="colors" value="yellow"  />&nbsp;
+                                                <label id="label-yellow" htmlFor="yellow"><span></span></label>
+
+                                                <input type="radio" id="red" name="colors" value="red"  />&nbsp;
+                                                <label id="label-red" htmlFor="red"><span></span></label>
+
+
                                             </div>
                                         </div>
                                     </div>
