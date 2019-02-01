@@ -53,20 +53,24 @@ export class Home extends Component {
     }
 
     changeClass() {
-        var index = this.state.selectedOption.value.indexOf("-", 7) + 1;
-        var year = this.state.selectedOption.value.substring(index, index + 1);
-        ++index;
-        var classroom = this.state.selectedOption.value.substring(index, index + 1);
-        index = this.state.selectedOption.value.indexOf("-", 15) + 2;
-        var school = this.state.selectedOption.value.substring(index, this.state.selectedOption.value.indexOf(","));
-        index = this.state.selectedOption.value.indexOf(",") + 2;
-        school = this.state.selectedOption.value.substring(index) + " " + school;
+        if (this.state.selectedOption !== undefined) {
+            var index = this.state.selectedOption.value.indexOf("-", 7) + 1;
+            var year = this.state.selectedOption.value.substring(index, index + 1);
+            ++index;
+            var classroom = this.state.selectedOption.value.substring(index, index + 1);
+            index = this.state.selectedOption.value.indexOf("-", 15) + 2;
+            var school = this.state.selectedOption.value.substring(index, this.state.selectedOption.value.indexOf(","));
+            index = this.state.selectedOption.value.indexOf(",") + 2;
+            school = this.state.selectedOption.value.substring(index) + " " + school;
 
-        this.setState({
-            year: year,
-            classroom: classroom,
-            school: school,
-        })
+            this.setState({
+                year: year,
+                classroom: classroom,
+                school: school,
+            });
+        }
+        else
+            alert("Selecione uma turma antes");
     }
 
     render() {

@@ -53,8 +53,11 @@ export class CyclePlan extends Component {
         this.state = {
             SustainableDevItems: [],
             KnowledgeItems: [],
-            today: today.getDate() + " de " + month + " - " + today.getFullYear()
+            today: today.getDate() + " de " + month + " - " + today.getFullYear(),
+            title: ""
         };
+
+        this.saveClick = this.saveClick.bind(this);
     }
 
     componentDidMount() {
@@ -75,10 +78,22 @@ export class CyclePlan extends Component {
 
                 this.setState({ SustainableDevItems: data, loading: false });
             });
+
+        //var title = this.props.year;
+
+        //if (title !== undefined) {
+        //    if (title === "1" || title === "2" || title === "3")
+        //        title = "Alfabetização";
+        //    else if (title === "4" || title === "5" || title === "6")
+        //        title = "Interdiciplinar";
+        //    else if (title === "7" || title === "8" || title === "9")
+        //        title = "Autoral";
+
+        //    this.setState({ title: title });
+        //}
     }
 
     componentWillUnmount() {
-
     }
 
     knowledgeItemClick(item, e) {
@@ -105,7 +120,24 @@ export class CyclePlan extends Component {
         this.setState({ SustainableDevItems: data });
     }
 
+    saveClick() {
+        alert(this.props.year !== undefined);
+    }
+
     render() {
+        var title = this.props.year;
+
+        if (title !== undefined) {
+            if (title === "1" || title === "2" || title === "3")
+                title = "Alfabetização";
+            else if (title === "4" || title === "5" || title === "6")
+                title = "Interdiciplinar";
+            else if (title === "7" || title === "8" || title === "9")
+                title = "Autoral";
+
+            sessionStorage.setItem("cycleName", title);
+        }
+
         return (
             <div className="tab-pane fade border-left border-right border-bottom" id="planoCiclo" role="tabpanel" aria-labelledby="planoCiclo-tab">
                 <nav className="container-tabpanel navbar">
@@ -116,7 +148,7 @@ export class CyclePlan extends Component {
                     <ul className="nav navbar-nav ml-auto">
                         <li className="nav-item">
                             <div className="form-inline">
-                                <a className="nav-link disabled">Salvamento automático...</a>
+                                <button className="btn btn-warning" onClick={this.saveClick}>Salvar</button>
                                 <a className="nav-link disabled">Última acesso: Maria Blábláblá | 29/01/2019</a>
                             </div>
                         </li>
@@ -127,7 +159,7 @@ export class CyclePlan extends Component {
 
                 <div id="cyclePlan-info" className="container-tabpanel-content">
                     <div className="container row">
-                        <h5 className="">Plano de Ciclo</h5>
+                        <h5 className="">Plano de Ciclo | {title}</h5>
                     </div>
 
 

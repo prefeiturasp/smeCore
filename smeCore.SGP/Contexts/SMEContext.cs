@@ -17,6 +17,8 @@ namespace smeCore.SGP.Contexts
         /// DbSet para mapear os usuários logados no sistema.
         /// </summary>
         public DbSet<smeCore.Models.Authentication.LoggedUser> LoggedUsers { get; set; }
+
+        public DbSet<smeCore.Models.Planning.Cycle> Cycles { get; set; }
         #endregion
 
 
