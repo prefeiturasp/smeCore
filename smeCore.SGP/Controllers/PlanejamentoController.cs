@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using smeCore.Models.Planning;
+using smeCore.Models.Settings;
 using smeCore.SGP.Contexts;
 using smeCore.SGP.Models.Planning;
 using System;
@@ -19,6 +21,7 @@ namespace smeCore.SGP.Controllers
         #region ==================== ATTRIBUTES ====================
 
         private readonly SMEContext _db; // Objeto context referente ao banco smeCoreDB
+        private readonly SgpURLSettings _sgpURLSettings; // Objeto referente às URLS no appsettings
 
         #endregion ==================== ATTRIBUTES ====================
 
@@ -28,9 +31,11 @@ namespace smeCore.SGP.Controllers
         /// Construtor padrão para o PlanejamentoController, faz injeção de dependências do SMEContext.
         /// </summary>
         /// <param name="db">Depêndencia de dataContext (SMEContext)</param>
-        public PlanejamentoController(SMEContext db)
+        public PlanejamentoController(SMEContext db, 
+                                      IOptions<SgpURLSettings> sgpURLSettings)
         {
             _db = db;
+            _sgpURLSettings = sgpURLSettings.Value;
         }
 
         #endregion ==================== CONSTRUCTORS ====================
@@ -41,12 +46,9 @@ namespace smeCore.SGP.Controllers
 
         private async Task<List<LearningObjective>> GetLearningObjectives()
         {
-            // Configurações iniciais
-            string url = "http://curriculo.sme.prefeitura.sp.gov.br/api/v1/learning_objectives";
-
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync(_sgpURLSettings.GetLearningObjectivesURL))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
@@ -132,12 +134,9 @@ namespace smeCore.SGP.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> ListarMatrizSaberes()
         {
-            // Configurações iniciais
-            string url = "http://curriculo.sme.prefeitura.sp.gov.br/api/v1/knowledge_matrices";
-
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync(_sgpURLSettings.ListarMatrizSaberesURL))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
@@ -157,12 +156,9 @@ namespace smeCore.SGP.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> ListarODS()
         {
-            // Configurações iniciais
-            string url = "http://curriculo.sme.prefeitura.sp.gov.br/api/ods";
-
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync(_sgpURLSettings.ListarODSURL))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
