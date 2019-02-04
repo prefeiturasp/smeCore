@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using smeCore.Models.Settings;
 using smeCore.SGP.Contexts;
 using System;
 using System.IO;
@@ -68,6 +69,13 @@ namespace smeCore.SGP
                         .AllowCredentials()
                         .Build());
             });
+
+            #region ----------------------- CONFIGURAÇÕES SERVIÇOS ----------------------------------------------------
+
+            services.Configure<SgpURLSettings>(Configuration
+                .GetSection(nameof(SgpURLSettings)));
+
+            #endregion
 
             // Registra o Swagger Generator (OpenAPI)
             services.AddSwaggerGen(options =>

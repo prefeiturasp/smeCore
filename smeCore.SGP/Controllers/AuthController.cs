@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using smeCore.Models.Authentication;
+using smeCore.Models.Settings;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -12,9 +14,22 @@ namespace smeCore.SGP.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        #region ==================== ATTRIBUTES ====================
+
+        private readonly SgpURLSettings _sgpURLSettings; // Objeto referente às URLS no appsettings
+
+        #endregion ==================== ATTRIBUTES ====================
+
+        #region ==================== CONSTRUCTORS ====================
+
+        public AuthController(IOptions<SgpURLSettings> sgpURLSettings)
+        {
+            _sgpURLSettings = sgpURLSettings.Value;
+        }
+
+        #endregion ==================== CONSTRUCTORS ====================
+
         #region ==================== METHODS ====================
-
-
 
         #region -------------------- PUBLIC --------------------
 
@@ -22,7 +37,6 @@ namespace smeCore.SGP.Controllers
         public async Task<ActionResult<string>> Login([FromBody]Credential credential)
         {
             // Configurações iniciais
-            string url = "http://smecore.sme.prefeitura.sp.gov.br/api/Auth/LoginJWT";
             Dictionary<string, string> data = new Dictionary<string, string>();
             data.Add("credential", JsonConvert.SerializeObject(credential));
             string result = "";
@@ -31,7 +45,9 @@ namespace smeCore.SGP.Controllers
 
             // Inicialização do cliente para requisições (GET e POST)
             HttpClient client = new HttpClient();
-            var response = await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(credential), Encoding.UTF8, "application/json"));
+            var response = await client.PostAsync(_sgpURLSettings.LoginURL, 
+                                                new StringContent(JsonConvert.SerializeObject(credential), 
+                                                Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
             {
