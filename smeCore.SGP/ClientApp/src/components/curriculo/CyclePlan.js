@@ -113,7 +113,7 @@ export class CyclePlan extends Component {
 
             if (type === "Alfabetização")
                 type = 0;
-            else if (type === "Alfabetização")
+            else if (type === "Interdiciplinar")
                 type = 1;
             else
                 type = 2;
@@ -162,6 +162,57 @@ export class CyclePlan extends Component {
         }
     }
 
+    getCycle() {
+        if (sessionStorage.getItem("cyclePlanLoaded") === null) {
+            var type = sessionStorage.getItem("cycleName");
+
+            if (type === "Alfabetização")
+                type = 0;
+            else if (type === "Interdiciplinar")
+                type = 1;
+            else
+                type = 2;
+
+            var cycle = {
+                school: this.props.school,
+                type: type
+            };
+
+            fetch('/api/Planejamento/AbrirPlanoCiclo', {
+                method: "post",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cycle)
+            })
+                //.then(response => response.json())
+                .then(data => {
+                    if (data.status === 200) {
+                        data.json().then(result => {
+                            //var txt = "";
+                            //for (var key in result)
+                            //    txt += key + ": " + result[key] + "\n";
+                            //alert(txt);
+                            document.getElementById("cyclePlanning-textarea").value = result.description;
+
+                            var selectedKnowledgeMatrix = result.selectedKnowledgeMatrix.split(",");
+                            var knowledgeItems = this.state.KnowledgeItems;
+                            for (var i = 0; i < knowledgeItems.length; i++)
+                                if (selectedKnowledgeMatrix.indexOf(knowledgeItems[i].sequence) >= 0)
+                                    knowledgeItems[i].selected = true;
+
+                            var selectedODS = result.selectedODS.split(",");
+                            var sustainableDevItems = this.state.SustainableDevItems;
+                            for (var i = 0; i < sustainableDevItems.length; i++)
+                                if (selectedODS.indexOf(sustainableDevItems[i].sequence) >= 0)
+                                    sustainableDevItems[i].selected = true;
+
+                            sessionStorage.setItem("cyclePlanLoaded", true);
+                            this.setState({ KnowledgeItems: knowledgeItems, SustainableDevItems: sustainableDevItems });
+                        });
+                    }
+                });
+        }
+    }
+
     render() {
         var title = this.props.year;
 
@@ -174,6 +225,7 @@ export class CyclePlan extends Component {
                 title = "Autoral";
 
             sessionStorage.setItem("cycleName", title);
+            this.getCycle();
         }
 
         return (

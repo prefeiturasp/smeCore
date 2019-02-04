@@ -215,6 +215,21 @@ namespace smeCore.SGP.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle cycle)
+        {
+            Cycle result =
+                (from current in _db.Cycles
+                 where current.Type == cycle.Type
+                 && current.School == cycle.School
+                 select current).SingleOrDefault();
+
+            if (result != null)
+                return (Ok(result));
+            else
+                return (NotFound());
+        }
+
+        [HttpPost]
         public async Task<ActionResult<string>> SalvarPlanoAnual(Annual annual)
         {
             annual.NewID();
