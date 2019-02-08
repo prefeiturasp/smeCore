@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using smeCore.Models.Planning;
+using smeCore.SGP.Contexts;
+using smeCore.SGP.Models.Planning;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using smeCore.SGP.Contexts;
-using smeCore.SGP.Models.Planning;
 
 namespace smeCore.SGP.Controllers
 {
@@ -17,12 +17,13 @@ namespace smeCore.SGP.Controllers
     public class PlanejamentoController : ControllerBase
     {
         #region ==================== ATTRIBUTES ====================
+
         private readonly SMEContext _db; // Objeto context referente ao banco smeCoreDB
-        #endregion
 
-
+        #endregion ==================== ATTRIBUTES ====================
 
         #region ==================== CONSTRUCTORS ====================
+
         /// <summary>
         /// Construtor padrão para o PlanejamentoController, faz injeção de dependências do SMEContext.
         /// </summary>
@@ -31,20 +32,18 @@ namespace smeCore.SGP.Controllers
         {
             _db = db;
         }
-        #endregion
 
-
+        #endregion ==================== CONSTRUCTORS ====================
 
         #region ==================== METHODS ====================
+
         #region -------------------- PRIVATE --------------------
+
         private async Task<List<LearningObjective>> GetLearningObjectives()
         {
-            // Configurações iniciais
-            string url = "http://curriculo.sme.prefeitura.sp.gov.br/api/v1/learning_objectives";
-
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync("http://curriculo.sme.prefeitura.sp.gov.br/api/v1/learning_objectives"))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
@@ -56,9 +55,11 @@ namespace smeCore.SGP.Controllers
                 return (result);
             }
         }
-        #endregion
+
+        #endregion -------------------- PRIVATE --------------------
 
         #region -------------------- PUBLIC --------------------
+
         /// <summary>
         /// Método para listar os objetivos de aprendizagem, podendo ser filtrado pelo ano desejado.
         /// </summary>
@@ -77,27 +78,35 @@ namespace smeCore.SGP.Controllers
                     case "1":
                         ano = "first";
                         break;
+
                     case "2":
                         ano = "second";
                         break;
+
                     case "3":
                         ano = "third";
                         break;
+
                     case "4":
                         ano = "fourth";
                         break;
+
                     case "5":
                         ano = "fifth";
                         break;
+
                     case "6":
                         ano = "sixth";
                         break;
+
                     case "7":
                         ano = "seventh";
                         break;
+
                     case "8":
                         ano = "eighth";
                         break;
+
                     case "9":
                         ano = "nineth";
                         break;
@@ -120,16 +129,13 @@ namespace smeCore.SGP.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> ListarMatrizSaberes()
         {
-            // Configurações iniciais
-            string url = "http://curriculo.sme.prefeitura.sp.gov.br/api/v1/knowledge_matrices";
-
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync("http://curriculo.sme.prefeitura.sp.gov.br/api/v1/knowledge_matrices"))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
-                List<KnowledgeItem> result = 
+                List<KnowledgeItem> result =
                     (from knowledgeItem in JsonConvert.DeserializeObject<List<KnowledgeItem>>(response)
                      orderby knowledgeItem.sequence
                      select knowledgeItem).ToList();
@@ -145,16 +151,13 @@ namespace smeCore.SGP.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> ListarODS()
         {
-            // Configurações iniciais
-            string url = "http://curriculo.sme.prefeitura.sp.gov.br/api/ods";
-
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync("http://curriculo.sme.prefeitura.sp.gov.br/api/ods"))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
-                List<SustainableDevItem> result = 
+                List<SustainableDevItem> result =
                     (from sustainableDevItem in JsonConvert.DeserializeObject<List<SustainableDevItem>>(response)
                      orderby sustainableDevItem.sequence
                      select sustainableDevItem).ToList();
@@ -162,7 +165,249 @@ namespace smeCore.SGP.Controllers
                 return (Ok(result));
             }
         }
-        #endregion
-        #endregion
+
+        [HttpGet]
+        public async Task<ActionResult<string>> CarregarTurmasProfessor(string username)
+        {
+            //string connectionString = @"Server=10.49.16.23\SME_PRD;Database=GestaoPedagogica;User Id=Caique.Santos;Password=Antares2014;";
+            //List<string> result = new List<string>();
+
+            //using (SqlConnection con = new SqlConnection(connectionString))
+            //{
+            //    try
+            //    {
+            //        SqlCommand cmd = new SqlCommand("API_CoreSme_BuscaTurmasAtribuidasDocente", con);
+            //        cmd.Parameters.Add(new SqlParameter("@usu_login", username));
+            //        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            //        SqlDataReader reader;
+
+            //        con.Open();
+            //        reader = cmd.ExecuteReader();
+
+            //        while (reader.Read())
+            //        {
+            //            string filtroTurma;
+            //            string ano = Convert.ToDateTime(reader["Ano"]).ToString();
+            //            ano = ano.Substring(6, 4);
+
+            //            filtroTurma = ano + " - ";
+            //            filtroTurma += reader["Turma"].ToString() + " - ";
+            //            filtroTurma += reader["Nome"].ToString();
+
+            //            if (result.Contains(filtroTurma) == false)
+            //                result.Add(filtroTurma);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            #region ==================== Mock Data ====================
+
+            Models.Mocking.Teacher result = new Models.Mocking.Teacher();
+            result.id = username;
+            result.schools.Add(new Models.Mocking.School() { name = "EMEF - MARIA APARECIDA DO NASCIMENTO, PROFA." });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-1C",
+                year = 1
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-2A",
+                year = 2
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-3A",
+                year = 3
+            });
+
+            result.schools.Add(new Models.Mocking.School() { name = "EMEF - IDEMIA DE GODOY, PROFA." });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-4A",
+                year = 4
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-5B",
+                year = 5
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-6C",
+                year = 6
+            });
+
+            result.schools.Add(new Models.Mocking.School() { name = "EMEF - MAURICIO GOULART" });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-7A",
+                year = 7
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-8B",
+                year = 8
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-9C",
+                year = 9
+            });
+
+            #endregion ==================== Mock Data ====================
+
+            if (result == null)
+                return (NotFound());
+            else
+                return (Ok(result));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle cycle)
+        {
+            cycle.NewID();
+            cycle.CreatedAt = DateTime.Now;
+            cycle.ModifiedAt = DateTime.Now;
+
+            Cycle old =
+                (from current in _db.Cycles
+                 where current.Type == cycle.Type
+                 && current.School == cycle.School
+                 select current).FirstOrDefault();
+
+            if (old != null)
+            {
+                old.ModifiedAt = cycle.ModifiedAt;
+                old.ModifiedBy = cycle.ModifiedBy;
+                old.Description = cycle.Description;
+                old.SelectedKnowledgeMatrix = cycle.SelectedKnowledgeMatrix;
+                old.SelectedODS = cycle.SelectedODS;
+
+                await _db.SaveChangesAsync();
+            }
+            else
+            {
+                try
+                {
+                    await _db.Cycles.AddAsync(cycle);
+                    await _db.SaveChangesAsync();
+                }
+                catch
+                {
+                    return (BadRequest());
+                }
+            }
+
+            return (Ok());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle cycle)
+        {
+            Cycle result =
+                (from current in _db.Cycles
+                 where current.Type == cycle.Type
+                 && current.School == cycle.School
+                 select current).SingleOrDefault();
+
+            if (result != null)
+                return (Ok(result));
+            else
+                return (NotFound());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarPlanoAnual(Annual annual)
+        {
+            annual.NewID();
+            annual.CreatedAt = DateTime.Now;
+            annual.ModifiedAt = DateTime.Now;
+
+            Annual old =
+                (from current in _db.Annuals
+                 where current.SchoolYear == annual.SchoolYear
+                 && current.Classroom == annual.Classroom
+                 && current.School == annual.School
+                 && current.UserId == annual.UserId
+                 select current).SingleOrDefault();
+
+            if (old != null)
+            {
+                old.ModifiedAt = annual.ModifiedAt;
+                old.SelectedLearningObjectivesB1 = annual.SelectedLearningObjectivesB1;
+                old.DescriptionB1 = annual.DescriptionB1;
+                old.SelectedLearningObjectivesB2 = annual.SelectedLearningObjectivesB2;
+                old.DescriptionB2 = annual.DescriptionB2;
+                old.SelectedLearningObjectivesB3 = annual.SelectedLearningObjectivesB3;
+                old.DescriptionB3 = annual.DescriptionB3;
+                old.SelectedLearningObjectivesB4 = annual.SelectedLearningObjectivesB4;
+                old.DescriptionB4 = annual.DescriptionB4;
+
+                await _db.SaveChangesAsync();
+            }
+            else
+            {
+                try
+                {
+                    await _db.Annuals.AddAsync(annual);
+                    await _db.SaveChangesAsync();
+                }
+                catch
+                {
+                    return (BadRequest());
+                }
+            }
+
+            return (Ok());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarHorarioAula(Appointment appointment)
+        {
+            appointment.NewID();
+            appointment.CreatedAt = DateTime.Now;
+            appointment.ModifiedAt = DateTime.Now;
+
+            Appointment old =
+                (from current in _db.Appointments
+                 where current.SchoolYear == appointment.SchoolYear
+                 && current.Classroom == appointment.Classroom
+                 && current.School == appointment.School
+                 && current.UserId == appointment.UserId
+                 && current.Date == appointment.Date
+                 select current).SingleOrDefault();
+
+            if (old != null)
+            {
+                old.ModifiedAt = appointment.ModifiedAt;
+                old.Date = appointment.Date;
+                old.TagColor = appointment.TagColor;
+
+                await _db.SaveChangesAsync();
+            }
+            else
+            {
+                try
+                {
+                    await _db.Appointments.AddAsync(appointment);
+                    await _db.SaveChangesAsync();
+                }
+                catch
+                {
+                    return (BadRequest());
+                }
+            }
+
+            return (Ok());
+        }
+
+        #endregion -------------------- PUBLIC --------------------
+
+        #endregion ==================== METHODS ====================
     }
 }

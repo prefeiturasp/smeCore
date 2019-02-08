@@ -1,0 +1,43 @@
+﻿.dot {
+    height: 0.7em;
+    width: 0.7em;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.color-red {
+    background-color: #fb1616;
+}
+
+.color-blue {
+    background-color: #03a9f4;
+}
+
+.color-green {
+    background-color: green;
+}
+
+.color-lilac {
+    background-color: #4c0f4c;
+}
+
+.color-purple {
+    background-color: mediumpurple;
+}
+
+.color-brown {
+    background-color: saddlebrown;
+}
+
+.color-yellow {
+    background-color: #fbc02d;
+}
+
+.container-appointment {
+}
+
+@media (max-width: 768px) {
+    .appointment-hora, .appointment-classe, .appointment-separador, .appointment-escola {
+        font-size: 0.7em;
+    }
+}

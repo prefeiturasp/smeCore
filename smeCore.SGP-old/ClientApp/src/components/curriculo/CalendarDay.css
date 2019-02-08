@@ -1,0 +1,109 @@
+﻿.appointments {
+    padding-top: 0.7em;
+    min-height: 8em;
+}
+
+.calendarDay-btn {
+    border-radius: 50px;
+    background-color: #ff5722 !important;
+    border: solid 1px #ff5722 !important;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    width: 1.7em;
+    height: 1.7em;
+}
+
+.calendarDay-btn svg{
+    margin: 0 5px 5px -4px;
+
+}
+
+.not-workday {
+    background-color: #D8F0FF;
+}
+.border-calendar-day{
+    border: solid 1px #10a3fb;
+}
+
+#calendar > tbody > tr td:first-child{
+    border-left:  none !important;
+}
+
+#calendar > tbody > tr td:last-child{
+    border-right:  none !important;
+}
+
+.tab-pane{
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+.input-minute{
+    display: inline-block;
+    margin-right: 1em;
+}
+
+/*Estilização Radio Buttons*/
+input[type="radio"]{
+    display:none;
+}
+
+input[type="radio"] + label
+{
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    margin: 0.25em 0.5em 0.25em 0.25em;
+    border: 0.0625em solid #adadad;
+    border-radius: 50%;
+    background: rgb(255,255,255);
+    vertical-align: bottom;
+}
+
+input[id=lilac]:checked + label{
+    background: #4c0f4c !important;
+    border: 0.0625em solid #4c0f4c;
+
+}
+
+input[id=purple]:checked + label{
+    background: mediumpurple !important;
+    border: 0.0625em solid mediumpurple;
+}
+
+input[id=blue]:checked + label{
+    background: #03a9f4 !important;
+    border: 0.0625em solid #03a9f4;
+}
+
+input[id=green]:checked + label{
+    background: green !important;
+    border: 0.0625em solid green;
+}
+
+input[id=yellow]:checked + label{
+    background: #fbc02d !important;
+    border: 0.0625em solid #fbc02d;
+}
+
+input[id=red]:checked + label{
+    background: #fb1616 !important;
+    border: 0.0625em solid #fb1616;
+}
+
+
+input[type="radio"]:checked + label  > span:before
+{
+    content: '✓';
+    /*content: "\2714";*/
+    display: block;
+
+    color: #fff;
+    font-size: 1.5em;
+    line-height: 1.2em;
+    text-align: center;
+    text-shadow: 0 0 0.0714em rgb(115,153,77);
+    font-weight: bold;
+
+}
+

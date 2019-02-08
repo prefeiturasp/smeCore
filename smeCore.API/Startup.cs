@@ -55,7 +55,7 @@ namespace smeCore.API
                 options.AddPolicy("CorsPolicy",
                     builder => builder
                         .AllowAnyOrigin() // Ulilizar a função abaixo e comentar essa para definir permissão de acesso de determinadas origens, caso contrário será aceito qualquer origem da requisição
-                        //.WithOrigins("https://mydomain.com", "http://outroendereco.com.br")
+                                          //.WithOrigins("https://mydomain.com", "http://outroendereco.com.br")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()

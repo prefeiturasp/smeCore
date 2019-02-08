@@ -1,38 +1,74 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Router } from 'react-router-dom';
-import { Layout } from './components/Layout';
-//import { Layout } from './components/Layout';
-import { Home } from './components/curriculo/Home';
-//import { FetchData } from './components/FetchData';
-//import { Counter } from './components/Counter';
-import { HomeLogin } from './components/login/Home';
+import { withRouter } from 'react-router-dom';
+import Routes from './Routes';
 
-export default class App extends Component {
+class App extends Component {
     static displayName = App.name;
 
-    render() {
-        //return (
-        //  <Layout>
-        //    <Route exact path='/' component={Home} />
-        //    <Route path='/counter' component={Counter} />
-        //    <Route path='/fetch-data' component={FetchData} />
-        //  </Layout>
-        //);
+    constructor(props) {
+        super(props);
 
-        //return (
-        //    <Layout>
-        //        <Route exact path='/' component={Home} />
-        //    </Layout>
-        //);
+        this.state = {
+            isAuthenticated: false,
+            user: {
+                name: "",
+                username: "",
+                token: "",
+                refreshToken: "",
+                lastAuthentication: null
+            }
+        };
+
+        this.userHasAuthenticated = this.userHasAuthenticated.bind(this);
+        this.loggoutUser = this.loggoutUser.bind(this);
+        this.logginUser = this.logginUser.bind(this);
+        this.setUser = this.setUser.bind(this);
+    }
+
+    userHasAuthenticated(authenticated) {
+        this.setState({ isAuthenticated: authenticated });
+    }
+
+    loggoutUser(event) {
+        sessionStorage.setItem("user", null);
+        this.setState({
+            isAuthenticated: false,
+            user: {
+                name: "",
+                username: "",
+                token: "",
+                refreshToken: "",
+                lastAuthentication: null
+            }
+        });
+    }
+
+    logginUser(user) {
+        sessionStorage.setItem("user", JSON.stringify(user));
+        this.setState({
+            isAuthenticated: true,
+            user: user
+        });
+    }
+
+    setUser(user) {
+        this.setState({ user: user });
+    }
+
+    render() {
+        const childProps = {
+            isAuthenticated: this.state.isAuthenticated,
+            userHasAuthenticated: this.userHasAuthenticated,
+            loggoutUser: this.loggoutUser,
+            logginUser: this.logginUser,
+            setUser: this.setUser,
+            user: this.state.user
+        };
 
         return (
-            <div>
-                <Route exact path='/Login' component={HomeLogin} />
-                <Layout>
-                    <Route exact path='/' component={Home} />
-                </Layout>
-            </div>
+            <Routes childProps={childProps} />
         );
     }
 }
+
+export default withRouter(App);

@@ -1,0 +1,21 @@
+﻿.MyObjective-item-span {
+    padding-left: 2em !important;
+    padding-right: 2em !important;
+}
+
+.MyObjective-label {
+    padding-right: 1em;
+}
+
+.MyObjective-item {
+    padding-bottom: 0.5em;
+}
+
+.edit-icon-50 {
+    width: 2.5em;
+    height: 2.5em;
+}
+
+.MyObjective-label > img {
+    padding-left: 0.5em;
+}

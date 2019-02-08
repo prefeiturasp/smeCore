@@ -4,11 +4,6 @@
         <name>smeCore.SGP</name>
     </assembly>
     <members>
-        <member name="T:smeCore.SGP.Contexts.SMEContext">
-            <summary>
-            DataBase Context do smeCore.
-            </summary>
-        </member>
         <member name="P:smeCore.SGP.Contexts.SMEContext.LoggedUsers">
             <summary>
             DbSet para mapear os usuários logados no sistema.
