@@ -7,11 +7,18 @@
 }
 
 .number-icon {
+
     min-width: 2.5em;
     min-height: 2.5em;
 }
 
     .number-icon > h5 {
         padding-top: 0.35em;
+    min-width: 2.3em;
+    min-height: 2.3em;
+}
+
+    .number-icon > h5 {
+        padding-top: 0.25em;
         margin-left: -0.0em
     }
