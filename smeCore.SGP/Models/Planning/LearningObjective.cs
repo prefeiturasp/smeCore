@@ -16,8 +16,6 @@ namespace smeCore.SGP.Models.Planning
 
         #endregion ==================== ATTRIBUTES ====================
 
-
-
         #region ==================== METHODS ====================
 
         /// <summary>

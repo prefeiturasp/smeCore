@@ -2,9 +2,6 @@
 
 namespace smeCore.SGP.Contexts
 {
-    /// <summary>
-    /// DataBase Context do smeCore.
-    /// </summary>
     public class SMEContext : DbContext
     {
         #region ==================== ATTRIBUTES ====================

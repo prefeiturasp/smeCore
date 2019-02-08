@@ -30,33 +30,33 @@
     white-space: nowrap;
 }
 
-.sem-border{
+.sem-border {
     border-radius: 0 !important;
 }
 
-.container-sair, .container-nome-professor{
+.container-sair, .container-nome-professor {
 }
 
-.container-nome-professor a{
-    display: inline;
-}
+    .container-nome-professor a {
+        display: inline;
+    }
 
-.icones-top-menu-desativado{
+.icones-top-menu-desativado {
     color: #6f34da;
     font-size: 2.4em;
     display: inline-block;
     margin-bottom: 0.5em;
 }
 
-span.texto, span.texto-bold{
+span.texto, span.texto-bold {
     font-size: 0.9em;
 }
 
-span.texto-bold{
+span.texto-bold {
     font-weight: 500 !important;
 }
 
-.borda-left-menu{
+.borda-left-menu {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-top: solid 1px #ccc;
@@ -65,7 +65,7 @@ span.texto-bold{
     overflow: hidden;
 }
 
-.borda-right-menu{
+.borda-right-menu {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-top: solid 1px #ccc;
@@ -74,45 +74,45 @@ span.texto-bold{
     overflow: hidden;
 }
 
-.bg-banner-top-menu{
-    background: url('https://ottobonidesign.com.br/banner3.svg') no-repeat center center ;
+.bg-banner-top-menu {
+    background: url('https://ottobonidesign.com.br/banner3.svg') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    height:100%;
+    height: 100%;
 }
 
-.link-bg-banner-menu{
+.link-bg-banner-menu {
     color: #000;
 }
 
-.texto-bg-banner-top{
+.texto-bg-banner-top {
     width: 75%;
     display: block;
     margin-left: 0.5em;
 }
 
 @media (min-width: 992px) {
-    .icones-top-menu{
+    .icones-top-menu {
         display: block;
         margin: 0 auto;
     }
 }
 
 @media (max-width: 992px) {
-    .borda-left-menu{
+    .borda-left-menu {
         border-radius: 10px;
         overflow: hidden;
         margin-bottom: 0.8em;
     }
 
-    .borda-right-menu{
+    .borda-right-menu {
         border-radius: 10px;
         overflow: hidden;
     }
 
-    .bg-banner-top-menu a{
+    .bg-banner-top-menu a {
         font-size: 0.8em;
     }
 }

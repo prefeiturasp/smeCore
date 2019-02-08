@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using smeCore.Models.Planning;
-using smeCore.Models.Settings;
 using smeCore.SGP.Contexts;
 using smeCore.SGP.Models.Planning;
 using System;
@@ -21,7 +19,6 @@ namespace smeCore.SGP.Controllers
         #region ==================== ATTRIBUTES ====================
 
         private readonly SMEContext _db; // Objeto context referente ao banco smeCoreDB
-        private readonly SgpURLSettings _sgpURLSettings; // Objeto referente às URLS no appsettings
 
         #endregion ==================== ATTRIBUTES ====================
 
@@ -31,11 +28,9 @@ namespace smeCore.SGP.Controllers
         /// Construtor padrão para o PlanejamentoController, faz injeção de dependências do SMEContext.
         /// </summary>
         /// <param name="db">Depêndencia de dataContext (SMEContext)</param>
-        public PlanejamentoController(SMEContext db, 
-                                      IOptions<SgpURLSettings> sgpURLSettings)
+        public PlanejamentoController(SMEContext db)
         {
             _db = db;
-            _sgpURLSettings = sgpURLSettings.Value;
         }
 
         #endregion ==================== CONSTRUCTORS ====================
@@ -48,7 +43,7 @@ namespace smeCore.SGP.Controllers
         {
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(_sgpURLSettings.GetLearningObjectivesURL))
+            using (HttpResponseMessage getResponse = await client.GetAsync("http://curriculo.sme.prefeitura.sp.gov.br/api/v1/learning_objectives"))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
@@ -136,7 +131,7 @@ namespace smeCore.SGP.Controllers
         {
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(_sgpURLSettings.ListarMatrizSaberesURL))
+            using (HttpResponseMessage getResponse = await client.GetAsync("http://curriculo.sme.prefeitura.sp.gov.br/api/v1/knowledge_matrices"))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
@@ -158,7 +153,7 @@ namespace smeCore.SGP.Controllers
         {
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage getResponse = await client.GetAsync(_sgpURLSettings.ListarODSURL))
+            using (HttpResponseMessage getResponse = await client.GetAsync("http://curriculo.sme.prefeitura.sp.gov.br/api/ods"))
             using (HttpContent content = getResponse.Content)
             {
                 string response = await content.ReadAsStringAsync();
@@ -169,6 +164,107 @@ namespace smeCore.SGP.Controllers
 
                 return (Ok(result));
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<string>> CarregarTurmasProfessor(string username)
+        {
+            //string connectionString = @"Server=10.49.16.23\SME_PRD;Database=GestaoPedagogica;User Id=Caique.Santos;Password=Antares2014;";
+            //List<string> result = new List<string>();
+
+            //using (SqlConnection con = new SqlConnection(connectionString))
+            //{
+            //    try
+            //    {
+            //        SqlCommand cmd = new SqlCommand("API_CoreSme_BuscaTurmasAtribuidasDocente", con);
+            //        cmd.Parameters.Add(new SqlParameter("@usu_login", username));
+            //        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            //        SqlDataReader reader;
+
+            //        con.Open();
+            //        reader = cmd.ExecuteReader();
+
+            //        while (reader.Read())
+            //        {
+            //            string filtroTurma;
+            //            string ano = Convert.ToDateTime(reader["Ano"]).ToString();
+            //            ano = ano.Substring(6, 4);
+
+            //            filtroTurma = ano + " - ";
+            //            filtroTurma += reader["Turma"].ToString() + " - ";
+            //            filtroTurma += reader["Nome"].ToString();
+
+            //            if (result.Contains(filtroTurma) == false)
+            //                result.Add(filtroTurma);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            #region ==================== Mock Data ====================
+
+            Models.Mocking.Teacher result = new Models.Mocking.Teacher();
+            result.id = username;
+            result.schools.Add(new Models.Mocking.School() { name = "EMEF - MARIA APARECIDA DO NASCIMENTO, PROFA." });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-1C",
+                year = 1
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-2A",
+                year = 2
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-3A",
+                year = 3
+            });
+
+            result.schools.Add(new Models.Mocking.School() { name = "EMEF - IDEMIA DE GODOY, PROFA." });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-4A",
+                year = 4
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-5B",
+                year = 5
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-6C",
+                year = 6
+            });
+
+            result.schools.Add(new Models.Mocking.School() { name = "EMEF - MAURICIO GOULART" });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-7A",
+                year = 7
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-8B",
+                year = 8
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-9C",
+                year = 9
+            });
+
+            #endregion ==================== Mock Data ====================
+
+            if (result == null)
+                return (NotFound());
+            else
+                return (Ok(result));
         }
 
         [HttpPost]

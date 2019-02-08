@@ -1,0 +1,15 @@
+﻿.text-small {
+    font-size: 0.8em;
+}
+
+.text-xsmall {
+    font-size: 0.6em;
+}
+
+#calendar {
+    width: 100%;
+}
+
+.calendar-col {
+    width: 14.28%;
+}

@@ -1,0 +1,14 @@
+﻿.SustainableDev-item {
+    padding-bottom: 0.5em;
+    cursor: pointer;
+}
+
+.SustainableDev-item-description {
+    font-size: 0.8em;
+    padding-left: 0.5em;
+}
+
+.SustainableDevItem-selected {
+    background-color: #92D6FF;
+    color: white;
+}

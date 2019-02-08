@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using smeCore.Models.Settings;
 using smeCore.SGP.Contexts;
 using System;
 using System.IO;
@@ -38,8 +37,7 @@ namespace smeCore.SGP
 
             // Configuração de injeção de dependência do SMEContext (Postgres - Npgsql)
             services.AddDbContext<SMEContext>(options =>
-                options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             // JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -70,13 +68,6 @@ namespace smeCore.SGP
                         .Build());
             });
 
-            #region ----------------------- CONFIGURAÇÕES SERVIÇOS ----------------------------------------------------
-
-            services.Configure<SgpURLSettings>(Configuration
-                .GetSection(nameof(SgpURLSettings)));
-
-            #endregion
-
             // Registra o Swagger Generator (OpenAPI)
             services.AddSwaggerGen(options =>
             {
@@ -103,8 +94,6 @@ namespace smeCore.SGP
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
