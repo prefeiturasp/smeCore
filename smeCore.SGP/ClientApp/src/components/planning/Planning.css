@@ -49,7 +49,7 @@
 }
 
 .text-color-purple {
-    color: #7C4DFF;
+    color: #7C4DFF !important;
 }
 
 .tab-pane {

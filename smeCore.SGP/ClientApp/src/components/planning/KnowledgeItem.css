@@ -11,8 +11,10 @@
 .knowledgeItem-selected {
     background-color: #92D6FF;
     color: white;
-    min-width: 2.3em !important;
-    min-height: 2.3em !important;
+
+    min-width: 2.5em !important;
+    min-height: 2.5em !important;
+
 }
 
 .round-icon {
