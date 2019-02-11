@@ -1,6 +1,8 @@
 ﻿import React, { Component } from 'react';
 import './EditAppointment.css';
 import { MyObjectiveItem } from './MyObjectiveItem';
+import { EditorState } from 'draft-js';
+import { RichTextBox } from '../textbox/RichTextBox';
 
 export class EditAppointment extends Component {
     constructor(props) {
@@ -23,9 +25,6 @@ export class EditAppointment extends Component {
                 { name: "EF02M10", date: "04/03/2019" }
             ]
         });
-    }
-
-    componentWillUnmount() {
     }
 
     render() {
@@ -72,19 +71,7 @@ export class EditAppointment extends Component {
 
                             <hr className="header-rule" />
 
-                            <textarea className="form-control" rows="5" id="classDevelopment-textarea"></textarea>
-                        </div>
-
-                        <div className="vertical-spacing"></div>
-
-                        <div>
-                            <div className="d-flex">
-                                <h5 className="font-weight-light text-color-purple">Lição de casa</h5>
-                            </div>
-
-                            <hr className="header-rule" />
-
-                            <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
+                            <RichTextBox />
                         </div>
 
                         <div className="vertical-spacing"></div>
@@ -97,6 +84,18 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <textarea className="form-control" rows="5" id="continuousRecovery-textarea"></textarea>
+                        </div>
+
+                        <div className="vertical-spacing"></div>
+
+                        <div>
+                            <div className="d-flex">
+                                <h5 className="font-weight-light text-color-purple">Lição de casa</h5>
+                            </div>
+
+                            <hr className="header-rule" />
+
+                            <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
                         </div>
                     </div>
                 </div>
