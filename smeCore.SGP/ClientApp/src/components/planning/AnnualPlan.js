@@ -35,19 +35,6 @@ export class AnnualPlan extends Component {
         ++index;
         var classroom = value.substring(index, index + 1);
 
-        //if (this.state.classroom === "" && this.state.loadLearningObjectives === true) {
-        //    var url = "api/Planejamento/ListarObjetivosAprendizagem?ano=" + year;
-        //    fetch(url)
-        //        .then(response => response.json())
-        //        .then(data => {
-        //            for (var i = 0; i < data.length; i++)
-        //                data[i].selected = false;
-
-        //            this.setState({ learningObjectiveItems: data, loadLearningObjectives: false, classroom: year + "°" + classroom });
-        //            alert("call api");
-        //        });
-        //}
-
         childProps = {
             year: this.props.year,
             classroom: this.props.classroom,
@@ -76,7 +63,10 @@ export class AnnualPlan extends Component {
     }
 
     saveButtonClick() {
-        alert("Not implemented");
+        alert(this.state.bimester1 + "\n" +
+            this.state.bimester2 + "\n" +
+            this.state.bimester3 + "\n" +
+            this.state.bimester4);
     }
 
     render() {

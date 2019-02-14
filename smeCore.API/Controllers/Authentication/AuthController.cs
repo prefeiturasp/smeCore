@@ -57,7 +57,7 @@ namespace smeCore.API.Controllers.Authentication
         /// </summary>
         /// <param name="credential">Objeto que contém informações da credencial do usuário</param>
         /// <returns>Objeto contendo informações do usuário encontrado, caso não seja encontrado nenhum usuário com correspondente a credencial enviada o método retorna nulo.</returns>
-        private async Task<User> Authenticate(Credential credential)
+        private async Task<ClientUser> Authenticate(Credential credential)
         {
             // Configurações iniciais
             string url = "http://identity.sme.prefeitura.sp.gov.br/Account/Login";
@@ -97,7 +97,7 @@ namespace smeCore.API.Controllers.Authentication
                 }
 
                 // Cria o usuário
-                User user = new User() { Username = credential.Username };
+                ClientUser user = new ClientUser() { Username = credential.Username };
 
                 // Pega os cookies da pagina
                 user.Cookies = cookies.GetCookies(new Uri(url)).Cast<Cookie>();
@@ -122,7 +122,7 @@ namespace smeCore.API.Controllers.Authentication
         /// </summary>
         /// <param name="user">Objeto contendo informações do usuário</param>
         /// <returns>Token gerado à partir das informações do usuário.</returns>
-        private string CreateToken(User user)
+        private string CreateToken(ClientUser user)
         {
             // Adicionar Claims para restringir o acesso dos usuários a determinados conteudos
             Claim[] claims = new Claim[]
@@ -185,12 +185,12 @@ namespace smeCore.API.Controllers.Authentication
         /// </summary>
         /// <param name="username">Nome de usuário a ser retornado</param>
         /// <returns>Usuário com o username especificado.</returns>
-        private async Task<User> GetUser(string username)
+        private async Task<ClientUser> GetUser(string username)
         {
             // Corrigir a metodologia de encontrar o usuário
             if (username == "teste")
             {
-                return (new User() { Name = "Usuário Teste", Email = "teste@teste.teste", Username = "teste" });
+                return (new ClientUser() { Name = "Usuário Teste", Email = "teste@teste.teste", Username = "teste" });
             }
 
             return (null);
@@ -236,7 +236,7 @@ namespace smeCore.API.Controllers.Authentication
         [HttpPost]
         public async Task<ActionResult<string>> LoginJWT([FromBody]Credential credential)
         {
-            User user = await Authenticate(credential); // Faz a autenticação do usuário
+            ClientUser user = await Authenticate(credential); // Faz a autenticação do usuário
 
             // Caso seja encontrado algum usuário com a combinação username e password
             if (user != null)
@@ -297,7 +297,7 @@ namespace smeCore.API.Controllers.Authentication
             if (loggedUser != null)
                 if ((loggedUser.ExpiresAt - DateTime.Now).Minutes > 0)
                 {
-                    User user = new User() { Username = credential.Username };//await GetUser(credential.Username); // Busca o usuário pelo username
+                    ClientUser user = new ClientUser() { Username = credential.Username };//await GetUser(credential.Username); // Busca o usuário pelo username
                     string newToken = CreateToken(user); // Cria o token de acesso
                     string newRefreshToken = CreateRefreshToken(); // Cria o refresh token
 
@@ -328,7 +328,7 @@ namespace smeCore.API.Controllers.Authentication
         public async Task<ActionResult<string>> LoginIdentity([FromBody]Credential credential)
         {
             // Executa o método de autenticação
-            User user = await Authenticate(credential);
+            ClientUser user = await Authenticate(credential);
 
             if (user == null)
                 return (Unauthorized());

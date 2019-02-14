@@ -80,31 +80,31 @@ export class CalendarPlan extends Component {
                     <tbody>
                         <tr>
                             {this.state.current_week.map(week_day => (
-                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps}/>
+                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.state.week1.map(week_day => (
-                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps}/>
+                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.state.week2.map(week_day => (
-                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps}/>
+                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.state.week3.map(week_day => (
-                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps}/>
+                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.state.week4.map(week_day => (
-                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps}/>
+                                <CalendarDay day={week_day.day} workday={week_day.workday} name={week_day.name} {...childProps} />
                             ))}
                         </tr>
                     </tbody>

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace smeCore.Models.Planning
+﻿namespace smeCore.Models.Academic
 {
-    public class Annual : Abstracts.PlanningTable
+    public class AnnualPlan : Base.Abstracts.LogTable
     {
         #region ==================== ATTRIBUTES ====================
+
         public string SelectedLearningObjectivesB1 { get; set; }
         public string DescriptionB1 { get; set; }
         public string SelectedLearningObjectivesB2 { get; set; }
@@ -17,16 +12,10 @@ namespace smeCore.Models.Planning
         public string DescriptionB3 { get; set; }
         public string SelectedLearningObjectivesB4 { get; set; }
         public string DescriptionB4 { get; set; }
-        #endregion
 
+        public string PlanningId { get; set; }
+        public virtual Planning Planning { get; set; }
 
-
-        #region ==================== CONSTRUCTORS ====================
-        #endregion
-
-
-
-        #region ==================== METHODS ====================
-        #endregion
+        #endregion ==================== ATTRIBUTES ====================
     }
 }

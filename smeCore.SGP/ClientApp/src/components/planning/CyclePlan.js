@@ -83,8 +83,6 @@ export class CyclePlan extends Component {
 
                                 <span className="text-muted text-color-purple">Última acesso: {this.state.lastModifiedBy}</span>&nbsp;
 
-                                <span className="text-muted">Última acesso: {this.state.lastModifiedBy}</span>&nbsp;
-
                                 <button className="btn btn-warning" onClick={this.saveButtonClick} disabled={this.props.year <= 0}>Salvar</button>
                             </div>
                         </li>

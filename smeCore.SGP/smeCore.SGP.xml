@@ -4,11 +4,6 @@
         <name>smeCore.SGP</name>
     </assembly>
     <members>
-        <member name="P:smeCore.SGP.Contexts.SMEContext.LoggedUsers">
-            <summary>
-            DbSet para mapear os usuários logados no sistema.
-            </summary>
-        </member>
         <member name="M:smeCore.SGP.Contexts.SMEContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{smeCore.SGP.Contexts.SMEContext})">
             <summary>
             Construtor padrão do SMEContext

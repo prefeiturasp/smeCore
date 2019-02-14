@@ -4,11 +4,21 @@ namespace smeCore.Models.Base.Abstracts
 {
     public abstract class Table
     {
-        public string id { get; set; }
+        #region ==================== ATTRIBUTES ====================
+
+        public string Id { get; set; }
+
+        #endregion ==================== ATTRIBUTES ====================
+
+
+
+        #region ==================== METHODS ====================
 
         public void NewID()
         {
-            this.id = Guid.NewGuid().ToString();
+            this.Id = Guid.NewGuid().ToString();
         }
+
+        #endregion ==================== METHODS ====================
     }
 }

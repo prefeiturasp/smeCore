@@ -1,9 +1,10 @@
-﻿namespace smeCore.Models.Planning
+﻿namespace smeCore.Models.Academic
 {
-    public class Cycle : Abstracts.PlanningTable
+    public class Cycle : Base.Abstracts.LogTable
     {
         #region ==================== ATTRIBUTES ====================
 
+        public string School { get; set; }
         public Enumerators.CycleTypes Type { get; set; }
         public string Description { get; set; }
         public string SelectedKnowledgeMatrix { get; set; }

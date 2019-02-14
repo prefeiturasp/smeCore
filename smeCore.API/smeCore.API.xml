@@ -39,7 +39,7 @@
             <param name="credential">Objeto que contém informações da credencial do usuário</param>
             <returns>Objeto contendo informações do usuário encontrado, caso não seja encontrado nenhum usuário com correspondente a credencial enviada o método retorna nulo.</returns>
         </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CreateToken(smeCore.Models.Authentication.User)">
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CreateToken(smeCore.Models.Authentication.ClientUser)">
             <summary>
             Método para gerar o token de acesso.
             </summary>

@@ -65,37 +65,73 @@ export class EditAppointment extends Component {
 
                     <div className="col">
                         <div>
-                            <div className="d-flex">
+                            <div className="d-flex btn align-items-center" data-toggle="collapse" href="#multiCollapseExample0" role="button" aria-expanded="false" aria-controls="multiCollapseExample0">
+                                <h5 className="font-weight-light text-color-purple">Frequência (preenchimento obrigatório)</h5>
+
+                                <div className="d-flex flex-fill flex-row-reverse">
+                                    <i class="fas fa-chevron-circle-down"></i>
+                                </div>
+                            </div>
+
+                            <hr className="header-rule" />
+
+                            <div id="multiCollapseExample0" className="collapse">
+                                <RichTextBox />
+                            </div>
+                        </div>
+
+                        <div className="vertical-spacing"></div>
+
+                        <div>
+                            <div className="d-flex btn align-items-center" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                                 <h5 className="font-weight-light text-color-purple">Desenvolvimento da aula</h5>
+
+                                <div className="d-flex flex-fill flex-row-reverse">
+                                    <i class="fas fa-chevron-circle-down"></i>
+                                </div>
                             </div>
 
                             <hr className="header-rule" />
 
-                            <RichTextBox />
+                            <div id="multiCollapseExample1" className="collapse">
+                                <RichTextBox />
+                            </div>
                         </div>
 
                         <div className="vertical-spacing"></div>
 
                         <div>
-                            <div className="d-flex">
+                            <div className="d-flex btn align-items-center" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2">
                                 <h5 className="font-weight-light text-color-purple">Recuperação contínua</h5>
+
+                                <div className="d-flex flex-fill flex-row-reverse">
+                                    <i class="fas fa-chevron-circle-down"></i>
+                                </div>
                             </div>
 
                             <hr className="header-rule" />
 
-                            <textarea className="form-control" rows="5" id="continuousRecovery-textarea"></textarea>
+                            <div id="multiCollapseExample2" className="collapse">
+                                <textarea className="form-control" rows="5" id="continuousRecovery-textarea"></textarea>
+                            </div>
                         </div>
 
                         <div className="vertical-spacing"></div>
 
                         <div>
-                            <div className="d-flex">
+                            <div className="d-flex btn align-items-center" data-toggle="collapse" href="#multiCollapseExample3" role="button" aria-expanded="false" aria-controls="multiCollapseExample3">
                                 <h5 className="font-weight-light text-color-purple">Lição de casa</h5>
+
+                                <div className="d-flex flex-fill flex-row-reverse">
+                                    <i class="fas fa-chevron-circle-down"></i>
+                                </div>
                             </div>
 
                             <hr className="header-rule" />
 
-                            <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
+                            <div id="multiCollapseExample3" className="collapse">
+                                <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>

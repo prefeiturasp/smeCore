@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using smeCore.Models.Planning;
 using smeCore.SGP.Contexts;
 using smeCore.SGP.Models.Planning;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -267,144 +265,144 @@ namespace smeCore.SGP.Controllers
                 return (Ok(result));
         }
 
-        [HttpPost]
-        public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle cycle)
-        {
-            cycle.NewID();
-            cycle.CreatedAt = DateTime.Now;
-            cycle.ModifiedAt = DateTime.Now;
+        //[HttpPost]
+        //public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle cycle)
+        //{
+        //    cycle.NewID();
+        //    cycle.CreatedAt = DateTime.Now;
+        //    cycle.ModifiedAt = DateTime.Now;
 
-            Cycle old =
-                (from current in _db.Cycles
-                 where current.Type == cycle.Type
-                 && current.School == cycle.School
-                 select current).FirstOrDefault();
+        //    Cycle old =
+        //        (from current in _db.Cycles
+        //         where current.Type == cycle.Type
+        //         && current.School == cycle.School
+        //         select current).FirstOrDefault();
 
-            if (old != null)
-            {
-                old.ModifiedAt = cycle.ModifiedAt;
-                old.ModifiedBy = cycle.ModifiedBy;
-                old.Description = cycle.Description;
-                old.SelectedKnowledgeMatrix = cycle.SelectedKnowledgeMatrix;
-                old.SelectedODS = cycle.SelectedODS;
+        //    if (old != null)
+        //    {
+        //        old.ModifiedAt = cycle.ModifiedAt;
+        //        old.ModifiedBy = cycle.ModifiedBy;
+        //        old.Description = cycle.Description;
+        //        old.SelectedKnowledgeMatrix = cycle.SelectedKnowledgeMatrix;
+        //        old.SelectedODS = cycle.SelectedODS;
 
-                await _db.SaveChangesAsync();
-            }
-            else
-            {
-                try
-                {
-                    await _db.Cycles.AddAsync(cycle);
-                    await _db.SaveChangesAsync();
-                }
-                catch
-                {
-                    return (BadRequest());
-                }
-            }
+        //        await _db.SaveChangesAsync();
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            await _db.Cycles.AddAsync(cycle);
+        //            await _db.SaveChangesAsync();
+        //        }
+        //        catch
+        //        {
+        //            return (BadRequest());
+        //        }
+        //    }
 
-            return (Ok());
-        }
+        //    return (Ok());
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle cycle)
-        {
-            Cycle result =
-                (from current in _db.Cycles
-                 where current.Type == cycle.Type
-                 && current.School == cycle.School
-                 select current).SingleOrDefault();
+        //[HttpPost]
+        //public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle cycle)
+        //{
+        //    Cycle result =
+        //        (from current in _db.Cycles
+        //         where current.Type == cycle.Type
+        //         && current.School == cycle.School
+        //         select current).SingleOrDefault();
 
-            if (result != null)
-                return (Ok(result));
-            else
-                return (NotFound());
-        }
+        //    if (result != null)
+        //        return (Ok(result));
+        //    else
+        //        return (NotFound());
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult<string>> SalvarPlanoAnual(Annual annual)
-        {
-            annual.NewID();
-            annual.CreatedAt = DateTime.Now;
-            annual.ModifiedAt = DateTime.Now;
+        //[HttpPost]
+        //public async Task<ActionResult<string>> SalvarPlanoAnual(Annual annual)
+        //{
+        //    annual.NewID();
+        //    annual.CreatedAt = DateTime.Now;
+        //    annual.ModifiedAt = DateTime.Now;
 
-            Annual old =
-                (from current in _db.Annuals
-                 where current.SchoolYear == annual.SchoolYear
-                 && current.Classroom == annual.Classroom
-                 && current.School == annual.School
-                 && current.UserId == annual.UserId
-                 select current).SingleOrDefault();
+        //    Annual old =
+        //        (from current in _db.Annuals
+        //         where current.SchoolYear == annual.SchoolYear
+        //         && current.Classroom == annual.Classroom
+        //         && current.School == annual.School
+        //         && current.UserId == annual.UserId
+        //         select current).SingleOrDefault();
 
-            if (old != null)
-            {
-                old.ModifiedAt = annual.ModifiedAt;
-                old.SelectedLearningObjectivesB1 = annual.SelectedLearningObjectivesB1;
-                old.DescriptionB1 = annual.DescriptionB1;
-                old.SelectedLearningObjectivesB2 = annual.SelectedLearningObjectivesB2;
-                old.DescriptionB2 = annual.DescriptionB2;
-                old.SelectedLearningObjectivesB3 = annual.SelectedLearningObjectivesB3;
-                old.DescriptionB3 = annual.DescriptionB3;
-                old.SelectedLearningObjectivesB4 = annual.SelectedLearningObjectivesB4;
-                old.DescriptionB4 = annual.DescriptionB4;
+        //    if (old != null)
+        //    {
+        //        old.ModifiedAt = annual.ModifiedAt;
+        //        old.SelectedLearningObjectivesB1 = annual.SelectedLearningObjectivesB1;
+        //        old.DescriptionB1 = annual.DescriptionB1;
+        //        old.SelectedLearningObjectivesB2 = annual.SelectedLearningObjectivesB2;
+        //        old.DescriptionB2 = annual.DescriptionB2;
+        //        old.SelectedLearningObjectivesB3 = annual.SelectedLearningObjectivesB3;
+        //        old.DescriptionB3 = annual.DescriptionB3;
+        //        old.SelectedLearningObjectivesB4 = annual.SelectedLearningObjectivesB4;
+        //        old.DescriptionB4 = annual.DescriptionB4;
 
-                await _db.SaveChangesAsync();
-            }
-            else
-            {
-                try
-                {
-                    await _db.Annuals.AddAsync(annual);
-                    await _db.SaveChangesAsync();
-                }
-                catch
-                {
-                    return (BadRequest());
-                }
-            }
+        //        await _db.SaveChangesAsync();
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            await _db.Annuals.AddAsync(annual);
+        //            await _db.SaveChangesAsync();
+        //        }
+        //        catch
+        //        {
+        //            return (BadRequest());
+        //        }
+        //    }
 
-            return (Ok());
-        }
+        //    return (Ok());
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult<string>> SalvarHorarioAula(Appointment appointment)
-        {
-            appointment.NewID();
-            appointment.CreatedAt = DateTime.Now;
-            appointment.ModifiedAt = DateTime.Now;
+        //[HttpPost]
+        //public async Task<ActionResult<string>> SalvarHorarioAula(Appointment appointment)
+        //{
+        //    appointment.NewID();
+        //    appointment.CreatedAt = DateTime.Now;
+        //    appointment.ModifiedAt = DateTime.Now;
 
-            Appointment old =
-                (from current in _db.Appointments
-                 where current.SchoolYear == appointment.SchoolYear
-                 && current.Classroom == appointment.Classroom
-                 && current.School == appointment.School
-                 && current.UserId == appointment.UserId
-                 && current.Date == appointment.Date
-                 select current).SingleOrDefault();
+        //    Appointment old =
+        //        (from current in _db.Appointments
+        //         where current.SchoolYear == appointment.SchoolYear
+        //         && current.Classroom == appointment.Classroom
+        //         && current.School == appointment.School
+        //         && current.UserId == appointment.UserId
+        //         && current.Date == appointment.Date
+        //         select current).SingleOrDefault();
 
-            if (old != null)
-            {
-                old.ModifiedAt = appointment.ModifiedAt;
-                old.Date = appointment.Date;
-                old.TagColor = appointment.TagColor;
+        //    if (old != null)
+        //    {
+        //        old.ModifiedAt = appointment.ModifiedAt;
+        //        old.Date = appointment.Date;
+        //        old.TagColor = appointment.TagColor;
 
-                await _db.SaveChangesAsync();
-            }
-            else
-            {
-                try
-                {
-                    await _db.Appointments.AddAsync(appointment);
-                    await _db.SaveChangesAsync();
-                }
-                catch
-                {
-                    return (BadRequest());
-                }
-            }
+        //        await _db.SaveChangesAsync();
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            await _db.Appointments.AddAsync(appointment);
+        //            await _db.SaveChangesAsync();
+        //        }
+        //        catch
+        //        {
+        //            return (BadRequest());
+        //        }
+        //    }
 
-            return (Ok());
-        }
+        //    return (Ok());
+        //}
 
         #endregion -------------------- PUBLIC --------------------
 

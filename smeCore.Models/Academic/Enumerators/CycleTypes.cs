@@ -1,4 +1,4 @@
-﻿namespace smeCore.Models.Planning.Enumerators
+﻿namespace smeCore.Models.Academic.Enumerators
 {
     public enum CycleTypes
     {
