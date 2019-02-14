@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using smeCore.API.Contexts;
+using smeCore.API.IoC;
 using System;
 using System.IO;
 using System.Reflection;
@@ -26,6 +27,8 @@ namespace smeCore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            DependencyInjector.Register(services);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Configuração de injeção de dependência do SMEContext (Postgres - Npgsql)

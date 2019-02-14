@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\smeCore.API.Service.Interface\smeCore.API.Service.Interface.csproj" />
+    <ProjectReference Include="..\smeCore.Library\smeCore.Library.csproj" />
+    <ProjectReference Include="..\smeCore.SGP\smeCore.SGP.csproj" />
+  </ItemGroup>
+
+</Project>
