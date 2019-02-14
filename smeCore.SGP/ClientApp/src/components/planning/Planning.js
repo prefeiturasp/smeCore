@@ -101,7 +101,8 @@ export default class Planning extends Component {
             getMonthByIndex: this.getMonthByIndex,
             year: this.state.year,
             classroom: this.state.classroom,
-            school: this.state.school
+            school: this.state.school,
+            user: this.props.user
         };
 
         return (

@@ -19,6 +19,10 @@ export class AnnualPlan extends Component {
             bimester2: null,
             bimester3: null,
             bimester4: null,
+            annualPlanningTextareaB1: "",
+            annualPlanningTextareaB2: "",
+            annualPlanningTextareaB3: "",
+            annualPlanningTextareaB4: "",
         };
 
         this.getClassroom = this.getClassroom.bind(this);
@@ -26,6 +30,7 @@ export class AnnualPlan extends Component {
         this.setBimester2 = this.setBimester2.bind(this);
         this.setBimester3 = this.setBimester3.bind(this);
         this.setBimester4 = this.setBimester4.bind(this);
+        this.onChangeDescription = this.onChangeDescription.bind(this);
         this.saveButtonClick = this.saveButtonClick.bind(this);
     }
 
@@ -62,11 +67,43 @@ export class AnnualPlan extends Component {
         this.setState({ bimester4: bimester.selectedLearningObjectiveItems });
     }
 
+    onChangeDescription(event) {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    }
+
     saveButtonClick() {
-        alert(this.state.bimester1 + "\n" +
-            this.state.bimester2 + "\n" +
-            this.state.bimester3 + "\n" +
-            this.state.bimester4);
+        var model = {
+            username: this.props.user.username,
+            year: this.props.year,
+            classroom: this.props.classroom,
+            school: this.props.school,
+            selectedLearningObjectivesB1: this.state.bimester1,
+            selectedLearningObjectivesB2: this.state.bimester2,
+            selectedLearningObjectivesB3: this.state.bimester3,
+            selectedLearningObjectivesB4: this.state.bimester4,
+            annualPlanningTextareaB1: this.state.annualPlanningTextareaB1,
+            annualPlanningTextareaB2: this.state.annualPlanningTextareaB2,
+            annualPlanningTextareaB3: this.state.annualPlanningTextareaB3,
+            annualPlanningTextareaB4: this.state.annualPlanningTextareaB4
+        };
+
+        fetch('/api/Planejamento/SalvarPlanoAnual', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            //.then(response => response.json())
+            .then(data => {
+                //var txt = "";
+                //for (var key in data)
+                //    txt += key + ": " + data[key] + "\n";
+                //alert(txt);
+
+                if (data.status === 200)
+                    alert("Plano de Ciclo salvo com sucesso!");
+            });
     }
 
     render() {
@@ -91,7 +128,7 @@ export class AnnualPlan extends Component {
                     <ul className="nav navbar-nav ml-auto">
                         <li className="nav-item">
                             <div className="form-inline">
-                                <button className="btn btn-warning" onClick={this.saveButtonClick} disabled={this.props.year <= 0}>Salvar</button>
+                                <button className="btn btn-warning text-white" onClick={this.saveButtonClick} disabled={this.props.year <= 0}>Salvar</button>
                             </div>
                         </li>
                     </ul>
@@ -106,19 +143,19 @@ export class AnnualPlan extends Component {
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B1" image="1bimestre" setBimester={this.setBimester1} selected={this.state.bimester1} {...childProps} />
+                    <Bimester name="B1" image="1bimestre" setBimester={this.setBimester1} selected={this.state.bimester1} textarea={this.state.annualPlanningTextareaB1} textareaChange={this.onChangeDescription} {...childProps} />
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B2" image="2bimestre" setBimester={this.setBimester2} selected={this.state.bimester2} {...childProps} />
+                    <Bimester name="B2" image="2bimestre" setBimester={this.setBimester2} selected={this.state.bimester2} textarea={this.state.annualPlanningTextareaB2} textareaChange={this.onChangeDescription} {...childProps} />
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B3" image="3bimestre" setBimester={this.setBimester3} selected={this.state.bimester3} {...childProps} />
+                    <Bimester name="B3" image="3bimestre" setBimester={this.setBimester3} selected={this.state.bimester3} textarea={this.state.annualPlanningTextareaB3} textareaChange={this.onChangeDescription} {...childProps} />
 
                     <div className="vertical-spacing"></div>
 
-                    <Bimester name="B4" image="4bimestre" setBimester={this.setBimester4} selected={this.state.bimester4} {...childProps} />
+                    <Bimester name="B4" image="4bimestre" setBimester={this.setBimester4} selected={this.state.bimester4} textarea={this.state.annualPlanningTextareaB4} textareaChange={this.onChangeDescription} {...childProps} />
                 </div>
             </div>
         );

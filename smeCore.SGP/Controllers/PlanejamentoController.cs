@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using smeCore.Models.Academic;
 using smeCore.SGP.Contexts;
 using smeCore.SGP.Models.Planning;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -320,22 +322,33 @@ namespace smeCore.SGP.Controllers
         //}
 
         //[HttpPost]
-        //public async Task<ActionResult<string>> SalvarPlanoAnual(Annual annual)
+        //public async Task<ActionResult<string>> SalvarPlanoAnual(AnnualPlanModel model)
         //{
-        //    annual.NewID();
-        //    annual.CreatedAt = DateTime.Now;
-        //    annual.ModifiedAt = DateTime.Now;
+        //    //AnnualPlan annualPlan = new AnnualPlan();
+        //    //annualPlan.NewID();
+        //    //annualPlan.CreatedAt = DateTime.Now;
+        //    //annualPlan.ModifiedAt = DateTime.Now;
 
-        //    Annual old =
-        //        (from current in _db.Annuals
-        //         where current.SchoolYear == annual.SchoolYear
-        //         && current.Classroom == annual.Classroom
-        //         && current.School == annual.School
-        //         && current.UserId == annual.UserId
-        //         select current).SingleOrDefault();
+        //    Planning planning =
+        //        (from current in _db.Plannings
+        //         where current.UserId == model.Username
+        //         && current.School == model.School
+        //         && current.Year == model.Year
+        //         && current.Classroom == model.Classroom
+        //         select current).FirstOrDefault();
 
-        //    if (old != null)
+        //    if (planning != null)
         //    {
+        //        planning.NewID();
+        //        planning.CreatedAt = DateTime.Now;
+        //        planning.ModifiedAt = DateTime.Now;
+        //        planning.UserId = model.Username;
+        //        planning.School = model.School;
+        //        planning.Year = model.Year;
+
+
+
+
         //        old.ModifiedAt = annual.ModifiedAt;
         //        old.SelectedLearningObjectivesB1 = annual.SelectedLearningObjectivesB1;
         //        old.DescriptionB1 = annual.DescriptionB1;

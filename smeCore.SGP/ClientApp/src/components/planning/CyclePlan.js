@@ -18,6 +18,7 @@ export class CyclePlan extends Component {
             lastModifiedBy: "Maria Blábláblá | 29/01/2019"
         };
 
+        this.getCycleName = this.getCycleName.bind(this);
         this.saveButtonClick = this.saveButtonClick.bind(this);
     }
 
@@ -65,11 +66,40 @@ export class CyclePlan extends Component {
         this.setState({ SustainableDevItems: data });
     }
 
+    getCycleName() {
+        var cycleName = "";
+
+        switch (this.props.year) {
+            case 1:
+            case 2:
+            case 3:
+                cycleName = "| Alfabetização";
+                break;
+            case 4:
+            case 5:
+            case 6:
+                cycleName = "| Interdiciplinar";
+                break;
+            case 7:
+            case 8:
+            case 9:
+                cycleName = "| Autoral";
+                break;
+            default:
+                cycleName = "";
+                break;
+        }
+
+        return (cycleName);
+    }
+
     saveButtonClick() {
         alert("not implemented");
     }
 
     render() {
+        var cycleName = this.getCycleName();
+
         return (
             <div className="tab-pane fade border-left border-right border-bottom" id="planoCiclo" role="tabpanel" aria-labelledby="planoCiclo-tab">
                 <nav className="container-tabpanel navbar">
@@ -93,7 +123,7 @@ export class CyclePlan extends Component {
 
                 <div id="cyclePlan-info" className="container-tabpanel-content">
                     <div className="container row">
-                        <h5 className="">Plano de Ciclo | planoDeCiclo</h5>
+                        <h5 className="">Plano de Ciclo {cycleName}</h5>
                     </div>
 
                     <div className="vertical-spacing-2" />

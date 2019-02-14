@@ -23,7 +23,7 @@ export class Bimester extends Component {
             learningObjectiveItems: [],
             objectiveItems: [],
             lastYearValue: "0",
-            textareaName: "annualPlanning-textarea" + props.name,
+            textareaName: "annualPlanningTextarea" + props.name,
             objectivesId: "myObjectives" + props.name,
             loadLearningObjectiveItems: true
         };
@@ -148,7 +148,7 @@ export class Bimester extends Component {
                                             <li>Avaliação</li>
                                         </ul>
 
-                                        <textarea className="form-control" rows="5" id={this.state.textareaName}></textarea>
+                                        <textarea className="form-control" rows="5" id={this.state.textareaName} value={this.props.textarea} onChange={this.props.textareaChange}></textarea>
                                     </div>
                                 </div>
                             </div>
