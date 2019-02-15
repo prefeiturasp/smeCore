@@ -10,7 +10,7 @@ using smeCore.SGP.Contexts;
 namespace smeCore.SGP.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20190214105628_m1")]
+    [Migration("20190215114037_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

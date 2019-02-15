@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using smeCore.Models.Academic;
 using smeCore.SGP.Contexts;
@@ -321,61 +322,103 @@ namespace smeCore.SGP.Controllers
         //        return (NotFound());
         //}
 
-        //[HttpPost]
-        //public async Task<ActionResult<string>> SalvarPlanoAnual(AnnualPlanModel model)
-        //{
-        //    //AnnualPlan annualPlan = new AnnualPlan();
-        //    //annualPlan.NewID();
-        //    //annualPlan.CreatedAt = DateTime.Now;
-        //    //annualPlan.ModifiedAt = DateTime.Now;
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarPlanoAnual(AnnualPlanModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.AnnualPlan)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
 
-        //    Planning planning =
-        //        (from current in _db.Plannings
-        //         where current.UserId == model.Username
-        //         && current.School == model.School
-        //         && current.Year == model.Year
-        //         && current.Classroom == model.Classroom
-        //         select current).FirstOrDefault();
+            if (planning == null)
+            {
+                planning = new Planning();
+                planning.NewID();
+                planning.CreatedAt = DateTime.Now;
+                planning.UserId = model.Username;
+                planning.School = model.School;
+                planning.Year = model.Year;
+                planning.Classroom = model.Classroom;
 
-        //    if (planning != null)
-        //    {
-        //        planning.NewID();
-        //        planning.CreatedAt = DateTime.Now;
-        //        planning.ModifiedAt = DateTime.Now;
-        //        planning.UserId = model.Username;
-        //        planning.School = model.School;
-        //        planning.Year = model.Year;
+                await _db.Plannings.AddAsync(planning);
+            }
+
+            planning.ModifiedAt = DateTime.Now;
+
+            if (planning.AnnualPlan == null)
+            {
+                planning.AnnualPlan = new AnnualPlan();
+                planning.AnnualPlan.CreatedAt = DateTime.Now;
+            }
+
+            planning.AnnualPlan.ModifiedAt = DateTime.Now;
+            planning.AnnualPlan.SelectedLearningObjectivesB1 = model.SelectedLearningObjectivesB1;
+            planning.AnnualPlan.SelectedLearningObjectivesB2 = model.SelectedLearningObjectivesB2;
+            planning.AnnualPlan.SelectedLearningObjectivesB3 = model.SelectedLearningObjectivesB3;
+            planning.AnnualPlan.SelectedLearningObjectivesB4 = model.SelectedLearningObjectivesB4;
+            planning.AnnualPlan.DescriptionB1 = model.DescriptionB1;
+            planning.AnnualPlan.DescriptionB2 = model.DescriptionB2;
+            planning.AnnualPlan.DescriptionB3 = model.DescriptionB3;
+            planning.AnnualPlan.DescriptionB4 = model.DescriptionB4;
+
+            await _db.SaveChangesAsync();
 
 
+            // Daqui pra baixo tem que arrumar
 
+            //if (planning != null)
+            //{
+            //    await _db.SaveChangesAsync();
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        await _db.Annuals.AddAsync(annual);
+            //        await _db.SaveChangesAsync();
+            //    }
+            //    catch
+            //    {
+            //        return (BadRequest());
+            //    }
+            //}
 
-        //        old.ModifiedAt = annual.ModifiedAt;
-        //        old.SelectedLearningObjectivesB1 = annual.SelectedLearningObjectivesB1;
-        //        old.DescriptionB1 = annual.DescriptionB1;
-        //        old.SelectedLearningObjectivesB2 = annual.SelectedLearningObjectivesB2;
-        //        old.DescriptionB2 = annual.DescriptionB2;
-        //        old.SelectedLearningObjectivesB3 = annual.SelectedLearningObjectivesB3;
-        //        old.DescriptionB3 = annual.DescriptionB3;
-        //        old.SelectedLearningObjectivesB4 = annual.SelectedLearningObjectivesB4;
-        //        old.DescriptionB4 = annual.DescriptionB4;
+            return (Ok());
+        }
 
-        //        await _db.SaveChangesAsync();
-        //    }
-        //    else
-        //    {
-        //        try
-        //        {
-        //            await _db.Annuals.AddAsync(annual);
-        //            await _db.SaveChangesAsync();
-        //        }
-        //        catch
-        //        {
-        //            return (BadRequest());
-        //        }
-        //    }
+        [HttpPost]
+        public async Task<ActionResult<string>> AbrirPlanoAnual(PlanningModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.AnnualPlan)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
 
-        //    return (Ok());
-        //}
+            if (planning != null && planning.AnnualPlan != null)
+            {
+                AnnualPlanModel result = new AnnualPlanModel()
+                {
+                    SelectedLearningObjectivesB1 = planning.AnnualPlan.SelectedLearningObjectivesB1,
+                    SelectedLearningObjectivesB2 = planning.AnnualPlan.SelectedLearningObjectivesB2,
+                    SelectedLearningObjectivesB3 = planning.AnnualPlan.SelectedLearningObjectivesB3,
+                    SelectedLearningObjectivesB4 = planning.AnnualPlan.SelectedLearningObjectivesB4,
+                    DescriptionB1 = planning.AnnualPlan.DescriptionB1,
+                    DescriptionB2 = planning.AnnualPlan.DescriptionB2,
+                    DescriptionB3 = planning.AnnualPlan.DescriptionB3,
+                    DescriptionB4 = planning.AnnualPlan.DescriptionB4
+                };
+
+                return (Ok(result));
+            }
+
+            return (NotFound());
+        }
 
         //[HttpPost]
         //public async Task<ActionResult<string>> SalvarHorarioAula(Appointment appointment)

@@ -15,16 +15,41 @@ export class EditAppointment extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            myObjectiveItems: [
-                { name: "EF02M05", date: "04/03/2019" },
-                { name: "EF02M06", date: "04/03/2019" },
-                { name: "EF02M07", date: "04/03/2019" },
-                { name: "EF02M08", date: "04/03/2019" },
-                { name: "EF02M09", date: "04/03/2019" },
-                { name: "EF02M10", date: "04/03/2019" }
-            ]
-        });
+        // carregar dados do planejamento anual
+        var model = {
+            username: this.props.user.username,
+            year: this.props.year,
+            classroom: this.props.classroom,
+            school: this.props.school
+        };
+
+        fetch('/api/Planejamento/AbrirPlanoAnual', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            //.then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    data.json().then(result => {
+
+                        // Fazer validação de qual bimestre usar
+
+                        var objectives = result.selectedLearningObjectivesB1.split(",");
+                        var myObjectives = [];
+
+                        for (var i = 0; i < objectives.length; i++)
+                            myObjectives.push({
+                                name: objectives[i],
+                                date: "04/03/2019"
+                            });
+
+                        this.setState({
+                            myObjectiveItems: myObjectives
+                        });
+                    });
+                }
+            });
     }
 
     render() {

@@ -5,12 +5,12 @@
         #region ==================== ATTRIBUTES ====================
 
         public string SelectedLearningObjectivesB1 { get; set; }
-        public string DescriptionB1 { get; set; }
         public string SelectedLearningObjectivesB2 { get; set; }
-        public string DescriptionB2 { get; set; }
         public string SelectedLearningObjectivesB3 { get; set; }
-        public string DescriptionB3 { get; set; }
         public string SelectedLearningObjectivesB4 { get; set; }
+        public string DescriptionB1 { get; set; }
+        public string DescriptionB2 { get; set; }
+        public string DescriptionB3 { get; set; }
         public string DescriptionB4 { get; set; }
 
         public string PlanningId { get; set; }

@@ -28,7 +28,8 @@ export class ClassPlan extends Component {
         const childProps = {
             year: this.props.year,
             classroom: this.props.classroom,
-            school: this.props.school
+            school: this.props.school,
+            user: this.props.user
         };
 
         return (
@@ -42,7 +43,7 @@ export class ClassPlan extends Component {
 
                 {this.state.showEditAppointment === false ?
                     (<CalendarPlan name="calendarPlan" {...childProps} />) :
-                    (<EditAppointment color="red" time="7:30am" name="5° B" school="EMEF" />)
+                    (<EditAppointment color="red" time="7:30am" name="5° B" {...childProps} />)
                 }
             </div>
         );

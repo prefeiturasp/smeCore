@@ -66,10 +66,14 @@ export class Bimester extends Component {
             this.learningObjectiveItems = this.props.learningObjectiveItems;
         }
 
-        if (this.props.selected !== null) {
+        if (this.props.selected !== null && this.props.selected.length > 0) {
+            this.selectedLearningObjectiveItems = [];
+
             for (var i = 0; i < this.learningObjectiveItems.length; i++) {
-                if (this.props.selected.includes(this.learningObjectiveItems[i].code) === true)
+                if (this.props.selected.includes(this.learningObjectiveItems[i].code) === true) {
                     this.learningObjectiveItems[i].selected = true;
+                    this.selectedLearningObjectiveItems.push(this.learningObjectiveItems[i].code);
+                }
                 else
                     this.learningObjectiveItems[i].selected = false;
             }
