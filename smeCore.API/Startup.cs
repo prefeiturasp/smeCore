@@ -6,8 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using smeCore.API.Contexts;
 using smeCore.API.IoC;
+using smeCore.API.Service.Interface.APIContexts;
+using smeCore.API.Service.Interface.Settings;
 using System;
 using System.IO;
 using System.Reflection;
@@ -32,7 +33,7 @@ namespace smeCore.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Configuração de injeção de dependência do SMEContext (Postgres - Npgsql)
-            services.AddDbContext<SMEContext>(options =>
+            services.AddDbContext<SMEAPIContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
@@ -64,6 +65,16 @@ namespace smeCore.API
                         .AllowCredentials()
                         .Build());
             });
+
+            #region ----------------------- CONFIGURAÇÕES SERVIÇOS ----------------------------------------------------
+
+            services.Configure<ApiURLSettings>(Configuration
+                .GetSection(nameof(ApiURLSettings)));
+
+            services.Configure<APISettings>(Configuration
+                .GetSection(nameof(APISettings)));
+
+            #endregion
 
             // Registra o Swagger Generator (OpenAPI)
             services.AddSwaggerGen(options =>

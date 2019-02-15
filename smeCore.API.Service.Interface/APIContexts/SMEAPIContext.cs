@@ -1,18 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using smeCore.Models.Authentication;
 
-namespace smeCore.API.Contexts
+namespace smeCore.API.Service.Interface.APIContexts
 {
     /// <summary>
     /// DataBase Context do smeCore.
     /// </summary>
-    public class SMEContext : DbContext
+    public class SMEAPIContext : DbContext
     {
         #region ==================== ATTRIBUTES ====================
 
         /// <summary>
         /// DbSet para mapear os usuários logados no sistema.
         /// </summary>
-        public DbSet<smeCore.Models.Authentication.LoggedUser> LoggedUsers { get; set; }
+        public DbSet<LoggedUser> LoggedUsers { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
 
@@ -22,7 +23,7 @@ namespace smeCore.API.Contexts
         /// Construtor padrão do SMEContext
         /// </summary>
         /// <param name="options">Dependência de configuração/inicialização do SMECore</param>
-        public SMEContext(DbContextOptions<SMEContext> options)
+        public SMEAPIContext(DbContextOptions<SMEAPIContext> options)
             : base(options)
         { }
 

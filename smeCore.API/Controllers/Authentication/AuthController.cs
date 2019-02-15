@@ -1,19 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using smeCore.API.Contexts;
+using smeCore.API.Service.Interface.APIContexts;
 using smeCore.API.Service.Interface.AuthInterfaces;
 using smeCore.Library.Extensions;
 using smeCore.Models.Authentication;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace smeCore.API.Controllers.Authentication
@@ -30,7 +23,6 @@ namespace smeCore.API.Controllers.Authentication
         #region ==================== ATTRIBUTES ====================
 
         private IConfiguration _config; // Objeto para recuperar informações de configuração do arquivo appsettings.json
-        private readonly SMEContext _db; // Objeto context referente ao banco smeCoreDB
         private readonly IAuthService authService;
 
         #endregion ==================== ATTRIBUTES ====================
@@ -41,11 +33,9 @@ namespace smeCore.API.Controllers.Authentication
         /// Construtor padrão para o AuthController, faz injeção de dependências de IConfiguration e SMEContext.
         /// </summary>
         /// <param name="config">Depêndencia de configurações</param>
-        /// <param name="db">Depêndencia de dataContext (SMEContext)</param>
-        public AuthController(IConfiguration config, SMEContext db, IAuthService authService)
+        public AuthController(IConfiguration config, IAuthService authService)
         {
             _config = config;
-            _db = db;
             this.authService = authService;
         }
 
@@ -64,10 +54,10 @@ namespace smeCore.API.Controllers.Authentication
             // Corrigir a metodologia de encontrar o usuário
             if (username == "teste")
             {
-                return (new ClientUser() { Name = "Usuário Teste", Email = "teste@teste.teste", Username = "teste" });
+                return new ClientUser() { Name = "Usuário Teste", Email = "teste@teste.teste", Username = "teste" };
             }
 
-            return (null);
+            return null;
         }        
 
         #endregion -------------------- PRIVATE --------------------
@@ -84,41 +74,12 @@ namespace smeCore.API.Controllers.Authentication
         public async Task<ActionResult<string>> LoginJWT([FromBody]Credential credential)
         {
             ClientUser user = await authService.Authenticate(credential); // Faz a autenticação do usuário
+            
+            (string newToken, string newRefreshToken) = await authService.GetTokens(user);
 
-            // Caso seja encontrado algum usuário com a combinação username e password
-            if (user != null)
+            if (newToken.IsNotNull() && newRefreshToken.IsNotNull())
             {
-                string newToken = authService.CreateToken(user); // Cria o token de acesso
-                string newRefreshToken = authService.CreateRefreshToken(); // Cria o refresh token
-
-                // Verifica se o usuário existe dentro dos usuários logados
-                LoggedUser loggedUser =
-                    (from current in _db.LoggedUsers
-                     where current.Username == user.Username
-                     select current).FirstOrDefault();
-
-                if (loggedUser == null) // Se o usuário não existir, registrar login
-                {
-                    loggedUser = new LoggedUser()
-                    {
-                        Username = user.Username,
-                        RefreshToken = newRefreshToken,
-                        LastLogin = DateTime.Now,
-                        ExpiresAt = DateTime.Now.AddMinutes(30)
-                    };
-
-                    await _db.LoggedUsers.AddAsync(loggedUser);
-                }
-                else // Caso contrário, atualiza as informações
-                {
-                    loggedUser.RefreshToken = newRefreshToken;
-                    loggedUser.LastLogin = DateTime.Now;
-                    loggedUser.ExpiresAt = DateTime.Now.AddMinutes(30);
-                }
-
-                await _db.SaveChangesAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
-
-                return (Ok(new { token = newToken, refreshToken = newRefreshToken }));
+                return Ok(new { token = newToken, refreshToken = newRefreshToken });
             }
 
             return Unauthorized();
@@ -170,25 +131,16 @@ namespace smeCore.API.Controllers.Authentication
         [HttpPost("Logout/Identity")]
         public async Task<ActionResult<string>> LogoutIdentity([FromBody] Credential credential)
         {
-            // Configurações iniciais
-            string url = "http://identity.sme.prefeitura.sp.gov.br/Account/Logout";
-
-            // Cria os dados necessários que compõe o corpo da requisição
-            Dictionary<string, string> data = new Dictionary<string, string>();
-            data.Add("logoutId", credential.Username); // Adiciona o nome de usuário
-
-            // Inicialização do cliente para requisições (GET)
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url) { Content = new FormUrlEncodedContent(data) }) // Encoda os dados no formato correto dentro da requisição
-            using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage response = await client.SendAsync(request))
+            var logout = await authService.LogoutIdentity(credential);
+            
+            if (logout)
             {
-                // Caso a requisição não ocorra corretamente, retorna 'Unauthorized'
-                if (!response.IsSuccessStatusCode)
-                    return Unauthorized();
-                else
-                    return Ok();
+                return Ok();
             }
+
+            return Unauthorized();
         }
+
 
         #endregion -------------------- PUBLIC --------------------
 

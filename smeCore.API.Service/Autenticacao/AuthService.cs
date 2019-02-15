@@ -1,31 +1,41 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using smeCore.API.Service.Interface.APIContexts;
 using smeCore.API.Service.Interface.AuthInterfaces;
+using smeCore.API.Service.Interface.Settings;
+using smeCore.Library.Extensions;
 using smeCore.Models.Authentication;
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Collections.Generic;
-using smeCore.Library.Extensions;
-using System.Linq;
-using smeCore.SGP.Contexts;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace smeCore.API.Service.Autenticacao
 {
     public class AuthService : IAuthService
     {
-        private readonly SMEContext _db;
+        private readonly SMEAPIContext _db;
         private IConfiguration _config;
+        private readonly ApiURLSettings apiURLSettings;
+        private readonly APISettings apiSettings;
+        private const string PARAM_VERIFICATION_TOKEN = "__RequestVerificationToken";
 
-        public AuthService(IConfiguration config, SMEContext db)
+        public AuthService(IConfiguration config,
+                           SMEAPIContext db, 
+                           IOptions<ApiURLSettings> apiURLSettings, 
+                           IOptions<APISettings> apiSettings)
         {
             _config = config;
             _db = db;
+            this.apiURLSettings = apiURLSettings.Value;
+            this.apiSettings = apiSettings.Value;
         }
 
         /// <summary>
@@ -35,25 +45,23 @@ namespace smeCore.API.Service.Autenticacao
         /// <returns>Objeto contendo informações do usuário encontrado, caso não seja encontrado nenhum usuário com correspondente a credencial enviada o método retorna nulo.</returns>
         public async Task<ClientUser> Authenticate(Credential credential)
         {
-            // Configurações iniciais
-            string url = "http://identity.sme.prefeitura.sp.gov.br/Account/Login";
             CookieContainer cookies = new CookieContainer();
             HttpClientHandler handler = new HttpClientHandler();
             handler.CookieContainer = cookies;
 
             // Inicialização do cliente para requisições (GET e POST)
             using (HttpClient client = new HttpClient(handler))
-            using (HttpResponseMessage getResponse = await client.GetAsync(url))
+            using (HttpResponseMessage getResponse = await client.GetAsync(apiURLSettings.AuthenticateURL))
             using (HttpContent content = getResponse.Content)
             {
                 // Extrai o anti forgery token da pagina da requisição GET
                 string result = await content.ReadAsStringAsync();
-                string forgeryToken = result.ExtractDataByName("__RequestVerificationToken");
+                string forgeryToken = result.ExtractDataByName(PARAM_VERIFICATION_TOKEN);
 
                 // Faz o POST dos dados (login) caso o usuário não esteja logado
-                if (forgeryToken != string.Empty)
+                if (forgeryToken.IsNotNull())
                 {
-                    HttpRequestMessage request = CreateRequestBody(credential, url, forgeryToken);
+                    HttpRequestMessage request = CreateRequestBody(credential, apiURLSettings.AuthenticateURL, forgeryToken);
 
                     HttpResponseMessage postResponse = await client.SendAsync(request); // Executa a requisição
 
@@ -64,13 +72,11 @@ namespace smeCore.API.Service.Autenticacao
                     result = await postResponse.Content.ReadAsStringAsync();
 
                     // Caso o usuário não seja autenticado, retorna 'null'
-                    if (result.StartsWith("<form method='post' action='http://coresso.sme.prefeitura.sp.gov.br/Login.ashx'>") == false)
+                    if (!result.StartsWith(apiSettings.AuthSettings.AuthenticateResponseStart))
                         return null;
                 }
 
-                ClientUser user = CreateUser(credential, url, cookies, result);
-
-                return user;
+               return CreateUser(credential, apiURLSettings.AuthenticateURL, cookies, result);
             }
         }
 
@@ -78,7 +84,7 @@ namespace smeCore.API.Service.Autenticacao
         {
             // Cria os dados necessários que compõe o corpo da requisição
             Dictionary<string, string> data = new Dictionary<string, string>();
-            data.Add("__RequestVerificationToken", forgeryToken); // Adiciona o Anti Forgery Token
+            data.Add(PARAM_VERIFICATION_TOKEN, forgeryToken); // Adiciona o Anti Forgery Token
             data.Add("Username", credential.Username); // Adiciona o nome de usuário
             data.Add("Password", credential.Password); // Adiciona a senha
             return new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(data) }; // Encoda os dados no formato correto dentro da requisição            
@@ -131,10 +137,11 @@ namespace smeCore.API.Service.Autenticacao
 
                     return (newToken, newRefreshToken);
                 }
-                else // Caso não seja válido, remove o usuário da lista de usuários logados
+                else
                 {
-                    _db.Remove(loggedUser); // Remove o usuário
-                    await _db.SaveChangesAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
+                    // Caso não seja válido, remove o usuário da lista de usuários logados                
+                    _db.Remove(loggedUser);
+                    await _db.SaveChangesAsync();
                 }
             }
 
@@ -167,7 +174,7 @@ namespace smeCore.API.Service.Autenticacao
                 expires: DateTime.Now.AddMinutes(10), // Define o tempo de validade de cada token
                 signingCredentials: creds);
 
-            return (new JwtSecurityTokenHandler().WriteToken(token));
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         /// <summary>
@@ -186,7 +193,71 @@ namespace smeCore.API.Service.Autenticacao
                 // Descomentar a linha abaixo para retirar do token os caracteres indesejados
                 //refreshToken = CleanString(refreshToken, new string[] { "+", "=", "/" });
 
-                return (refreshToken);
+                return refreshToken;
+            }
+        }
+
+        public async Task<(string, string)> GetTokens(ClientUser user)
+        {
+            // Caso seja encontrado algum usuário com a combinação username e password
+            if (user != null)
+            {
+                string newToken = CreateToken(user); // Cria o token de acesso
+                string newRefreshToken = CreateRefreshToken(); // Cria o refresh token
+
+                // Verifica se o usuário existe dentro dos usuários logados
+                LoggedUser loggedUser =
+                    (from current in _db.LoggedUsers
+                     where current.Username == user.Username
+                     select current).FirstOrDefault();
+
+                if (loggedUser == null) // Se o usuário não existir, registrar login
+                {
+                    loggedUser = new LoggedUser()
+                    {
+                        Username = user.Username,
+                        RefreshToken = newRefreshToken,
+                        LastLogin = DateTime.Now,
+                        ExpiresAt = DateTime.Now.AddMinutes(30)
+                    };
+
+                    await _db.LoggedUsers.AddAsync(loggedUser);
+                }
+                else // Caso contrário, atualiza as informações
+                {
+                    loggedUser.RefreshToken = newRefreshToken;
+                    loggedUser.LastLogin = DateTime.Now;
+                    loggedUser.ExpiresAt = DateTime.Now.AddMinutes(30);
+                }
+
+                await _db.SaveChangesAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
+
+                return (newToken, newRefreshToken);
+            }
+
+            return (string.Empty, string.Empty);
+        }
+
+        public async Task<bool> LogoutIdentity(Credential credential)
+        {
+            // Cria os dados necessários que compõe o corpo da requisição
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data.Add("logoutId", credential.Username); // Adiciona o nome de usuário
+
+            // Inicialização do cliente para requisições (GET)
+            using (HttpRequestMessage request =
+                new HttpRequestMessage(HttpMethod.Get,
+                                        apiURLSettings.LogoutIdentityURL
+                                        )
+                {
+                    Content = new FormUrlEncodedContent(data)
+                }
+                ) // Encoda os dados no formato correto dentro da requisição
+
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = await client.SendAsync(request))
+            {
+                return response.IsSuccessStatusCode;
             }
         }
     }
