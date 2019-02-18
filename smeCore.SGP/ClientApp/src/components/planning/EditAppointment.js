@@ -8,13 +8,22 @@ export class EditAppointment extends Component {
     constructor(props) {
         super(props);
 
+        this.isLoaded = false;
+
         this.state = {
             color: "dot color-" + props.color,
             myObjectiveItems: []
         };
+
+        this.LoadData = this.LoadData.bind(this);
     }
 
     componentDidMount() {
+        
+
+    }
+
+    LoadData() {
         // carregar dados do planejamento anual
         var model = {
             username: this.props.user.username,
@@ -41,8 +50,10 @@ export class EditAppointment extends Component {
                         for (var i = 0; i < objectives.length; i++)
                             myObjectives.push({
                                 name: objectives[i],
-                                date: "04/03/2019"
+                                date: "04/03/2019" // Arrumar essa data (obter do pai)
                             });
+
+                        this.isLoaded = true;
 
                         this.setState({
                             myObjectiveItems: myObjectives
@@ -53,6 +64,9 @@ export class EditAppointment extends Component {
     }
 
     render() {
+        if (this.props.classroom !== "" && this.isLoaded === false)
+            this.LoadData();
+
         return (
             <div className="editAppointment">
                 <hr className="horizontal-rule bg-azul-ux" />
@@ -61,17 +75,20 @@ export class EditAppointment extends Component {
                     <div className="form-inline">
                         <div className={this.state.color}></div>&nbsp;
                         <div>{this.props.time}</div>&nbsp;
-                        <div>{this.props.name}</div>&nbsp;
+                        <div>-</div>&nbsp;
+                        <div>{this.props.classroom}</div>&nbsp;
                         <div>-</div>&nbsp;
                         <div className="font-weight-bold">{this.props.school}</div>
                     </div>
 
                     <div className="ml-auto form-inline">
-                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Listao.aspx" role="button">Listão</a>
+                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Listao.aspx" role="button">Listão <i class="fas fa-list-alt"></i></a>
                         <div className="spacing"></div>
-                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Frequencia.aspx" role="button">Frequência</a>
+                        <button className="btn btn-primary">Migrar Conteúdo <i class="fas fa-share-square"></i></button>
                     </div>
                 </div>
+
+                <div className="vertical-spacing"></div>
 
                 <div className="editAppointment-container w-auto row">
                     <div className="col">
@@ -94,7 +111,7 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Frequência (preenchimento obrigatório)</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down"></i>
+                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
@@ -112,7 +129,7 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Desenvolvimento da aula</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down"></i>
+                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
@@ -130,7 +147,7 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Recuperação contínua</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down"></i>
+                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
@@ -148,7 +165,7 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Lição de casa</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down"></i>
+                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 

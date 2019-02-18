@@ -10,7 +10,10 @@ export class CyclePlan extends Component {
         var today = new Date();
         var month = props.getMonthByIndex(today.getMonth());
 
+        this.isLoaded = false;
+
         this.state = {
+            cyclePlanningDescription: "",
             SustainableDevItems: [],
             KnowledgeItems: [],
             today: today.getDate() + " de " + month + " - " + today.getFullYear(),
@@ -18,7 +21,9 @@ export class CyclePlan extends Component {
             lastModifiedBy: "Maria Blábláblá | 29/01/2019"
         };
 
+        this.onTextChange = this.onTextChange.bind(this);
         this.getCycleName = this.getCycleName.bind(this);
+        this.getCycleType = this.getCycleType.bind(this);
         this.saveButtonClick = this.saveButtonClick.bind(this);
     }
 
@@ -29,7 +34,7 @@ export class CyclePlan extends Component {
                 for (var i = 0; i < data.length; i++)
                     data[i].selected = false;
 
-                this.setState({ KnowledgeItems: data, loading: false });
+                this.setState({ KnowledgeItems: data });
             });
 
         fetch('api/Planejamento/ListarODS')
@@ -38,7 +43,7 @@ export class CyclePlan extends Component {
                 for (var i = 0; i < data.length; i++)
                     data[i].selected = false;
 
-                this.setState({ SustainableDevItems: data, loading: false });
+                this.setState({ SustainableDevItems: data });
             });
     }
 
@@ -66,6 +71,12 @@ export class CyclePlan extends Component {
         this.setState({ SustainableDevItems: data });
     }
 
+    onTextChange(event) {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    }
+
     getCycleName() {
         var cycleName = "";
 
@@ -90,11 +101,129 @@ export class CyclePlan extends Component {
                 break;
         }
 
+        if (cycleName !== "")
+            this.loadData();
+
         return (cycleName);
     }
 
+    getCycleType() {
+        var cycleType = -1;
+
+        switch (this.props.year) {
+            case 1:
+            case 2:
+            case 3:
+                cycleType = 0;
+                break;
+            case 4:
+            case 5:
+            case 6:
+                cycleType = 1;
+                break;
+            case 7:
+            case 8:
+            case 9:
+                cycleType = 2;
+                break;
+            default:
+                cycleType = -1;
+                break;
+        }
+
+        return (cycleType);
+    }
+
     saveButtonClick() {
-        alert("not implemented");
+        var knowledgeItems = [];
+        for (var i = 0; i < this.state.KnowledgeItems.length; i++)
+            if (this.state.KnowledgeItems[i].selected === true)
+                knowledgeItems.push(this.state.KnowledgeItems[i].sequence);
+
+        var sustainableDevItems = [];
+        for (var i = 0; i < this.state.SustainableDevItems.length; i++)
+            if (this.state.SustainableDevItems[i].selected === true)
+                sustainableDevItems.push(this.state.KnowledgeItems[i].sequence);
+
+        var model = {
+            school: this.props.school,
+            type: this.getCycleType(),
+            description: this.state.cyclePlanningDescription,
+            selectedKnowledgeMatrix: knowledgeItems.toString(),
+            selectedODS: sustainableDevItems.toString(),
+            modifiedBy: this.props.user.username
+        }
+
+        fetch('/api/Planejamento/SalvarPlanoCiclo', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    alert("Plano de Ciclo salvo com sucesso!");
+            });
+    }
+
+    loadData() {
+        var model = {
+            school: this.props.school,
+            type: this.getCycleType()
+        };
+
+        fetch('/api/Planejamento/AbrirPlanoCiclo', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200) {
+                    data.json().then(result => {
+                        var auxKnowledgeItems = this.state.KnowledgeItems;
+                        var KnowledgeItems = result.selectedKnowledgeMatrix.split(",");
+                        var auxSustainableDevItems = this.state.SustainableDevItems;
+                        var SustainableDevItems = result.selectedODS.split(",");
+
+                        for (var i = 0; i < auxKnowledgeItems.length; i++)
+                            if (KnowledgeItems.indexOf(auxKnowledgeItems[i].sequence.toString()) >= 0)
+                                auxKnowledgeItems[i].selected = true;
+
+                        for (var i = 0; i < auxSustainableDevItems.length; i++)
+                            if (SustainableDevItems.indexOf(auxSustainableDevItems[i].sequence.toString()) >= 0)
+                                auxSustainableDevItems[i].selected = true;
+
+                        var modifiedAt = new Date(result.modifiedAt);
+                        var date = modifiedAt.getDate() + "/";
+                        date += (modifiedAt.getMonth() + 1) > 9 ? (modifiedAt.getMonth() + 1) : "0" + (modifiedAt.getMonth() + 1);
+                        date += "/" + modifiedAt.getFullYear();
+
+                        this.setState({
+                            cyclePlanningDescription: result.description,
+                            KnowledgeItems: auxKnowledgeItems,
+                            SustainableDevItems: auxSustainableDevItems,
+                            lastModifiedBy: result.modifiedBy + " | " + date
+                        });
+                    });
+                }
+
+                if (data.status === 404) {
+                    var auxKnowledgeItems = this.state.KnowledgeItems;
+                    var auxSustainableDevItems = this.state.SustainableDevItems;
+
+                    for (var i = 0; i < auxKnowledgeItems.length; i++)
+                        auxKnowledgeItems[i].selected = false;
+
+                    for (var i = 0; i < auxSustainableDevItems.length; i++)
+                        auxSustainableDevItems[i].selected = false;
+
+                    this.setState({
+                        cyclePlanningDescription: "",
+                        KnowledgeItems: auxKnowledgeItems,
+                        SustainableDevItems: auxSustainableDevItems,
+                        lastModifiedBy: "-"
+                    });
+                }
+            });
     }
 
     render() {
@@ -139,8 +268,10 @@ export class CyclePlan extends Component {
                                     <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
                                 </div>
                             </div>
+
                             <div className="vertical-spacing" />
-                            <textarea className="form-control" rows="5" id="cyclePlanning-textarea"></textarea>
+
+                            <textarea className="form-control" rows="5" id="cyclePlanningDescription" value={this.state.cyclePlanningDescription} onChange={this.onTextChange}></textarea>
                         </div>
 
                         <div className="col-12 col-md-6 col-lg-6 col-xl-6">

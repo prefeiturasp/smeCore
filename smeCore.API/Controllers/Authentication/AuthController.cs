@@ -6,6 +6,7 @@ using smeCore.API.Contexts;
 using smeCore.Models.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
@@ -96,8 +97,11 @@ namespace smeCore.API.Controllers.Authentication
                         return (null);
                 }
 
-                // Cria o usuário
-                ClientUser user = new ClientUser() { Username = credential.Username };
+                // Cria e pega informações do usuário
+                ClientUser user = await GetUser(credential.Username);
+
+                if (user == null)
+                    user = new ClientUser() { Username = credential.Username };
 
                 // Pega os cookies da pagina
                 user.Cookies = cookies.GetCookies(new Uri(url)).Cast<Cookie>();
@@ -187,13 +191,33 @@ namespace smeCore.API.Controllers.Authentication
         /// <returns>Usuário com o username especificado.</returns>
         private async Task<ClientUser> GetUser(string username)
         {
-            // Corrigir a metodologia de encontrar o usuário
-            if (username == "teste")
+            string connectionString = @"Server=10.49.16.23\SME_PRD;Database=GestaoPedagogica;User Id=Caique.Santos;Password=Antares2014;";
+            ClientUser clientUser = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                return (new ClientUser() { Name = "Usuário Teste", Email = "teste@teste.teste", Username = "teste" });
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("API_SMECORE_GET_USER_INFO", con);
+                    cmd.Parameters.Add(new SqlParameter("@usu_login", username));
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader;
+
+                    con.Open();
+                    reader = cmd.ExecuteReader();
+                    reader.Read();
+
+                    clientUser = new ClientUser() { Username = username };
+                    clientUser.Name = reader["nome"].ToString();
+                    clientUser.Email = reader["email"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
 
-            return (null);
+            return (clientUser);
         }
 
         /// <summary>
@@ -271,7 +295,7 @@ namespace smeCore.API.Controllers.Authentication
 
                 await _db.SaveChangesAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
 
-                return (Ok(new { token = newToken, refreshToken = newRefreshToken }));
+                return (Ok(new SgpToken { Token = newToken, RefreshToken = newRefreshToken }));
             }
 
             return (Unauthorized());
@@ -329,6 +353,9 @@ namespace smeCore.API.Controllers.Authentication
         {
             // Executa o método de autenticação
             ClientUser user = await Authenticate(credential);
+            user.SgpToken = new SgpToken();
+            user.SgpToken.Token = CreateToken(user); // Cria o token de acesso
+            user.SgpToken.RefreshToken = CreateRefreshToken(); // Cria o refresh token
 
             if (user == null)
                 return (Unauthorized());

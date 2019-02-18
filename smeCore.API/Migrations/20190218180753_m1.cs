@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace smeCore.API.Migrations
 {
@@ -11,7 +11,7 @@ namespace smeCore.API.Migrations
                 name: "LoggedUsers",
                 columns: table => new
                 {
-                    id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     Username = table.Column<string>(nullable: true),
                     RefreshToken = table.Column<string>(nullable: true),
                     LastLogin = table.Column<DateTime>(nullable: false),
@@ -19,7 +19,7 @@ namespace smeCore.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LoggedUsers", x => x.id);
+                    table.PrimaryKey("PK_LoggedUsers", x => x.Id);
                 });
         }
 

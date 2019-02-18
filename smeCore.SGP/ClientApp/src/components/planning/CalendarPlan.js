@@ -60,7 +60,8 @@ export class CalendarPlan extends Component {
         const childProps = {
             year: this.props.year,
             classroom: this.props.classroom,
-            school: this.props.school
+            school: this.props.school,
+            user: this.props.user
         };
 
         return (

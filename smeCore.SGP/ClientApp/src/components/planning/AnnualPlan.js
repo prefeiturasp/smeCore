@@ -58,13 +58,6 @@ export class AnnualPlan extends Component {
     }
 
     setBimester1(bimester) {
-        //var aux = this.state.bimester1;
-
-        //if (aux.length === 0)
-        //    this.setState({ bimester1: bimester.selectedLearningObjectiveItems });
-        //else {
-        //    alert(aux.length + "\n" + bimester.selectedLearningObjectiveItems.length);
-        //}
         this.setState({ bimester1: bimester.selectedLearningObjectiveItems });
     }
 

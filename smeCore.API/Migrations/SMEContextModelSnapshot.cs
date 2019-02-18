@@ -21,7 +21,7 @@ namespace smeCore.API.Migrations
 
             modelBuilder.Entity("smeCore.Models.Authentication.LoggedUser", b =>
                 {
-                    b.Property<string>("id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ExpiresAt");
@@ -32,7 +32,7 @@ namespace smeCore.API.Migrations
 
                     b.Property<string>("Username");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("LoggedUsers");
                 });

@@ -10,7 +10,7 @@ using smeCore.API.Contexts;
 namespace smeCore.API.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20181220171626_m1")]
+    [Migration("20190218180753_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +23,7 @@ namespace smeCore.API.Migrations
 
             modelBuilder.Entity("smeCore.Models.Authentication.LoggedUser", b =>
                 {
-                    b.Property<string>("id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ExpiresAt");
@@ -34,7 +34,7 @@ namespace smeCore.API.Migrations
 
                     b.Property<string>("Username");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("LoggedUsers");
                 });

@@ -268,59 +268,62 @@ namespace smeCore.SGP.Controllers
                 return (Ok(result));
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle cycle)
-        //{
-        //    cycle.NewID();
-        //    cycle.CreatedAt = DateTime.Now;
-        //    cycle.ModifiedAt = DateTime.Now;
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle model)
+        {
+            Cycle cycle =
+                (from current in _db.Cycles
+                 where current.School == model.School
+                 && current.Type == model.Type
+                 select current).FirstOrDefault();
 
-        //    Cycle old =
-        //        (from current in _db.Cycles
-        //         where current.Type == cycle.Type
-        //         && current.School == cycle.School
-        //         select current).FirstOrDefault();
+            bool newItem = false;
 
-        //    if (old != null)
-        //    {
-        //        old.ModifiedAt = cycle.ModifiedAt;
-        //        old.ModifiedBy = cycle.ModifiedBy;
-        //        old.Description = cycle.Description;
-        //        old.SelectedKnowledgeMatrix = cycle.SelectedKnowledgeMatrix;
-        //        old.SelectedODS = cycle.SelectedODS;
+            if (cycle == null)
+            {
+                cycle = new Cycle();
+                cycle.NewID();
+                cycle.CreatedAt = DateTime.Now;
+                newItem = true;
+            }
 
-        //        await _db.SaveChangesAsync();
-        //    }
-        //    else
-        //    {
-        //        try
-        //        {
-        //            await _db.Cycles.AddAsync(cycle);
-        //            await _db.SaveChangesAsync();
-        //        }
-        //        catch
-        //        {
-        //            return (BadRequest());
-        //        }
-        //    }
+            cycle.ModifiedAt = DateTime.Now;
+            cycle.School = model.School;
+            cycle.Type = model.Type;
+            cycle.Description = model.Description;
+            cycle.SelectedKnowledgeMatrix = model.SelectedKnowledgeMatrix;
+            cycle.SelectedODS = model.SelectedODS;
+            cycle.ModifiedBy = model.ModifiedBy;
 
-        //    return (Ok());
-        //}
+            try
+            {
+                if (newItem == true)
+                    await _db.Cycles.AddAsync(cycle);
 
-        //[HttpPost]
-        //public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle cycle)
-        //{
-        //    Cycle result =
-        //        (from current in _db.Cycles
-        //         where current.Type == cycle.Type
-        //         && current.School == cycle.School
-        //         select current).SingleOrDefault();
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return (StatusCode(500));
+            }
 
-        //    if (result != null)
-        //        return (Ok(result));
-        //    else
-        //        return (NotFound());
-        //}
+            return (Ok());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle model)
+        {
+            Cycle result =
+                (from current in _db.Cycles
+                 where current.Type == model.Type
+                 && current.School == model.School
+                 select current).SingleOrDefault();
+
+            if (result != null)
+                return (Ok(result));
+            else
+                return (NotFound());
+        }
 
         [HttpPost]
         public async Task<ActionResult<string>> SalvarPlanoAnual(AnnualPlanModel model)

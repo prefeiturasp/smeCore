@@ -10,5 +10,6 @@ namespace smeCore.Models.Authentication
         public string Email { get; set; }
         public Identity Identity { get; set; }
         public IEnumerable<Cookie> Cookies { get; set; }
+        public SgpToken SgpToken { get; set; }
     }
 }
