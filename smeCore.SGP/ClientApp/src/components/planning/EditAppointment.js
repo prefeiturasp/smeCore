@@ -117,7 +117,8 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample0" className="collapse">
-                                <RichTextBox />
+                                <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
+                            
                             </div>
                         </div>
 
@@ -153,7 +154,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample2" className="collapse">
-                                <textarea className="form-control" rows="5" id="continuousRecovery-textarea"></textarea>
+                                <RichTextBox />
                             </div>
                         </div>
 
@@ -171,7 +172,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample3" className="collapse">
-                                <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
+                                <RichTextBox /> 
                             </div>
                         </div>
                     </div>
