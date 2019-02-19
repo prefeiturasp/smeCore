@@ -423,45 +423,67 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<string>> SalvarHorarioAula(Appointment appointment)
-        //{
-        //    appointment.NewID();
-        //    appointment.CreatedAt = DateTime.Now;
-        //    appointment.ModifiedAt = DateTime.Now;
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarHorarioAula(ClassScheduleModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
 
-        //    Appointment old =
-        //        (from current in _db.Appointments
-        //         where current.SchoolYear == appointment.SchoolYear
-        //         && current.Classroom == appointment.Classroom
-        //         && current.School == appointment.School
-        //         && current.UserId == appointment.UserId
-        //         && current.Date == appointment.Date
-        //         select current).SingleOrDefault();
+            if (planning == null)
+            {
+                planning = new Planning();
+                planning.NewID();
+                planning.CreatedAt = DateTime.Now;
+                planning.UserId = model.Username;
+                planning.School = model.School;
+                planning.Year = model.Year;
+                planning.Classroom = model.Classroom;
 
-        //    if (old != null)
-        //    {
-        //        old.ModifiedAt = appointment.ModifiedAt;
-        //        old.Date = appointment.Date;
-        //        old.TagColor = appointment.TagColor;
+                await _db.Plannings.AddAsync(planning);
+            }
 
-        //        await _db.SaveChangesAsync();
-        //    }
-        //    else
-        //    {
-        //        try
-        //        {
-        //            await _db.Appointments.AddAsync(appointment);
-        //            await _db.SaveChangesAsync();
-        //        }
-        //        catch
-        //        {
-        //            return (BadRequest());
-        //        }
-        //    }
+            planning.ModifiedAt = DateTime.Now;
 
-        //    return (Ok());
-        //}
+            if (planning.ClassSchedules == null)
+            {
+                planning.ClassSchedules = new List<ClassSchedule>();
+            }
+
+            ClassSchedule classSchedule = null;
+
+            foreach (ClassSchedule current in planning.ClassSchedules)
+                if (current.Date == model.Date && current.TagColor == model.TagColor)
+                    classSchedule = current;
+
+            if (classSchedule == null)
+            {
+                classSchedule = new ClassSchedule();
+                classSchedule.NewID();
+                classSchedule.CreatedAt = DateTime.Now;
+                classSchedule.ModifiedAt = DateTime.Now;
+                classSchedule.Date = model.Date;
+                classSchedule.TagColor = model.TagColor;
+                planning.ClassSchedules.Add(classSchedule);
+            }
+            else
+                classSchedule.ModifiedAt = DateTime.Now;
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return (StatusCode(500));
+            }
+
+            return (Ok());
+        }
 
         #endregion -------------------- PUBLIC --------------------
 

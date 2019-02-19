@@ -193,7 +193,8 @@ export class CyclePlan extends Component {
                                 auxSustainableDevItems[i].selected = true;
 
                         var modifiedAt = new Date(result.modifiedAt);
-                        var date = modifiedAt.getDate() + "/";
+                        var date = modifiedAt.getDate() > 9 ? modifiedAt.getDate() : "0" + modifiedAt.getDate();
+                        date += "/";
                         date += (modifiedAt.getMonth() + 1) > 9 ? (modifiedAt.getMonth() + 1) : "0" + (modifiedAt.getMonth() + 1);
                         date += "/" + modifiedAt.getFullYear();
 

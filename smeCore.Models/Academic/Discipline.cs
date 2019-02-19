@@ -9,6 +9,7 @@ namespace smeCore.Models.Academic
         public string Name { get; set; }
 
         public virtual List<StudentClass> StudentsClasses { get; set; }
+        public virtual List<Planning> Plannings { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
     }

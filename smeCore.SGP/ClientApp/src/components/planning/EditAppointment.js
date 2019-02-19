@@ -37,7 +37,6 @@ export class EditAppointment extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(model)
         })
-            //.then(response => response.json())
             .then(data => {
                 if (data.status === 200) {
                     data.json().then(result => {
@@ -50,7 +49,7 @@ export class EditAppointment extends Component {
                         for (var i = 0; i < objectives.length; i++)
                             myObjectives.push({
                                 name: objectives[i],
-                                date: "04/03/2019" // Arrumar essa data (obter do pai)
+                                date: this.props.date
                             });
 
                         this.isLoaded = true;
@@ -179,10 +178,6 @@ export class EditAppointment extends Component {
                 </div>
 
                 <div className="vertical-spacing"></div>
-
-                <div className="d-flex editAppointment-container">
-                    <button className="btn btn-warning btn-block text-white">SALVAR</button>
-                </div>
             </div>
         );
     }

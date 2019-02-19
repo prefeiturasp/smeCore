@@ -8,14 +8,25 @@ export class Appointment extends Component {
         this.state = {
             color: "dot color-" + props.color
         };
+
+        this.classAppointmentClick = this.classAppointmentClick.bind(this);
     }
 
-    abrirModal() {
+    classAppointmentClick() {
+        var properties = {
+            color: this.state.color,
+            time: this.props.time,
+            day: this.props.day,
+            month: this.props.month,
+            fullYear: this.props.fullYear
+        };
+
+        this.props.classAppointmentClick(properties);
     }
 
     render() {
         return (
-            <div className="appointment">
+            <div className="appointment" onClick={this.classAppointmentClick}>
                 <div className="border-bottom form-inline d-flex justify-content-center container-appointment">
                     <div className={this.state.color}></div>&nbsp;
                     <div className="appointment-hora">{this.props.time}</div>&nbsp;

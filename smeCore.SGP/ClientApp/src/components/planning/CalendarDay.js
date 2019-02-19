@@ -21,11 +21,12 @@ export class CalendarDay extends Component {
     }
 
     addAppointmentClick() {
-        let time = document.getElementById(this.state.modalHourId).value + ":" + document.getElementById(this.state.modalMinuteId).value;
-        let color = "gray";
-        let radios = document.getElementsByName('colors');
-        let name = this.props.year + "° " + this.props.classroom;
-        let school = "EMEF";
+        var date = this.props.fullYear + "-" + this.props.month + "-" + this.props.day;
+        var time = document.getElementById(this.state.modalHourId).value + ":" + document.getElementById(this.state.modalMinuteId).value;
+        var color = "gray";
+        var radios = document.getElementsByName('colors');
+        var name = this.props.year + "° " + this.props.classroom;
+        var school = this.props.school.substring(0, this.props.school.indexOf("-"));
 
         for (var i = 0, length = radios.length; i < length; i++)
             if (radios[i].checked) {
@@ -33,31 +34,34 @@ export class CalendarDay extends Component {
                 break;
             }
 
-        var appointment = {
-            schoolYear: this.props.year,
-            classroom: this.classroom,
+        var model = {
+            username: this.props.user.username,
+            year: this.props.year,
+            classroom: this.props.classroom,
             school: this.props.school,
-            userId: sessionStorage.getItem("username"),
-            date: "2019-02-01 " + time,
+            date: date + " " + time,
             tagColor: color
         };
-
-        //fetch('/api/Planejamento/SalvarHorarioAula', {
-        //    method: "post",
-        //    headers: { 'Content-Type': 'application/json' },
-        //    body: JSON.stringify(appointment)
-        //})
-        //    .then(data => {
-        //        if (data.status === 200)
-        //            alert("Plano de Ciclo salvo com sucesso!");
-        //    });
+        debugger;
+        fetch('/api/Planejamento/SalvarHorarioAula', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    alert("Plano de Ciclo salvo com sucesso!");
+            });
 
         this.setState({
             appointments: this.state.appointments.concat({
                 color: color,
                 time: time,
                 name: name,
-                school: school
+                school: school,
+                day: this.props.day,
+                month: this.props.month,
+                fullYear: this.props.fullYear
             }),
         });
 
@@ -73,11 +77,11 @@ export class CalendarDay extends Component {
 
                 <div className="appointments">
                     {this.state.appointments.map(appointment => (
-                        <Appointment color={appointment.color} time={appointment.time} name={appointment.name} school={appointment.school} />
+                        <Appointment day={appointment.day} month={appointment.month} fullYear={appointment.fullYear} color={appointment.color} time={appointment.time} name={appointment.name} school={appointment.school} classAppointmentClick={this.props.classAppointmentClick} />
                     ))}
                 </div>
 
-                {this.props.workday === "true" &&
+                {this.props.workday === "true" && this.props.editable === true &&
                     <div className="calendarDay-controls d-flex justify-content-end">
                         <button type="button" className="btn btn-danger btn-sm calendarDay-btn" data-toggle="modal" data-target={this.state.dataTarget}><i className="fas fa-plus text-white"></i></button>
                         <div className="modal fade" id={this.state.modalId} tabIndex="-1" role="dialog" aria-labelledby={this.state.modalTitle} aria-hidden="true">
@@ -95,8 +99,9 @@ export class CalendarDay extends Component {
                                                 &nbsp;
                                                 <span>:</span>
                                                 &nbsp;
-                                                <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} /> Formato 24 Horas
-
+                                                <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} />
+                                            &nbsp;
+                                                <span className="text-muted"><small>Formato 24 Horas</small></span>
                                             </div>
                                         </div>
 
@@ -114,9 +119,9 @@ export class CalendarDay extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    {}
-                                    <div className="modal-footer">
-                                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.addAppointmentClick}>SALVAR</button>
+
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.addAppointmentClick} disabled={this.props.year <= 0}>SALVAR</button>
                                     </div>
                                 </div>
                             </div>
