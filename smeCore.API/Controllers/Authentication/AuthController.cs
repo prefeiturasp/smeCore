@@ -213,7 +213,7 @@ namespace smeCore.API.Controllers.Authentication
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    return (null);
                 }
             }
 
