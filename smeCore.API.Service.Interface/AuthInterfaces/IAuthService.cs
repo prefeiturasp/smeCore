@@ -6,10 +6,8 @@ namespace smeCore.API.Service.Interface.AuthInterfaces
     public interface IAuthService
     {
         Task<ClientUser> Authenticate(Credential credential);
-        Task<(string, string)> GetTokens(ClientUser user);
-        Task<(string, string)> RefreshToken(Credential credential);
+        Task<(string newtoken, string newRefreshToken)> GetTokens(ClientUser user);
+        Task<(string newtoken, string newRefreshToken)> RefreshToken(Credential credential);
         Task<bool> LogoutIdentity(Credential credential);
-        string CreateToken(ClientUser user);
-        string CreateRefreshToken();
     }
 }

@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using smeCore.API.Service.Interface.APIContexts;
 using smeCore.API.Service.Interface.AuthInterfaces;
 using smeCore.Library.Extensions;
 using smeCore.Models.Authentication;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace smeCore.API.Controllers.Authentication
@@ -18,7 +15,7 @@ namespace smeCore.API.Controllers.Authentication
     [Produces("application/json")]
     [Route("api/Autenticacao")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
         #region ==================== ATTRIBUTES ====================
 
@@ -43,25 +40,6 @@ namespace smeCore.API.Controllers.Authentication
 
         #region ==================== METHODS ====================
 
-        #region -------------------- PRIVATE --------------------
-        /// <summary>
-        /// Método para encontrar um usuário pelo username. Não está implementado corretamente ainda.
-        /// </summary>
-        /// <param name="username">Nome de usuário a ser retornado</param>
-        /// <returns>Usuário com o username especificado.</returns>
-        private async Task<ClientUser> GetUser(string username)
-        {
-            // Corrigir a metodologia de encontrar o usuário
-            if (username == "teste")
-            {
-                return new ClientUser() { Name = "Usuário Teste", Email = "teste@teste.teste", Username = "teste" };
-            }
-
-            return null;
-        }        
-
-        #endregion -------------------- PRIVATE --------------------
-
         #region -------------------- PUBLIC --------------------
 
         /// <summary>
@@ -73,7 +51,7 @@ namespace smeCore.API.Controllers.Authentication
         [HttpPost("Login")]
         public async Task<ActionResult<string>> LoginJWT([FromBody]Credential credential)
         {
-            ClientUser user = await authService.Authenticate(credential); // Faz a autenticação do usuário
+            ClientUser user = await authService.Authenticate(credential);
             
             (string newToken, string newRefreshToken) = await authService.GetTokens(user);
 

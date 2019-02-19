@@ -111,7 +111,7 @@ namespace smeCore.API.Service.Autenticacao
             return user;
         }
 
-        public async Task<(string, string)> RefreshToken(Credential credential)
+        public async Task<(string newtoken, string newRefreshToken)> RefreshToken(Credential credential)
         {
             // Faz a pesquisa no banco de dados (smeCoreDB/LoggedUsers) se o usuário está listado como logado e possui o mesmo refresh token
             LoggedUser loggedUser =
@@ -153,7 +153,7 @@ namespace smeCore.API.Service.Autenticacao
         /// </summary>
         /// <param name="user">Objeto contendo informações do usuário</param>
         /// <returns>Token gerado à partir das informações do usuário.</returns>
-        public string CreateToken(ClientUser user)
+        private string CreateToken(ClientUser user)
         {
             // Adicionar Claims para restringir o acesso dos usuários a determinados conteudos
             Claim[] claims = new Claim[]
@@ -181,7 +181,7 @@ namespace smeCore.API.Service.Autenticacao
         /// Método para gerar um refresh token para revalidar acesso do usuário sem a necessidade de um novo login.
         /// </summary>
         /// <returns>Refresh token para revalidação do usuário</returns>
-        public string CreateRefreshToken()
+        private string CreateRefreshToken()
         {
             byte[] randomNumber = new byte[32];
 
@@ -197,7 +197,7 @@ namespace smeCore.API.Service.Autenticacao
             }
         }
 
-        public async Task<(string, string)> GetTokens(ClientUser user)
+        public async Task<(string newtoken, string newRefreshToken)> GetTokens(ClientUser user)
         {
             // Caso seja encontrado algum usuário com a combinação username e password
             if (user != null)
