@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using smeCore.API.Repository.Interface.Interfaces;
+using smeCore.API.Repository.Repositories;
 using smeCore.API.Service.Autenticacao;
 using smeCore.API.Service.Interface.AuthInterfaces;
 
@@ -13,7 +15,12 @@ namespace smeCore.API.IoC
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthServiceToRepository, AuthServiceToRepository>();
+        }
+
+        private static void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IAuthRepository, AuthRepository>();
         }
     }
 }

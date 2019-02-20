@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\smeCore.API.Repository\smeCore.API.Repository.csproj" />
     <ProjectReference Include="..\smeCore.API.Service.Interface\smeCore.API.Service.Interface.csproj" />
     <ProjectReference Include="..\smeCore.API.Service\smeCore.API.Service.csproj" />
   </ItemGroup>

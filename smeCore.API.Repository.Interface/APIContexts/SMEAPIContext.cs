@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using smeCore.Models.Authentication;
 
-namespace smeCore.API.Service.Interface.APIContexts
+namespace smeCore.API.Repository.Interface.APIContexts
 {
-    /// <summary>
-    /// DataBase Context do smeCore.
-    /// </summary>
     public class SMEAPIContext : DbContext
     {
         #region ==================== ATTRIBUTES ====================

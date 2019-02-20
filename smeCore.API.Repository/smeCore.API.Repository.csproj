@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\smeCore.API.Repository.Interface\smeCore.API.Repository.Interface.csproj" />
-    <ProjectReference Include="..\smeCore.API.Service.Interface\smeCore.API.Service.Interface.csproj" />
-    <ProjectReference Include="..\smeCore.Library\smeCore.Library.csproj" />
-    <ProjectReference Include="..\smeCore.SGP\smeCore.SGP.csproj" />
   </ItemGroup>
 
 </Project>

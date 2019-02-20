@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using smeCore.API.Service.Interface.APIContexts;
+using smeCore.API.Repository.Interface.APIContexts;
 using smeCore.API.Service.Interface.AuthInterfaces;
 using smeCore.API.Service.Interface.Settings;
 using smeCore.Library.Extensions;
@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace smeCore.API.Service.Autenticacao
 {
-    public class AuthService : IAuthService
+    public class AuthServiceToRepository : IAuthServiceToRepository
     {
         private readonly SMEAPIContext _db;
         private IConfiguration _config;
@@ -27,7 +27,7 @@ namespace smeCore.API.Service.Autenticacao
         private readonly APISettings apiSettings;
         private const string PARAM_VERIFICATION_TOKEN = "__RequestVerificationToken";
 
-        public AuthService(IConfiguration config,
+        public AuthServiceToRepository(IConfiguration config,
                            SMEAPIContext db, 
                            IOptions<ApiURLSettings> apiURLSettings, 
                            IOptions<APISettings> apiSettings)

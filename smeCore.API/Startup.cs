@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using smeCore.API.IoC;
-using smeCore.API.Service.Interface.APIContexts;
+using smeCore.API.Repository.Interface.APIContexts;
 using smeCore.API.Service.Interface.Settings;
 using System;
 using System.IO;

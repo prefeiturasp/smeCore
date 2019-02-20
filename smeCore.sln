@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "smeCore.API.Service", "smeC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smeCore.Library", "smeCore.Library\smeCore.Library.csproj", "{ED5989E9-0511-49A7-BDC6-B4D913AF7E41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smeCore.API.Repository.Interface", "smeCore.API.Repository.Interface\smeCore.API.Repository.Interface.csproj", "{D69BDCF4-4B1A-4A21-947E-003EF00726E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smeCore.API.Repository", "smeCore.API.Repository\smeCore.API.Repository.csproj", "{9AABACE7-29E6-44DC-A553-D4721B3D54EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,14 @@ Global
 		{ED5989E9-0511-49A7-BDC6-B4D913AF7E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED5989E9-0511-49A7-BDC6-B4D913AF7E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED5989E9-0511-49A7-BDC6-B4D913AF7E41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D69BDCF4-4B1A-4A21-947E-003EF00726E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D69BDCF4-4B1A-4A21-947E-003EF00726E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D69BDCF4-4B1A-4A21-947E-003EF00726E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D69BDCF4-4B1A-4A21-947E-003EF00726E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AABACE7-29E6-44DC-A553-D4721B3D54EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AABACE7-29E6-44DC-A553-D4721B3D54EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AABACE7-29E6-44DC-A553-D4721B3D54EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AABACE7-29E6-44DC-A553-D4721B3D54EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +84,8 @@ Global
 		{F2277966-DD4D-4DFB-AE38-5DF18586D45F} = {062AEAB1-EF18-4BD2-BC69-1DEC07E0CB9B}
 		{9F11D991-FCEE-4B01-87BD-A5B85CA24246} = {062AEAB1-EF18-4BD2-BC69-1DEC07E0CB9B}
 		{83D7926A-FD4B-4F6F-8275-648E19DE47E4} = {062AEAB1-EF18-4BD2-BC69-1DEC07E0CB9B}
+		{D69BDCF4-4B1A-4A21-947E-003EF00726E9} = {062AEAB1-EF18-4BD2-BC69-1DEC07E0CB9B}
+		{9AABACE7-29E6-44DC-A553-D4721B3D54EC} = {062AEAB1-EF18-4BD2-BC69-1DEC07E0CB9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC3A7D54-AF7C-4A7C-99A9-B8653CD81959}
