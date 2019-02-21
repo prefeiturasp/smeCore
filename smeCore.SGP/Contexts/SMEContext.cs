@@ -37,6 +37,7 @@ namespace smeCore.SGP.Contexts
         #region -------------------- ORGANIZATION --------------------
 
         public DbSet<smeCore.Models.Organization.Code> Codes { get; set; }
+        public DbSet<smeCore.Models.Organization.StudentCode> StudentCodes { get; set; }
         public DbSet<smeCore.Models.Organization.UserCode> UserCodes { get; set; }
 
         #endregion -------------------- ORGANIZATION --------------------

@@ -101,7 +101,7 @@ export class CyclePlan extends Component {
                 break;
         }
 
-        if (cycleName !== "")
+        if (cycleName !== "" && this.isLoaded === false)
             this.loadData();
 
         return (cycleName);
@@ -224,6 +224,8 @@ export class CyclePlan extends Component {
                         lastModifiedBy: "-"
                     });
                 }
+
+                this.isLoaded = true;
             });
     }
 

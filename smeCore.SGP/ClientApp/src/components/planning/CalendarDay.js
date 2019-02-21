@@ -6,6 +6,8 @@ export class CalendarDay extends Component {
     constructor(props) {
         super(props);
 
+        this.isLoaded = false;
+
         this.state = {
             id: "Item" + props.name,
             dataTarget: "#Modal" + props.name,
@@ -17,6 +19,7 @@ export class CalendarDay extends Component {
         };
 
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
+        this.getClassSchedules = this.getClassSchedules.bind(this);
         //this.clickRadioHora = this.clickRadioHora.bind(this);
     }
 
@@ -42,7 +45,7 @@ export class CalendarDay extends Component {
             date: date + " " + time,
             tagColor: color
         };
-        debugger;
+
         fetch('/api/Planejamento/SalvarHorarioAula', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
@@ -70,7 +73,55 @@ export class CalendarDay extends Component {
         document.getElementById(this.state.modalMinuteId).value = '';
     }
 
+    getClassSchedules() {
+        var date = this.props.fullYear + "-" + this.props.month + "-" + this.props.day
+        var model = {
+            username: this.props.user.username,
+            year: this.props.year,
+            classroom: this.props.classroom,
+            school: this.props.school,
+            date: date + " 00:00"
+        };
+
+        fetch('/api/Planejamento/AbrirHorarioAula', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    data.json().then(result => {
+                        var classSchedules = [];
+                        var name = this.props.year + "° " + this.props.classroom;
+                        var school = this.props.school.substring(0, this.props.school.indexOf("-"));
+
+                        for (var i = 0; i < result.length; i++) {
+                            var date = new Date(result[i].date);
+                            var time = date.getHours() > 9 ? date.getHours() : "0" + date.getHours();
+                            time += ":";
+                            time += date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes();
+
+                            classSchedules.push({
+                                color: result[i].tagColor,
+                                time: time,
+                                name: name,
+                                school: school,
+                                day: this.props.day,
+                                month: this.props.month,
+                                fullYear: this.props.fullYear
+                            });
+                        }
+
+                        this.isLoaded = true;
+                        this.setState({ appointments: classSchedules });
+                    });
+            });
+    }
+
     render() {
+        if (this.props.year > 0 && this.isLoaded === false)
+            this.getClassSchedules();
+
         return (
             <td className={this.props.workday === "true" ? "border-calendar-day" : "border-calendar-day not-workday"}>
                 {this.props.workday === "true" && (<div className="day text-small text-info text-center">{this.props.day}</div>)}

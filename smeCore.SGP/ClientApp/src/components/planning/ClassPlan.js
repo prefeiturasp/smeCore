@@ -73,7 +73,7 @@ export class ClassPlan extends Component {
 
                 {this.state.showEditAppointment === false ?
                     (<CalendarPlan name="calendarPlan" {...childProps} classAppointmentClick={this.editAppointmentClick} />) :
-                    (<EditAppointment color={this.editAppontimentColor} time={this.editAppointmentTime} date={this.editAppointmentDate} name="5° B" {...childProps} />)
+                    (<EditAppointment color={this.editAppontimentColor} time={this.editAppointmentTime} date={this.editAppointmentDate} name="5° B" students={this.props.students} {...childProps} />)
                 }
             </div>
         );

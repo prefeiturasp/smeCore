@@ -141,6 +141,8 @@ namespace smeCore.SGP.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<string>("DisciplineId");
+
                     b.Property<DateTime>("ModifiedAt");
 
                     b.Property<string>("School");
@@ -150,6 +152,8 @@ namespace smeCore.SGP.Migrations
                     b.Property<int>("Year");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
 
                     b.ToTable("Plannings");
                 });
@@ -174,7 +178,7 @@ namespace smeCore.SGP.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DisciplineId");
+                    b.Property<string>("PlanningId");
 
                     b.Property<string>("StudentId");
 
@@ -182,7 +186,7 @@ namespace smeCore.SGP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DisciplineId");
+                    b.HasIndex("PlanningId");
 
                     b.HasIndex("StudentId");
 
@@ -280,6 +284,28 @@ namespace smeCore.SGP.Migrations
                     b.ToTable("Codes");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Organization.StudentCode", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CodeId");
+
+                    b.Property<string>("StudentId");
+
+                    b.Property<DateTime>("Validity");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentCodes");
+                });
+
             modelBuilder.Entity("smeCore.Models.Organization.UserCode", b =>
                 {
                     b.Property<string>("Id")
@@ -321,6 +347,13 @@ namespace smeCore.SGP.Migrations
                         .HasForeignKey("PlanningId");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Academic.Planning", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.Discipline", "Discipline")
+                        .WithMany("Plannings")
+                        .HasForeignKey("DisciplineId");
+                });
+
             modelBuilder.Entity("smeCore.Models.Academic.Student", b =>
                 {
                     b.HasOne("smeCore.Models.Entity.Profile", "Profile")
@@ -330,9 +363,9 @@ namespace smeCore.SGP.Migrations
 
             modelBuilder.Entity("smeCore.Models.Academic.StudentClass", b =>
                 {
-                    b.HasOne("smeCore.Models.Academic.Discipline", "Discipline")
-                        .WithMany("StudentsClasses")
-                        .HasForeignKey("DisciplineId");
+                    b.HasOne("smeCore.Models.Academic.Planning", "Planning")
+                        .WithMany("StudentClasses")
+                        .HasForeignKey("PlanningId");
 
                     b.HasOne("smeCore.Models.Academic.Student", "Student")
                         .WithMany("Classes")
@@ -355,6 +388,17 @@ namespace smeCore.SGP.Migrations
                     b.HasOne("smeCore.Models.Authentication.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("smeCore.Models.Entity.Profile", "UserId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Organization.StudentCode", b =>
+                {
+                    b.HasOne("smeCore.Models.Organization.Code", "Code")
+                        .WithMany()
+                        .HasForeignKey("CodeId");
+
+                    b.HasOne("smeCore.Models.Academic.Student", "Student")
+                        .WithMany("Codes")
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("smeCore.Models.Organization.UserCode", b =>

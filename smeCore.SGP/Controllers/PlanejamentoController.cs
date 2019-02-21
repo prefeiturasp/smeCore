@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using smeCore.Models.Academic;
+using smeCore.Models.Entity;
+using smeCore.Models.Organization;
 using smeCore.SGP.Contexts;
 using smeCore.SGP.Models.Planning;
 using System;
@@ -450,14 +452,12 @@ namespace smeCore.SGP.Controllers
             planning.ModifiedAt = DateTime.Now;
 
             if (planning.ClassSchedules == null)
-            {
                 planning.ClassSchedules = new List<ClassSchedule>();
-            }
 
             ClassSchedule classSchedule = null;
 
             foreach (ClassSchedule current in planning.ClassSchedules)
-                if (current.Date == model.Date && current.TagColor == model.TagColor)
+                if (current.Date == model.Date)
                     classSchedule = current;
 
             if (classSchedule == null)
@@ -471,7 +471,10 @@ namespace smeCore.SGP.Controllers
                 planning.ClassSchedules.Add(classSchedule);
             }
             else
+            {
                 classSchedule.ModifiedAt = DateTime.Now;
+                classSchedule.TagColor = model.TagColor;
+            }
 
             try
             {
@@ -483,6 +486,142 @@ namespace smeCore.SGP.Controllers
             }
 
             return (Ok());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> AbrirHorarioAula(ClassScheduleModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            List<ClassScheduleModel> result = new List<ClassScheduleModel>();
+
+            if (planning != null && planning.ClassSchedules != null)
+            {
+                result =
+                    (from current in planning.ClassSchedules
+                     where current.Date.Day == model.Date.Day
+                     && current.Date.Month == model.Date.Month
+                     && current.Date.Year == model.Date.Year
+                     select new ClassScheduleModel
+                     {
+                         Date = current.Date,
+                         TagColor = current.TagColor
+                     }).ToList();
+            }
+
+            return (Ok(result));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> CarregarAlunosMock(PlanningModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.AnnualPlan)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            if (planning != null)
+            {
+                if (_db.Students.Any() == false)
+                {
+                    List<Profile> people = new List<Profile>()
+                    {
+                        new Profile() { Name = "Ágatha Melo Pinto" },
+                        new Profile() { Name = "André Cardoso Melo" },
+                        new Profile() { Name = "Beatrice Cunha Castro" },
+                        new Profile() { Name = "Bruna Pereira Araujo" },
+                        new Profile() { Name = "Caio Goncalves Azevedo" },
+                        new Profile() { Name = "Carlos Carvalho Lima" },
+                        new Profile() { Name = "Daniel Gomes Santos" },
+                        new Profile() { Name = "Davi Cunha Rodrigues" },
+                        new Profile() { Name = "Diego Oliveira Fernandes" },
+                        new Profile() { Name = "Diogo Rodrigues Almeida" },
+                        new Profile() { Name = "Evelyn Gomes Santos" },
+                        new Profile() { Name = "Fernanda Silva Carvalho" },
+                        new Profile() { Name = "Gustavo Cardoso Castro" },
+                        new Profile() { Name = "Isabela Barbosa Fernandes" },
+                        new Profile() { Name = "Isabella Cardoso Dias" },
+                        new Profile() { Name = "Júlia Goncalves Martins" },
+                        new Profile() { Name = "Julieta Azevedo Costa" },
+                        new Profile() { Name = "Kauã Fernandes Carvalho" },
+                        new Profile() { Name = "Laura Cavalcanti Ferreira" },
+                        new Profile() { Name = "Letícia Barros Cunha" },
+                        new Profile() { Name = "Marisa Dias Ferreira" },
+                        new Profile() { Name = "Nicolas Barbosa Cavalcanti" },
+                        new Profile() { Name = "Paulo Melo Santos" },
+                        new Profile() { Name = "Rodrigo Silva Dias" },
+                        new Profile() { Name = "Ryan Goncalves Alves" },
+                        new Profile() { Name = "Samuel Ferreira Silva" },
+                        new Profile() { Name = "Sarah Melo Barbosa" },
+                        new Profile() { Name = "Sophia Pereira Lima" },
+                        new Profile() { Name = "Tânia Sousa Ferreira" },
+                        new Profile() { Name = "Thiago Pereira Silva" },
+                        new Profile() { Name = "Fernanda Almeida" }
+                    };
+
+                    Discipline discipline = new Discipline() { Name = "Disciplina Teste" };
+                    discipline.NewID();
+
+                    await _db.Disciplines.AddAsync(discipline);
+
+                    int count = 0;
+                    Code studentCode = new Code();
+                    studentCode.NewID();
+                    studentCode.Name = "Código de Chamada";
+
+                    await _db.Codes.AddAsync(studentCode);
+
+                    foreach (Profile person in people)
+                    {
+                        person.NewID();
+                        person.Student = new Student();
+                        person.Student.NewID();
+                        person.Student.Codes = new List<StudentCode>();
+                        person.Student.Codes.Add(new StudentCode()
+                        {
+                            Code = studentCode,
+                            Validity = new DateTime(DateTime.Now.Year, 12, 20),
+                            Value = (++count).ToString()
+                        });
+                        person.Student.Codes[0].NewID();
+
+                        person.Student.Classes = new List<StudentClass>();
+                        person.Student.Classes.Add(new StudentClass()
+                        {
+                            Year = DateTime.Now.Year,
+                            Planning = planning
+                        });
+                        person.Student.Classes[0].NewID();
+                    }
+
+                    await _db.Profiles.AddRangeAsync(people);
+                    await _db.SaveChangesAsync();
+                }
+
+                List<Models.Mocking.Student> result =
+                    (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+                     join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
+                     select new Models.Mocking.Student()
+                     {
+                         Id = student.Id,
+                         Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                         Name = student.Profile.Name,
+                         Attendance = 100
+                     }).ToList();
+
+                return (Ok(result.OrderBy(x => x.Sequence)));
+            }
+
+            return (NotFound());
         }
 
         #endregion -------------------- PUBLIC --------------------

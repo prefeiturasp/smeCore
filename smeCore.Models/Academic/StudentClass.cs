@@ -7,10 +7,10 @@ namespace smeCore.Models.Academic
         #region ==================== ATTRIBUTES ====================
 
         public int Year { get; set; }
-
-        public virtual Discipline Discipline { get; set; }
+        
         public virtual Student Student { get; set; }
         public virtual List<ClassAbsence> Absences { get; set; }
+        public virtual Planning Planning { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
     }

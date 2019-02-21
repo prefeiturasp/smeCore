@@ -14,7 +14,8 @@ export default class Planning extends Component {
             year: 0,
             classroom: "",
             school: "",
-            learningObjectiveItems: []
+            learningObjectiveItems: [],
+            students: []
         }
 
         this.getMonthByIndex = this.getMonthByIndex.bind(this);
@@ -93,6 +94,26 @@ export default class Planning extends Component {
                     learningObjectiveItems: data
                 });
             });
+
+        var model = {
+            username: this.props.user.username,
+            year: this.state.selectedClass.year,
+            classroom: this.state.selectedClass.description,
+            school: this.state.selectedClass.school
+        };
+
+        fetch('/api/Planejamento/CarregarAlunosMock', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    data.json().then(result => {
+                        debugger;
+                        this.setState({ students: result });
+                    });
+            });
     }
 
     render() {
@@ -141,7 +162,7 @@ export default class Planning extends Component {
                         </li>
                     </ul>
                     <div className="tab-content border-azul" id="myTabContent">
-                        <ClassPlan name="classPlan" {...childProps} />
+                        <ClassPlan name="classPlan" students={this.state.students} {...childProps} />
 
                         <AnnualPlan name="annualPlan" learningObjectiveItems={this.state.learningObjectiveItems} {...childProps} />
 

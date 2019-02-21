@@ -66,24 +66,6 @@ namespace smeCore.SGP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plannings",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    ModifiedAt = table.Column<DateTime>(nullable: false),
-                    Year = table.Column<int>(nullable: false),
-                    Classroom = table.Column<string>(nullable: true),
-                    School = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Plannings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -109,51 +91,26 @@ namespace smeCore.SGP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AnnualPlans",
+                name: "Plannings",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     ModifiedAt = table.Column<DateTime>(nullable: false),
-                    SelectedLearningObjectivesB1 = table.Column<string>(nullable: true),
-                    SelectedLearningObjectivesB2 = table.Column<string>(nullable: true),
-                    SelectedLearningObjectivesB3 = table.Column<string>(nullable: true),
-                    SelectedLearningObjectivesB4 = table.Column<string>(nullable: true),
-                    DescriptionB1 = table.Column<string>(nullable: true),
-                    DescriptionB2 = table.Column<string>(nullable: true),
-                    DescriptionB3 = table.Column<string>(nullable: true),
-                    DescriptionB4 = table.Column<string>(nullable: true),
-                    PlanningId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AnnualPlans", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AnnualPlans_Plannings_PlanningId",
-                        column: x => x.PlanningId,
-                        principalTable: "Plannings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClassSchedules",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    Classroom = table.Column<string>(nullable: true),
+                    School = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
-                    TagColor = table.Column<string>(nullable: true),
-                    PlanningId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    DisciplineId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassSchedules", x => x.Id);
+                    table.PrimaryKey("PK_Plannings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClassSchedules_Plannings_PlanningId",
-                        column: x => x.PlanningId,
-                        principalTable: "Plannings",
+                        name: "FK_Plannings_Disciplines_DisciplineId",
+                        column: x => x.DisciplineId,
+                        principalTable: "Disciplines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -229,6 +186,56 @@ namespace smeCore.SGP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnnualPlans",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    SelectedLearningObjectivesB1 = table.Column<string>(nullable: true),
+                    SelectedLearningObjectivesB2 = table.Column<string>(nullable: true),
+                    SelectedLearningObjectivesB3 = table.Column<string>(nullable: true),
+                    SelectedLearningObjectivesB4 = table.Column<string>(nullable: true),
+                    DescriptionB1 = table.Column<string>(nullable: true),
+                    DescriptionB2 = table.Column<string>(nullable: true),
+                    DescriptionB3 = table.Column<string>(nullable: true),
+                    DescriptionB4 = table.Column<string>(nullable: true),
+                    PlanningId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnnualPlans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnnualPlans_Plannings_PlanningId",
+                        column: x => x.PlanningId,
+                        principalTable: "Plannings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassSchedules",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    TagColor = table.Column<string>(nullable: true),
+                    PlanningId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassSchedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassSchedules_Plannings_PlanningId",
+                        column: x => x.PlanningId,
+                        principalTable: "Plannings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -252,20 +259,47 @@ namespace smeCore.SGP.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Year = table.Column<int>(nullable: false),
-                    DisciplineId = table.Column<string>(nullable: true),
-                    StudentId = table.Column<string>(nullable: true)
+                    StudentId = table.Column<string>(nullable: true),
+                    PlanningId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StudentClasses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StudentClasses_Disciplines_DisciplineId",
-                        column: x => x.DisciplineId,
-                        principalTable: "Disciplines",
+                        name: "FK_StudentClasses_Plannings_PlanningId",
+                        column: x => x.PlanningId,
+                        principalTable: "Plannings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_StudentClasses_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentCodes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: true),
+                    Validity = table.Column<DateTime>(nullable: false),
+                    CodeId = table.Column<string>(nullable: true),
+                    StudentId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentCodes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentCodes_Codes_CodeId",
+                        column: x => x.CodeId,
+                        principalTable: "Codes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StudentCodes_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
@@ -308,19 +342,34 @@ namespace smeCore.SGP.Migrations
                 column: "PlanningId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Plannings_DisciplineId",
+                table: "Plannings",
+                column: "DisciplineId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Profiles_UserId",
                 table: "Profiles",
                 column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentClasses_DisciplineId",
+                name: "IX_StudentClasses_PlanningId",
                 table: "StudentClasses",
-                column: "DisciplineId");
+                column: "PlanningId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentClasses_StudentId",
                 table: "StudentClasses",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentCodes_CodeId",
+                table: "StudentCodes",
+                column: "CodeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentCodes_StudentId",
+                table: "StudentCodes",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
@@ -368,6 +417,9 @@ namespace smeCore.SGP.Migrations
                 name: "LoggedUsers");
 
             migrationBuilder.DropTable(
+                name: "StudentCodes");
+
+            migrationBuilder.DropTable(
                 name: "UserCodes");
 
             migrationBuilder.DropTable(
@@ -377,19 +429,19 @@ namespace smeCore.SGP.Migrations
                 name: "StudentClasses");
 
             migrationBuilder.DropTable(
-                name: "Plannings");
-
-            migrationBuilder.DropTable(
                 name: "Codes");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Disciplines");
+                name: "Plannings");
 
             migrationBuilder.DropTable(
                 name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "Disciplines");
 
             migrationBuilder.DropTable(
                 name: "Profiles");

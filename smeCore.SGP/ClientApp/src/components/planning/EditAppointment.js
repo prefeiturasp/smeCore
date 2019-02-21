@@ -3,6 +3,7 @@ import './EditAppointment.css';
 import { MyObjectiveItem } from './MyObjectiveItem';
 import { EditorState } from 'draft-js';
 import { RichTextBox } from '../textbox/RichTextBox';
+import { Student } from './Student';
 
 export class EditAppointment extends Component {
     constructor(props) {
@@ -16,11 +17,6 @@ export class EditAppointment extends Component {
         };
 
         this.LoadData = this.LoadData.bind(this);
-    }
-
-    componentDidMount() {
-        
-
     }
 
     LoadData() {
@@ -117,7 +113,23 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample0" className="collapse">
-                                <textarea className="form-control" rows="5" id="homework-textarea"></textarea>
+                                <table className="table table-sm table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"><i class="fas fa-sort-numeric-down font-weight-light text-color-purple"></i></th>
+                                            <th scope="col"><i class="fas fa-sort-alpha-down font-weight-light text-color-purple"></i></th>
+                                            <th scope="col"><span className="font-weight-light text-color-purple">Faltas</span></th>
+                                            <th scope="col"><span className="font-weight-light text-color-purple">% Aula</span></th>
+                                            <th scope="col"><span className="font-weight-light text-color-purple">Alertas</span></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {this.props.students.map(student => (
+                                            <Student sequence={student.sequence} name={student.name} attendance={student.attendance} />
+                                        ))}
+                                    </tbody>
+                                </table>
                             
                             </div>
                         </div>

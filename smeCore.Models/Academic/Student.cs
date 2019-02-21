@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using smeCore.Models.Organization;
+using System.Collections.Generic;
 
 namespace smeCore.Models.Academic
 {
@@ -7,6 +8,7 @@ namespace smeCore.Models.Academic
         #region ==================== ATTRIBUTES ====================
 
         public virtual List<StudentClass> Classes { get; set; }
+        public virtual List<StudentCode> Codes { get; set; }
 
         public string ProfileId { get; set; }
         public virtual Entity.Profile Profile { get; set; }
