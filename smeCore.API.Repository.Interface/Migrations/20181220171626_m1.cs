@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace smeCore.API.Migrations
+namespace smeCore.API.Repository.Interface.Migrations
 {
     public partial class m1 : Migration
     {

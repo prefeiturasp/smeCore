@@ -8,13 +8,13 @@ namespace smeCore.API.Repository
     {
         public async Task<bool> AddAsync(T entity, SMEAPIContext _db)
         {
-            await _db.AddAsync<T>(entity);
+            await _db.AddAsync(entity);
             return await SaveAsync(_db);
         }
 
         public async Task<bool> DeleteAsync(T entity, SMEAPIContext _db)
         {
-            _db.Remove<T>(entity);
+            _db.Remove(entity);
             return await SaveAsync(_db);
         }
 
@@ -25,7 +25,7 @@ namespace smeCore.API.Repository
 
         public async Task<bool> UpdateAsync(T entity, SMEAPIContext _db)
         {
-            _db.Update<T>(entity);
+            _db.Update(entity);
             return await SaveAsync(_db);
         }
     }

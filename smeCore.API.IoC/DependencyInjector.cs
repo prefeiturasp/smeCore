@@ -3,6 +3,7 @@ using smeCore.API.Repository.Interface.Interfaces;
 using smeCore.API.Repository.Repositories;
 using smeCore.API.Service.Autenticacao;
 using smeCore.API.Service.Interface.AuthInterfaces;
+using smeCore.Models.Authentication;
 
 namespace smeCore.API.IoC
 {
@@ -11,16 +12,17 @@ namespace smeCore.API.IoC
         public static void Register(IServiceCollection services)
         {
             RegisterServices(services);
+            RegisterRepositories(services);
         }
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IAuthServiceToRepository, AuthServiceToRepository>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         private static void RegisterRepositories(IServiceCollection services)
         {
-            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IAuthRepository<LoggedUser>, AuthRepository<LoggedUser>>();
         }
     }
 }

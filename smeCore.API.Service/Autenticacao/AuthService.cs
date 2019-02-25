@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using smeCore.API.Repository.Interface.APIContexts;
+using smeCore.API.Repository.Interface.Interfaces;
 using smeCore.API.Service.Interface.AuthInterfaces;
 using smeCore.API.Service.Interface.Settings;
 using smeCore.Library.Extensions;
@@ -19,23 +20,26 @@ using System.Threading.Tasks;
 
 namespace smeCore.API.Service.Autenticacao
 {
-    public class AuthServiceToRepository : IAuthServiceToRepository
+    public class AuthService : IAuthService
     {
         private readonly SMEAPIContext _db;
+        private readonly IAuthRepository<LoggedUser> loggedUserRepository;
         private IConfiguration _config;
         private readonly ApiURLSettings apiURLSettings;
         private readonly APISettings apiSettings;
         private const string PARAM_VERIFICATION_TOKEN = "__RequestVerificationToken";
 
-        public AuthServiceToRepository(IConfiguration config,
+        public AuthService(IConfiguration config,
                            SMEAPIContext db, 
                            IOptions<ApiURLSettings> apiURLSettings, 
-                           IOptions<APISettings> apiSettings)
+                           IOptions<APISettings> apiSettings,
+                           IAuthRepository<LoggedUser> loggedUserRepository)
         {
             _config = config;
             _db = db;
             this.apiURLSettings = apiURLSettings.Value;
             this.apiSettings = apiSettings.Value;
+            this.loggedUserRepository = loggedUserRepository;
         }
 
         /// <summary>
@@ -133,15 +137,14 @@ namespace smeCore.API.Service.Autenticacao
                     loggedUser.LastLogin = DateTime.Now;
                     loggedUser.ExpiresAt = DateTime.Now.AddMinutes(30); // Define o tempo de validade do refresh token
 
-                    await _db.SaveChangesAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
+                    await loggedUserRepository.SaveAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
 
                     return (newToken, newRefreshToken);
                 }
                 else
                 {
                     // Caso não seja válido, remove o usuário da lista de usuários logados                
-                    _db.Remove(loggedUser);
-                    await _db.SaveChangesAsync();
+                    await loggedUserRepository.DeleteAsync(loggedUser);
                 }
             }
 
@@ -185,9 +188,9 @@ namespace smeCore.API.Service.Autenticacao
         {
             byte[] randomNumber = new byte[32];
 
-            using (var rng = RandomNumberGenerator.Create())
+            using (var randomNumGenerated = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(randomNumber);
+                randomNumGenerated.GetBytes(randomNumber);
                 string refreshToken = Convert.ToBase64String(randomNumber);
 
                 // Descomentar a linha abaixo para retirar do token os caracteres indesejados
@@ -221,16 +224,16 @@ namespace smeCore.API.Service.Autenticacao
                         ExpiresAt = DateTime.Now.AddMinutes(30)
                     };
 
-                    await _db.LoggedUsers.AddAsync(loggedUser);
+                    await loggedUserRepository.AddAsync(loggedUser);
                 }
                 else // Caso contrário, atualiza as informações
                 {
                     loggedUser.RefreshToken = newRefreshToken;
                     loggedUser.LastLogin = DateTime.Now;
                     loggedUser.ExpiresAt = DateTime.Now.AddMinutes(30);
-                }
 
-                await _db.SaveChangesAsync(); // Salva as informações na tabela correspondente (LoggedUsers)
+                    await loggedUserRepository.SaveAsync();
+                }
 
                 return (newToken, newRefreshToken);
             }
