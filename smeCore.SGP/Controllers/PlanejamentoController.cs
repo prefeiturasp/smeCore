@@ -59,6 +59,46 @@ namespace smeCore.SGP.Controllers
             }
         }
 
+        private CalendarModel CreateCalendar()
+        {
+            CalendarModel calendar = new CalendarModel() { Weeks = new List<List<DayScheduleModel>>() };
+
+            DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            DateTime sunday = today.AddDays(-(int)today.DayOfWeek);
+
+            for (int i = 0; i < 5; i++)
+                calendar.Weeks.Add(CreateWeekDays(sunday.AddDays(i * 7)));
+
+            return (calendar);
+        }
+
+        private List<DayScheduleModel> CreateWeekDays(DateTime sunday)
+        {
+            List<DayScheduleModel> week = new List<DayScheduleModel>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime today = sunday.AddDays(i);
+
+                DayScheduleModel day = new DayScheduleModel()
+                {
+                    FullDate = today,
+                    Day = today.Day,
+                    Month = today.Month,
+                    Year = today.Year,
+                    Workday = true,
+                    Schedules = new List<ScheduleModel>()
+                };
+
+                if (today.DayOfWeek == DayOfWeek.Sunday || today.DayOfWeek == DayOfWeek.Saturday)
+                    day.Workday = false;
+
+                week.Add(day);
+            }
+
+            return (week);
+        }
+
         #endregion -------------------- PRIVATE --------------------
 
         #region -------------------- PUBLIC --------------------
@@ -516,6 +556,56 @@ namespace smeCore.SGP.Controllers
             }
 
             return (Ok(result));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> AbrirCalendarioAula(ClassScheduleModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            List<ClassScheduleModel> result = new List<ClassScheduleModel>();
+            CalendarModel calendar = CreateCalendar();
+
+            if (planning != null && planning.ClassSchedules != null)
+            {
+                result =
+                    (from current in planning.ClassSchedules
+                     where current.Date >= calendar.Weeks[0][0].FullDate
+                     && current.Date <= calendar.Weeks[4][6].FullDate
+                     select new ClassScheduleModel
+                     {
+                         Date = current.Date,
+                         TagColor = current.TagColor
+                     }).ToList();
+
+                for (int i = 0; i < 5; i++)
+                    for (int j = 0; j < 7; j++)
+                    {
+                        calendar.Weeks[i][j].Schedules =
+                            (from current in result
+                             where current.Date.Day == calendar.Weeks[i][j].Day
+                             && current.Date.Month == calendar.Weeks[i][j].Month
+                             && current.Date.Year == calendar.Weeks[i][j].Year
+                             select new ScheduleModel
+                             {
+                                 Color = current.TagColor,
+                                 Time = current.Date.ToShortTimeString(),
+                                 Name = model.Classroom,
+                                 School = model.School.Substring(0, model.School.IndexOf("-") - 1),
+                                 Day = current.Date.Day,
+                                 Month = current.Date.Month,
+                                 FullYear = current.Date.Year
+                             }).ToList();
+                    }
+            }
+
+            return (Ok(calendar));
         }
 
         [HttpPost]

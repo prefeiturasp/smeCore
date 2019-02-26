@@ -7,16 +7,12 @@ export class ClassPlan extends Component {
     constructor(props) {
         super(props);
 
-        let today = new Date();
-        var month = props.getMonthByIndex(today.getMonth());
-
         this.editAppontimentColor = "";
         this.editAppointmentTime = "";
         this.editAppointmentDate = "";
 
         this.state = {
-            showEditAppointment: false,
-            today: today.getDate() + " de " + month + " - " + today.getFullYear()
+            showEditAppointment: false
         };
 
         this.editAppointmentClick = this.editAppointmentClick.bind(this);
@@ -55,7 +51,7 @@ export class ClassPlan extends Component {
             <div className="tab-pane fade border-left border-right border-bottom" id="planoAula" role="tabpanel" aria-labelledby="planoAula-tab">
                 <nav className="container-tabpanel navbar">
                     <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm border-azul btn-today">{this.state.today}</button>
+                        <button className="btn btn-outline-primary btn-sm border-azul btn-today">{this.props.todayDate}</button>
                     </div>
 
                     {this.state.showEditAppointment === true && (
@@ -72,7 +68,7 @@ export class ClassPlan extends Component {
                 </nav>
 
                 {this.state.showEditAppointment === false ?
-                    (<CalendarPlan name="calendarPlan" {...childProps} classAppointmentClick={this.editAppointmentClick} />) :
+                    (<CalendarPlan name="calendarPlan" calendar={this.props.calendar} setSchedule={this.props.setSchedule} {...childProps} classAppointmentClick={this.editAppointmentClick} />) :
                     (<EditAppointment color={this.editAppontimentColor} time={this.editAppointmentTime} date={this.editAppointmentDate} name="5° B" students={this.props.students} {...childProps} />)
                 }
             </div>

@@ -78,9 +78,12 @@ export class Bimester extends Component {
                     this.learningObjectiveItems[i].selected = false;
             }
         }
-        else
+        else {
             for (var i = 0; i < this.learningObjectiveItems.length; i++)
                 this.learningObjectiveItems[i].selected = false;
+
+            this.selectedLearningObjectiveItems = [];
+        }
 
         return (
             <div className="w-auto shadows-box-bimester rounded">
