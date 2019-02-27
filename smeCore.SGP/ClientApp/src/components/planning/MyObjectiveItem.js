@@ -17,9 +17,9 @@ export class MyObjectiveItem extends Component {
     render() {
         return (
             <li className="MyObjective-item" id={this.state.id}>
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center gray-background">
                     <div className="MyObjective-label d-flex">
-                        <div className="rounded-pill border border-primary d-flex align-items-center" >
+                        <div className="rounded-pill border border-primary d-flex align-items-center bg-primary text-white" >
                             <span className="MyObjective-item-span">{this.props.name}</span>
                         </div>
 
@@ -27,7 +27,6 @@ export class MyObjectiveItem extends Component {
                     </div>
 
                     <div className="d-flex flex-fill flex-row-reverse">
-                        <span>{this.props.date}</span>
                     </div>
                 </div>
 

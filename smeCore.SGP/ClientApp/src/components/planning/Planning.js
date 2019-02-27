@@ -16,6 +16,7 @@ export default class Planning extends Component {
             todayDate: today.getDate() + " de " + month + " - " + today.getFullYear(),
             selectedClass: null,
             teacherClasses: [],
+            relatedClasses: [],
             schoolYear: 0,
             classroom: "",
             school: "",
@@ -354,7 +355,16 @@ export default class Planning extends Component {
 
 
     selectedChange(selectedClass) {
-        this.setState({ selectedClass: selectedClass });
+        var relatedClasses = [];
+
+        for (var i = 0; i < this.state.teacherClasses.length; i++)
+            if (this.state.teacherClasses[i].description !== selectedClass.description && this.state.teacherClasses[i].year === selectedClass.year)
+                relatedClasses.push(this.state.teacherClasses[i]);
+
+        this.setState({
+            selectedClass: selectedClass,
+            relatedClasses: relatedClasses
+        });
     }
 
     changeClass() {
@@ -578,7 +588,7 @@ export default class Planning extends Component {
                         </li>
                     </ul>
                     <div className="tab-content border-azul" id="myTabContent">
-                        <ClassPlan name="classPlan" calendar={this.state.calendar} students={this.state.students} setSchedule={this.setClassSchedule} {...childProps} />
+                        <ClassPlan name="classPlan" calendar={this.state.calendar} students={this.state.students} setSchedule={this.setClassSchedule} relatedClasses={this.state.relatedClasses} annualPlan={this.state.annual} {...childProps} />
 
                         <AnnualPlan name="annualPlan" annual={this.state.annual} setAnnualPlan={this.setAnnualPlan} saveAnnualPlan={this.saveAnnualPlan} learningObjectiveItems={this.state.learningObjectiveItems} {...childProps} />
 

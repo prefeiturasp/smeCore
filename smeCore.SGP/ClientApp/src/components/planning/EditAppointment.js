@@ -2,8 +2,10 @@
 import './EditAppointment.css';
 import { MyObjectiveItem } from './MyObjectiveItem';
 import { EditorState } from 'draft-js';
+import { DynamicDatePicker } from '../textbox/DynamicDatePicker';
 import { RichTextBox } from '../textbox/RichTextBox';
 import { Student } from './Student';
+import Select from 'react-select';
 
 export class EditAppointment extends Component {
     constructor(props) {
@@ -13,54 +15,110 @@ export class EditAppointment extends Component {
 
         this.state = {
             color: "dot color-" + props.color,
-            myObjectiveItems: []
+            copyContent: {
+                selectedClass: null,
+                selectedDates: [
+                    {
+                        id: "copyContentDatePicker0",
+                        value: null
+                    }
+                ],
+                sequence: 0,
+                learningObjectivesCheckbox: false,
+                classDevelopmentCheckbox: false,
+                homeworkCheckbox: false
+            },
+            selectedDate: null,
+            selectedClass: null
         };
 
-        this.LoadData = this.LoadData.bind(this);
+        this.selectedChange = this.selectedChange.bind(this);
+        this.dateChange = this.dateChange.bind(this);
+        this.addDate = this.addDate.bind(this);
+        this.removeDate = this.removeDate.bind(this);
+        this.checkboxChange = this.checkboxChange.bind(this);
+        this.copyContentClick = this.copyContentClick.bind(this);
     }
 
-    LoadData() {
-        // carregar dados do planejamento anual
-        var model = {
-            username: this.props.user.username,
-            year: this.props.year,
-            classroom: this.props.classroom,
-            school: this.props.school
-        };
+    selectedChange(selectedClass) {
+        var copyContent = this.state.copyContent;
+        copyContent.selectedClass = selectedClass;
 
-        fetch('/api/Planejamento/AbrirPlanoAnual', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
-            .then(data => {
-                if (data.status === 200) {
-                    data.json().then(result => {
-
-                        // Fazer validação de qual bimestre usar
-
-                        var objectives = result.selectedLearningObjectivesB1.split(",");
-                        var myObjectives = [];
-
-                        for (var i = 0; i < objectives.length; i++)
-                            myObjectives.push({
-                                name: objectives[i],
-                                date: this.props.date
-                            });
-
-                        this.isLoaded = true;
-
-                        this.setState({
-                            myObjectiveItems: myObjectives
-                        });
-                    });
-                }
-            });
+        this.setState({ copyContent: copyContent });
     }
+
+    dateChange(date) {
+        var copyContent = this.state.copyContent;
+
+        for (var i = 0; i < copyContent.selectedDates.length; i++)
+            if (copyContent.selectedDates[i].id === date.id) {
+                copyContent.selectedDates[i].value = date.value
+                break;
+            }
+
+        this.setState({ copyContent: copyContent })
+    }
+
+    addDate() {
+        var copyContent = this.state.copyContent;
+        copyContent.selectedDates.push({
+            id: "copyContentDatePicker" + (++copyContent.sequence),
+            value: null
+        });
+
+        this.setState({ copyContent: copyContent });
+    }
+
+    removeDate(dateId) {
+        var copyContent = this.state.copyContent;
+        var removeIndex = -1;
+
+        for (var i = 0; i < copyContent.selectedDates.length; i++)
+            if (copyContent.selectedDates[i].id === dateId) {
+                removeIndex = i;
+                break;
+            }
+
+        copyContent.selectedDates.splice(removeIndex, 1);
+
+        this.setState({ copyContent: copyContent })
+    }
+
+    checkboxChange(event) {
+        var copyContent = this.state.copyContent;
+        copyContent[event.target.id] = event.target.checked;
+
+        this.setState({ copyContent: copyContent });
+    }
+
+    copyContentClick() {
+        var txt = "Selected Class: " + this.state.copyContent.selectedClass.label + "\nDates:\n";
+
+        for (var i = 0; i < this.state.copyContent.selectedDates.length; i++)
+            txt += "    - " + this.state.copyContent.selectedDates[i].value + "\n";
+
+        txt +=
+            "Learning Objectives: " + this.state.copyContent.learningObjectivesCheckbox + "\n" +
+            "Class Development: " + this.state.copyContent.classDevelopmentCheckbox + "\n" +
+            "Homework: " + this.state.copyContent.homeworkCheckbox;
+
+        alert(txt);
+    }
+
+
 
     render() {
-        if (this.props.classroom !== "" && this.isLoaded === false)
-            this.LoadData();
+        var copyContent = this.state.copyContent;
+
+        // Fazer validação de qual bimestre usar
+        var objectives = this.props.annualPlan.bimester1;
+        var selectedObjectives = [];
+
+        for (var i = 0; i < objectives.length; i++)
+            selectedObjectives.push({
+                name: objectives[i],
+                date: this.props.date
+            });
 
         return (
             <div className="editAppointment">
@@ -69,6 +127,7 @@ export class EditAppointment extends Component {
                 <div className="editAppointment-container form-inline">
                     <div className="form-inline">
                         <div className={this.state.color}></div>&nbsp;
+                        <div className="font-weight-bold">{this.props.date}</div>&nbsp;
                         <div>{this.props.time}</div>&nbsp;
                         <div>-</div>&nbsp;
                         <div>{this.props.classroom}</div>&nbsp;
@@ -79,7 +138,63 @@ export class EditAppointment extends Component {
                     <div className="ml-auto form-inline">
                         <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Listao.aspx" role="button">Listão <i class="fas fa-list-alt"></i></a>
                         <div className="spacing"></div>
-                        <button className="btn btn-primary">Migrar Conteúdo <i class="fas fa-share-square"></i></button>
+                        <button className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Migrar Conteúdo <i class="fas fa-share-square"></i></button>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title text-secondary" id="exampleModalLongTitle">Copiar conte&uacute;do</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div className="w-100">
+                                            <label className="float-left font-weight-light">Para a turma:</label>
+                                            <br />
+                                            <Select className="w-100" type="text" value={this.state.copyContent.selectedClass} onChange={this.selectedChange} options={this.props.relatedClasses} />
+                                        </div>
+
+                                        <div className="w-100 pt-4">
+                                            <label className="float-left font-weight-light">Aula do dia:</label>
+                                            <div>
+                                                {copyContent.selectedDates.map(item => (
+                                                    <DynamicDatePicker id={item.id} value={item.value} dateChange={this.dateChange} removeDate={this.removeDate} />
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="w-100 pt-1">
+                                            <button className="btn btn-secondary btn-sm" onClick={this.addDate}><i className="fas fa-plus"></i> <small>Adicionar dia</small></button>
+                                        </div>
+
+                                        <div className="w-100 pt-4">
+                                            <label className="float-left font-weight-light">Selecione o conte&uacute;do:</label>
+
+                                            <div class="form-check w-100 d-flex justify-content-start pt-2">
+                                                <input type="checkbox" className="form-check-input" id="learningObjectivesCheckbox" onChange={this.checkboxChange} checked={this.state.copyContent.learningObjectivesCheckbox} />
+                                                <label className="form-check-label" for="learningObjectivesCheckbox"><small className="font-weight-bold">Objetivos de aprendizagem e meus objetivos (Curr&iacute;culo da Cidade)</small></label>
+                                            </div>
+
+                                            <div class="form-check w-100 d-flex justify-content-start pt-2">
+                                                <input type="checkbox" className="form-check-input" id="classDevelopmentCheckbox" onChange={this.checkboxChange} checked={this.state.copyContent.classDevelopmentCheckbox} />
+                                                <label className="form-check-label" for="classDevelopmentCheckbox"><small className="font-weight-bold">Desenvolvimento da aula</small></label>
+                                            </div>
+
+                                            <div class="form-check w-100 d-flex justify-content-start pt-2">
+                                                <input type="checkbox" className="form-check-input" id="homeworkCheckbox" onChange={this.checkboxChange} checked={this.state.copyContent.homeworkCheckbox} />
+                                                <label className="form-check-label" for="homeworkCheckbox"><small className="font-weight-bold">Li&ccedil;&atilde;o de casa</small></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" className="btn btn-primary" onClick={this.copyContentClick}>Confirmar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -94,7 +209,7 @@ export class EditAppointment extends Component {
                         <hr className="header-rule" />
 
                         <ul className="list-unstyled">
-                            {this.state.myObjectiveItems.map(myObjectiveItem => (
+                            {selectedObjectives.map(myObjectiveItem => (
                                 <MyObjectiveItem name={myObjectiveItem.name} date={myObjectiveItem.date} parent="EditAppointment" />
                             ))}
                         </ul>

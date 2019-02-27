@@ -69,7 +69,7 @@ export class ClassPlan extends Component {
 
                 {this.state.showEditAppointment === false ?
                     (<CalendarPlan name="calendarPlan" calendar={this.props.calendar} setSchedule={this.props.setSchedule} {...childProps} classAppointmentClick={this.editAppointmentClick} />) :
-                    (<EditAppointment color={this.editAppontimentColor} time={this.editAppointmentTime} date={this.editAppointmentDate} name="5° B" students={this.props.students} {...childProps} />)
+                    (<EditAppointment color={this.editAppontimentColor} time={this.editAppointmentTime} date={this.editAppointmentDate} name="5° B" students={this.props.students} annualPlan={this.props.annualPlan} relatedClasses={this.props.relatedClasses} {...childProps} />)
                 }
             </div>
         );

@@ -6,13 +6,16 @@ export class CalendarDay extends Component {
     constructor(props) {
         super(props);
 
+        var todayDate = this.props.day + "/" + this.props.month + "/" + this.props.fullYear;
+
         this.state = {
             id: "Item" + props.name,
             dataTarget: "#Modal" + props.name,
             modalId: "Modal" + props.name,
             modalTitle: "ModalTitle" + props.name,
             modalHourId: "ModalHour" + props.name,
-            modalMinuteId: "ModalMinute" + props.name
+            modalMinuteId: "ModalMinute" + props.name,
+            todayDate: todayDate
         };
 
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
@@ -67,7 +70,7 @@ export class CalendarDay extends Component {
                             <div className="modal-dialog modal-dialog-centered" role="document">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h5 className="modal-title" id={this.state.modalTitle}>Minha aula</h5>
+                                        <h5 className="modal-title" id={this.state.modalTitle}>Minha aula - {this.state.todayDate}</h5>
                                         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div className="modal-body">

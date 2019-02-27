@@ -58,9 +58,9 @@ export class CyclePlan extends Component {
                         <li className="nav-item">
                             <div className="form-inline">
 
-                                <span className="text-muted text-color-purple">Última acesso: {this.props.cycle.lastModifiedBy}</span>&nbsp;
+                                <span className="text-muted text-color-purple px-2">Última acesso: {this.props.cycle.lastModifiedBy}</span>&nbsp;
 
-                                <button className="btn btn-warning" onClick={this.props.saveCyclePlan} disabled={this.props.year <= 0}>Salvar</button>
+                                <button className="btn btn-warning text-white" onClick={this.props.saveCyclePlan} disabled={this.props.year <= 0}>Salvar</button>
                             </div>
                         </li>
                     </ul>

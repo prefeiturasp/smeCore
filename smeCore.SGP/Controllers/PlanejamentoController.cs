@@ -271,6 +271,11 @@ namespace smeCore.SGP.Controllers
             result.schools.Add(new Models.Mocking.School() { name = "EMEF - IDEMIA DE GODOY, PROFA." });
             result.schools[1].classes.Add(new Models.Mocking.MyClass()
             {
+                description = "EF-1B",
+                year = 1
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
                 description = "EF-4A",
                 year = 4
             });
@@ -286,6 +291,11 @@ namespace smeCore.SGP.Controllers
             });
 
             result.schools.Add(new Models.Mocking.School() { name = "EMEF - MAURICIO GOULART" });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-1A",
+                year = 1
+            });
             result.schools[2].classes.Add(new Models.Mocking.MyClass()
             {
                 description = "EF-7A",
