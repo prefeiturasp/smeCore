@@ -15,10 +15,14 @@ export class CalendarDay extends Component {
             modalTitle: "ModalTitle" + props.name,
             modalHourId: "ModalHour" + props.name,
             modalMinuteId: "ModalMinute" + props.name,
+            modalRadioColorName: "colors" + props.name,
+            modalRadioClassQuantityName: "quantities" + props.name,
+            modalRadioRepeatName: "repeat" + props.name,
             todayDate: todayDate
         };
 
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
+        this.removeAppointmentClick = this.removeAppointmentClick.bind(this);
     }
 
     addAppointmentClick() {
@@ -52,6 +56,13 @@ export class CalendarDay extends Component {
         this.props.setSchedule(schedule);
     }
 
+    removeAppointmentClick(appointment) {
+        var txt = 
+
+
+        alert(appointment.time);
+    }
+
     render() {
         var todayDate =
             (this.props.day > 9 ? this.props.day : "0" + this.props.day) + "/" +
@@ -64,7 +75,7 @@ export class CalendarDay extends Component {
 
                 <div className="appointments">
                     {this.props.schedule !== undefined && this.props.schedule.map(appointment => (
-                        <Appointment day={appointment.day} month={appointment.month} fullYear={appointment.fullYear} color={appointment.color} time={appointment.time} name={appointment.name} school={appointment.school} classAppointmentClick={this.props.classAppointmentClick} />
+                        <Appointment day={appointment.day} month={appointment.month} fullYear={appointment.fullYear} color={appointment.color} time={appointment.time} name={appointment.name} school={appointment.school} classAppointmentClick={this.props.classAppointmentClick} removeAppointment={this.removeAppointmentClick} />
                     ))}
                 </div>
 
@@ -75,34 +86,69 @@ export class CalendarDay extends Component {
                             <div className="modal-dialog modal-dialog-centered" role="document">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h5 className="modal-title" id={this.state.modalTitle}>Minha aula - {todayDate}</h5>
+                                        <h5 className="modal-title" id={this.state.modalTitle}>Novo horario de aula - {todayDate}</h5>
                                         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div className="modal-body">
                                         <div>
-                                            <h6>Horário</h6>
+                                            <small>Horário</small>
                                             <div className="form-inline">
                                                 <input type="number" min="0" max="23" className="form-control form-control-sm" id={this.state.modalHourId} />
-                                                &nbsp;
-                                                <span>:</span>
-                                                &nbsp;
+                                                <span className="px-1">:</span>
                                                 <input type="number" min="0" max="59" className="form-control form-control-sm" id={this.state.modalMinuteId} />
-                                                &nbsp;
-                                                <span className="text-muted"><small>Formato 24 Horas</small></span>
+                                                <small className="text-muted pl-1"><small>Formato 24 Horas</small></small>
                                             </div>
                                         </div>
 
-                                        <div className="vertical-spacing"></div>
-
-                                        <div>
-                                            <h6>Marcador</h6>
+                                        <div className="pt-3">
+                                            <small>Quantidade de aulas</small>
                                             <div className="form-inline">
-                                                <input type="radio" name="colors" value="lilac" onClick={this.clickRadioHora} />&nbsp;
-                                                <input type="radio" name="colors" value="purple" />&nbsp;
-                                                <input type="radio" name="colors" value="blue" />&nbsp;
-                                                <input type="radio" name="colors" value="green" />&nbsp;
-                                                <input type="radio" name="colors" value="yellow" />&nbsp;
-                                                <input type="radio" name="colors" value="red" />
+                                                <div className="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id={this.state.modalRadioClassQuantityName + "1"} name={this.state.modalRadioClassQuantityName} className="custom-control-input" checked="true" />
+                                                    <label className="custom-control-label" for={this.state.modalRadioClassQuantityName + "1"}>1</label>
+                                                </div>
+
+                                                <div className="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id={this.state.modalRadioClassQuantityName + "2"} name={this.state.modalRadioClassQuantityName} className="custom-control-input" />
+                                                    <label className="custom-control-label" for={this.state.modalRadioClassQuantityName + "2"}>2</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-3">
+                                            <small>Repete</small>
+                                            <div>
+                                                <div className="custom-control custom-radio">
+                                                    <input type="radio" id={this.state.modalRadioRepeatName + "1"} name={this.state.modalRadioRepeatName} className="custom-control-input" checked="true" />
+                                                    <label className="custom-control-label" for={this.state.modalRadioRepeatName + "1"}>N&atilde;o Repetir</label>
+                                                </div>
+
+                                                <div className="custom-control custom-radio">
+                                                    <input type="radio" id={this.state.modalRadioRepeatName + "2"} name={this.state.modalRadioRepeatName} className="custom-control-input" />
+                                                    <label className="custom-control-label" for={this.state.modalRadioRepeatName + "2"}>Repetir no Bimestre vigente</label>
+                                                </div>
+
+                                                <div className="custom-control custom-radio">
+                                                    <input type="radio" id={this.state.modalRadioRepeatName + "3"} name={this.state.modalRadioRepeatName} className="custom-control-input" />
+                                                    <label className="custom-control-label" for={this.state.modalRadioRepeatName + "3"}>Repetir para todos os Bimestres</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-3">
+                                            <small>Marcador</small>
+                                            <div className="form-inline">
+                                                <input type="radio" name={this.state.modalRadioColorName} value="lilac" />
+                                                <div className="px-1" />
+                                                <input type="radio" name={this.state.modalRadioColorName} value="purple" />
+                                                <div className="px-1" />
+                                                <input type="radio" name={this.state.modalRadioColorName} value="blue" />
+                                                <div className="px-1" />
+                                                <input type="radio" name={this.state.modalRadioColorName} value="green" />
+                                                <div className="px-1" />
+                                                <input type="radio" name={this.state.modalRadioColorName} value="yellow" />
+                                                <div className="px-1" />
+                                                <input type="radio" name={this.state.modalRadioColorName} value="red" />
                                             </div>
                                         </div>
                                     </div>

@@ -128,11 +128,11 @@ export default class Planning extends Component {
                 let current = new Date(sunday);
                 current.setDate(sunday.getDate() + i);
                 week[i] = {};
-                week[i].day = current.getDate() > 9 ? current.getDate() : "0" + current.getDate();
-                week[i].month = (current.getMonth() + 1) > 9 ? (current.getMonth() + 1) : "0" + (current.getMonth() + 1);
+                week[i].day = current.getDate();
+                week[i].month = current.getMonth() + 1;
                 week[i].year = current.getFullYear();
 
-                if (i === 0 || i === 6)
+                if (i === 0)
                     week[i].workday = false;
                 else
                     week[i].workday = true;

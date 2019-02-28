@@ -91,7 +91,7 @@ namespace smeCore.SGP.Controllers
                     Schedules = new List<ScheduleModel>()
                 };
 
-                if (today.DayOfWeek == DayOfWeek.Sunday || today.DayOfWeek == DayOfWeek.Saturday)
+                if (today.DayOfWeek == DayOfWeek.Sunday)
                     day.Workday = false;
 
                 week.Add(day);
