@@ -6,7 +6,7 @@ export class CalendarDay extends Component {
     constructor(props) {
         super(props);
 
-        var todayDate = this.props.day + "/" + this.props.month + "/" + this.props.fullYear;
+        var todayDate = props.day + "/" + props.month + "/" + props.fullYear;
 
         this.state = {
             id: "Item" + props.name,
@@ -48,11 +48,16 @@ export class CalendarDay extends Component {
         //radios[i].checked = false;
         //document.getElementById(this.state.modalHourId).value = '';
         //document.getElementById(this.state.modalMinuteId).value = '';
-
+        debugger;
         this.props.setSchedule(schedule);
     }
 
     render() {
+        var todayDate =
+            (this.props.day > 9 ? this.props.day : "0" + this.props.day) + "/" +
+            (this.props.month > 9 ? this.props.month : "0" + this.props.month) + "/" +
+            this.props.fullYear
+
         return (
             <td className={this.props.workday === true ? "border-calendar-day" : "border-calendar-day not-workday"}>
                 {this.props.workday === true && (<div className="day text-small text-info text-center">{this.props.day}</div>)}
@@ -70,7 +75,7 @@ export class CalendarDay extends Component {
                             <div className="modal-dialog modal-dialog-centered" role="document">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h5 className="modal-title" id={this.state.modalTitle}>Minha aula - {this.state.todayDate}</h5>
+                                        <h5 className="modal-title" id={this.state.modalTitle}>Minha aula - {todayDate}</h5>
                                         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div className="modal-body">

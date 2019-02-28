@@ -22,11 +22,10 @@ export class MyObjectiveItem extends Component {
                         <div className="rounded-pill border border-primary d-flex align-items-center bg-primary text-white" >
                             <span className="MyObjective-item-span">{this.props.name}</span>
                         </div>
-
-                        <img src="/img/Icon_editar.svg" alt="edit icon" className="edit-icon-50 btn" data-toggle="collapse" data-target={this.state.collapseTarget} aria-expanded="true" aria-controls={this.state.collapseId} />
                     </div>
 
                     <div className="d-flex flex-fill flex-row-reverse">
+                        <img src="/img/Icon_editar.svg" alt="edit icon" className="edit-icon-50 btn" data-toggle="collapse" data-target={this.state.collapseTarget} aria-expanded="true" aria-controls={this.state.collapseId} />
                     </div>
                 </div>
 

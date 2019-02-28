@@ -22,7 +22,10 @@ export class ClassPlan extends Component {
     editAppointmentClick(properties) {
         this.editAppontimentColor = properties.color;
         this.editAppointmentTime = properties.time;
-        this.editAppointmentDate = properties.day + "/" + properties.month + "/" + properties.fullYear;
+        this.editAppointmentDate =
+            (properties.day > 9 ? properties.day : "0" + properties.day) + "/" +
+            (properties.month > 9 ? properties.month : "0" + properties.month) + "/" +
+            properties.fullYear;
 
         this.setState(state => ({
             showEditAppointment: true

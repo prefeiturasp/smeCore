@@ -82,6 +82,7 @@ namespace smeCore.SGP.Controllers
 
                 DayScheduleModel day = new DayScheduleModel()
                 {
+                    Name = today.Day + "-" + today.Month + "-" + today.Year,
                     FullDate = today,
                     Day = today.Day,
                     Month = today.Month,

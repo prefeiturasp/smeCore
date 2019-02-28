@@ -137,7 +137,7 @@ export default class Planning extends Component {
                 else
                     week[i].workday = true;
 
-                week[i].name = current.getDate() + "-" + current.getMonth() + "-" + i;
+                week[i].name = current.getDate() + "-" + current.getMonth() + "-" + current.getFullYear();
             }
 
             return (week);
@@ -587,14 +587,14 @@ export default class Planning extends Component {
                             <a className="nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#documentos" role="tab" aria-controls="documentos" aria-selected="false">Documentos</a>
                         </li>
                     </ul>
-                    <div className="tab-content border-azul" id="myTabContent">
+                    <div className="tab-content border-azul rounded" id="myTabContent">
                         <ClassPlan name="classPlan" calendar={this.state.calendar} students={this.state.students} setSchedule={this.setClassSchedule} relatedClasses={this.state.relatedClasses} annualPlan={this.state.annual} {...childProps} />
 
                         <AnnualPlan name="annualPlan" annual={this.state.annual} setAnnualPlan={this.setAnnualPlan} saveAnnualPlan={this.saveAnnualPlan} learningObjectiveItems={this.state.learningObjectiveItems} {...childProps} />
 
                         <CyclePlan name="cyclePlan" cycle={this.state.cycle} setCycle={this.setCycle} saveCyclePlan={this.saveCyclePlan} {...childProps} />
 
-                        <div className="tab-pane fade border-left border-right border-bottom" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
+                        <div className="tab-pane fade border-0" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
                             <div className="container-tabpanel">
                                 <h4 className="display-4">Em construção...</h4>
                             </div>

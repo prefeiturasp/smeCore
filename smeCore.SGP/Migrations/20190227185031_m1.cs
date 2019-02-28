@@ -222,6 +222,10 @@ namespace smeCore.SGP.Migrations
                     ModifiedAt = table.Column<DateTime>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     TagColor = table.Column<string>(nullable: true),
+                    LearninObjectives = table.Column<string>(nullable: true),
+                    ClassroomDevelopment = table.Column<string>(nullable: true),
+                    ContinuousRecovery = table.Column<string>(nullable: true),
+                    Homework = table.Column<string>(nullable: true),
                     PlanningId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

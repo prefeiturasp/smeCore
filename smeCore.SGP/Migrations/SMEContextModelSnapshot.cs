@@ -75,9 +75,17 @@ namespace smeCore.SGP.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ClassroomDevelopment");
+
+                    b.Property<string>("ContinuousRecovery");
+
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("Homework");
+
+                    b.Property<string>("LearninObjectives");
 
                     b.Property<DateTime>("ModifiedAt");
 

@@ -10,7 +10,7 @@ using smeCore.SGP.Contexts;
 namespace smeCore.SGP.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20190221133310_m1")]
+    [Migration("20190227185031_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,9 +77,17 @@ namespace smeCore.SGP.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ClassroomDevelopment");
+
+                    b.Property<string>("ContinuousRecovery");
+
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("Homework");
+
+                    b.Property<string>("LearninObjectives");
 
                     b.Property<DateTime>("ModifiedAt");
 

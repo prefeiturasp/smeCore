@@ -28,8 +28,9 @@ export class EditAppointment extends Component {
                 classDevelopmentCheckbox: false,
                 homeworkCheckbox: false
             },
-            selectedDate: null,
-            selectedClass: null
+            classDevelopment: EditorState.createEmpty(),
+            continuousRecovery: EditorState.createEmpty(),
+            homework: EditorState.createEmpty()
         };
 
         this.selectedChange = this.selectedChange.bind(this);
@@ -38,6 +39,10 @@ export class EditAppointment extends Component {
         this.removeDate = this.removeDate.bind(this);
         this.checkboxChange = this.checkboxChange.bind(this);
         this.copyContentClick = this.copyContentClick.bind(this);
+
+        this.changeClassDevelopment = this.changeClassDevelopment.bind(this);
+        this.changeContinuousRecovery = this.changeContinuousRecovery.bind(this);
+        this.changeHomework = this.changeHomework.bind(this);
     }
 
     selectedChange(selectedClass) {
@@ -92,6 +97,7 @@ export class EditAppointment extends Component {
     }
 
     copyContentClick() {
+        // Fazer método para salvar os dados
         var txt = "Selected Class: " + this.state.copyContent.selectedClass.label + "\nDates:\n";
 
         for (var i = 0; i < this.state.copyContent.selectedDates.length; i++)
@@ -103,6 +109,20 @@ export class EditAppointment extends Component {
             "Homework: " + this.state.copyContent.homeworkCheckbox;
 
         alert(txt);
+    }
+
+
+
+    changeClassDevelopment(change) {
+        this.setState({ classDevelopment: change });
+    }
+
+    changeContinuousRecovery(change) {
+        this.setState({ continuousRecovery: change });
+    }
+
+    changeHomework(change) {
+        this.setState({ homework: change });
     }
 
 
@@ -263,7 +283,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample1" className="collapse">
-                                <RichTextBox />
+                                <RichTextBox changeText={this.changeClassDevelopment} value={this.state.classDevelopment} />
                             </div>
                         </div>
 
@@ -281,7 +301,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample2" className="collapse">
-                                <RichTextBox />
+                                <RichTextBox changeText={this.changeContinuousRecovery} value={this.state.continuousRecovery} />
                             </div>
                         </div>
 
@@ -299,7 +319,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample3" className="collapse">
-                                <RichTextBox /> 
+                                <RichTextBox changeText={this.changeHomework} value={this.state.homework} />
                             </div>
                         </div>
                     </div>

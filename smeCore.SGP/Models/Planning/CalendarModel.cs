@@ -19,6 +19,7 @@ namespace smeCore.SGP.Models.Planning
 
     public class DayScheduleModel
     {
+        public string Name { get; set; }
         public DateTime FullDate { get; set; }
         public int Day { get; set; }
         public int Month { get; set; }
