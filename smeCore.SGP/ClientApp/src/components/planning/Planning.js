@@ -241,7 +241,7 @@ export default class Planning extends Component {
             case 1:
                 return ("Fevereiro");
             case 2:
-                return ("MarĂ§o");
+                return ("Março");
             case 3:
                 return ("Abril");
             case 4:

@@ -27,11 +27,13 @@ export class Appointment extends Component {
 
     removeAppointment() {
         this.props.removeAppointment({
+            name: this.props.name,
             color: this.state.color,
             time: this.props.time,
             day: this.props.day,
             month: this.props.month,
-            fullYear: this.props.fullYear
+            fullYear: this.props.fullYear,
+            school: this.props.school
         });
     }
 
@@ -49,7 +51,7 @@ export class Appointment extends Component {
                 </div>
 
                 <div className="d-flex flex-fill flex-row-reverse">
-                    <button type="button" className="close" aria-label="Close" onClick={this.removeAppointment}>
+                    <button type="button" className="close" aria-label="Close" onClick={this.removeAppointment} data-toggle="modal" data-target={"#" + this.props.removeModalId}>
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
