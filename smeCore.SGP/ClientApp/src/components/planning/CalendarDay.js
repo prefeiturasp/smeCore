@@ -45,6 +45,7 @@ export class CalendarDay extends Component {
         this.addAppointmentClick = this.addAppointmentClick.bind(this);
         this.removeAppointmentClick = this.removeAppointmentClick.bind(this);
         this.changeRemoveRepeat = this.changeRemoveRepeat.bind(this);
+        this.removeScheduleClick = this.removeScheduleClick.bind(this);
     }
 
     textChange(event) {
@@ -123,6 +124,16 @@ export class CalendarDay extends Component {
         this.setState({ modalSelectedRemoveRepeat: event.target.value });
     }
 
+    removeScheduleClick() {
+        var txt =
+            "Name: " + this.state.removeSchedule.name + "\n" +
+            "Time: " + this.state.removeSchedule.time + "\n" +
+            "School: " + this.state.removeSchedule.school + "\n" +
+            "Selected Repeat: " + this.state.modalSelectedRemoveRepeat;
+
+        alert(txt);
+    }
+
     render() {
         var todayDate =
             (this.props.day > 9 ? this.props.day : "0" + this.props.day) + "/" +
@@ -145,7 +156,8 @@ export class CalendarDay extends Component {
                             school={appointment.school}
                             classAppointmentClick={this.props.classAppointmentClick}
                             removeModalId={this.state.removeModalId}
-                            removeAppointment={this.removeAppointmentClick} />
+                            removeAppointment={this.removeAppointmentClick}
+                        />
                     ))}
                 </div>
 
@@ -153,7 +165,7 @@ export class CalendarDay extends Component {
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Excluir aula - {todayDate}</h5>
+                                <h5 className="modal-title" id={"title-" + this.state.removeModalId}>Excluir aula - {todayDate}</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -188,7 +200,7 @@ export class CalendarDay extends Component {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary">Confirmar</button>
+                                <button type="button" className="btn btn-primary" onClick={this.removeScheduleClick}>Confirmar</button>
                             </div>
                         </div>
                     </div>

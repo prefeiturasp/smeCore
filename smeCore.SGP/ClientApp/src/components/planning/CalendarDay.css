@@ -11,6 +11,7 @@
     margin-right: 5px;
     width: 1.7em;
     height: 1.7em;
+    opacity: 0;
 }
 
     .calendarDay-btn svg {
@@ -25,9 +26,13 @@
     border: solid 1px #10a3fb;
 }
 
-#calendar > tbody > tr td:first-child {
-    border-left: none !important;
-}
+    .border-calendar-day:hover .calendarDay-btn {
+        opacity: 1;
+    }
+
+    #calendar > tbody > tr td:first-child {
+        border-left: none !important;
+    }
 
 #calendar > tbody > tr td:last-child {
     border-right: none !important;
