@@ -11,6 +11,7 @@ namespace smeCore.Models.Academic
         public virtual Student Student { get; set; }
         public virtual List<ClassAbsence> Absences { get; set; }
         public virtual Planning Planning { get; set; }
+        public virtual SchoolClass SchoolClass { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
     }

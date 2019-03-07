@@ -9,6 +9,7 @@ namespace smeCore.Models.Academic
     public class SchoolYear : Base.Abstracts.Table
     {
         #region ==================== ATTRIBUTES ====================
+        public string Name { get; set; }
         public int Year { get; set; }
         public DateTime Bimester1ValidityStart { get; set; }
         public DateTime Bimester1ValidityEnd { get; set; }
@@ -28,7 +29,8 @@ namespace smeCore.Models.Academic
         public DateTime Bimester4ClosureEnd { get; set; }
         public DateTime ReportCardConsolidation { get; set; }
 
-        public virtual List<SchoolYearType> SchoolYearTypes { get; set; }
+        public virtual List<SchoolCalendar> SchoolCalendars { get; set; }
+        public virtual List<ClassModeCalendar> ClassModeCalendars { get; set; }
         #endregion
 
 

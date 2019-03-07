@@ -10,10 +10,17 @@ namespace smeCore.SGP.Contexts
 
         public DbSet<smeCore.Models.Academic.AnnualPlan> AnnualPlans { get; set; }
         public DbSet<smeCore.Models.Academic.ClassAbsence> ClassAbsences { get; set; }
+        public DbSet<smeCore.Models.Academic.ClassMode> ClassModes { get; set; }
+        public DbSet<smeCore.Models.Academic.ClassModeCalendar> ClassModeCalendars { get; set; }
         public DbSet<smeCore.Models.Academic.ClassSchedule> ClassSchedules { get; set; }
         public DbSet<smeCore.Models.Academic.Cycle> Cycles { get; set; }
         public DbSet<smeCore.Models.Academic.Discipline> Disciplines { get; set; }
         public DbSet<smeCore.Models.Academic.Planning> Plannings { get; set; }
+        public DbSet<smeCore.Models.Academic.RegionalBoardEducation> RegionalBoardEducations { get; set; }
+        public DbSet<smeCore.Models.Academic.School> Schools { get; set; }
+        public DbSet<smeCore.Models.Academic.SchoolCalendar> SchoolCalendars { get; set; }
+        public DbSet<smeCore.Models.Academic.SchoolClass> SchoolClasses { get; set; }
+        public DbSet<smeCore.Models.Academic.SchoolYear> SchoolYears { get; set; }
         public DbSet<smeCore.Models.Academic.Student> Students { get; set; }
         public DbSet<smeCore.Models.Academic.StudentClass> StudentClasses { get; set; }
 

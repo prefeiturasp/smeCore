@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace smeCore.Models.Academic
 {
-    public class SchoolType : Base.Abstracts.Table
+    public class ClassModeCalendar : Base.Abstracts.Table
     {
         #region ==================== ATTRIBUTES ====================
-        public string Name { get; set; }
-        public string Acronym { get; set; }
-
-        public virtual List<SchoolYearType> SchoolYearTypes { get; set; }
+        public virtual ClassMode ClassMode { get; set; }
+        public virtual SchoolYear SchoolYear { get; set; }
         #endregion
 
 

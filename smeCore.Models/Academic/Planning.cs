@@ -17,6 +17,7 @@ namespace smeCore.Models.Academic
         public virtual List<ClassSchedule> ClassSchedules { get; set; }
         public virtual Discipline Discipline { get; set; }
         public virtual List<StudentClass> StudentClasses { get; set; }
+        public virtual SchoolClass SchoolClass { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
     }
