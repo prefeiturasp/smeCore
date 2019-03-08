@@ -109,24 +109,7 @@ namespace smeCore.SGP.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Year = table.Column<int>(nullable: false),
-                    Bimester1ValidityStart = table.Column<DateTime>(nullable: false),
-                    Bimester1ValidityEnd = table.Column<DateTime>(nullable: false),
-                    Bimester2ValidityStart = table.Column<DateTime>(nullable: false),
-                    Bimester2ValidityEnd = table.Column<DateTime>(nullable: false),
-                    Bimester3ValidityStart = table.Column<DateTime>(nullable: false),
-                    Bimester3ValidityEnd = table.Column<DateTime>(nullable: false),
-                    Bimester4ValidityStart = table.Column<DateTime>(nullable: false),
-                    Bimester4ValidityEnd = table.Column<DateTime>(nullable: false),
-                    Bimester1ClosureStart = table.Column<DateTime>(nullable: false),
-                    Bimester1ClosureEnd = table.Column<DateTime>(nullable: false),
-                    Bimester2ClosureStart = table.Column<DateTime>(nullable: false),
-                    Bimester2ClosureEnd = table.Column<DateTime>(nullable: false),
-                    Bimester3ClosureStart = table.Column<DateTime>(nullable: false),
-                    Bimester3ClosureEnd = table.Column<DateTime>(nullable: false),
-                    Bimester4ClosureStart = table.Column<DateTime>(nullable: false),
-                    Bimester4ClosureEnd = table.Column<DateTime>(nullable: false),
-                    ReportCardConsolidation = table.Column<DateTime>(nullable: false)
+                    Year = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,6 +168,30 @@ namespace smeCore.SGP.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ClassModeCalendars_SchoolYears_SchoolYearId",
+                        column: x => x.SchoolYearId,
+                        principalTable: "SchoolYears",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SchoolTerm",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    ValidityStart = table.Column<DateTime>(nullable: false),
+                    ValidityEnd = table.Column<DateTime>(nullable: false),
+                    ClosureStart = table.Column<DateTime>(nullable: false),
+                    ClosureEnd = table.Column<DateTime>(nullable: false),
+                    ReportCardConsolidation = table.Column<DateTime>(nullable: false),
+                    SchoolYearId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SchoolTerm", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SchoolTerm_SchoolYears_SchoolYearId",
                         column: x => x.SchoolYearId,
                         principalTable: "SchoolYears",
                         principalColumn: "Id",
@@ -497,6 +504,22 @@ namespace smeCore.SGP.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "SchoolYears",
+                columns: new[] { "Id", "Name", "Year" },
+                values: new object[] { "67351fff-afa1-4846-beb5-07a4c5d1ade9", "Ensino Regular", 2019 });
+
+            migrationBuilder.InsertData(
+                table: "SchoolTerm",
+                columns: new[] { "Id", "ClosureEnd", "ClosureStart", "Name", "ReportCardConsolidation", "SchoolYearId", "ValidityEnd", "ValidityStart" },
+                values: new object[,]
+                {
+                    { "30998ed4-998a-455d-9aed-f2fb2aca00a9", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "67351fff-afa1-4846-beb5-07a4c5d1ade9", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "1482309b-488b-40c9-9e47-b8e0c4ae4744", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "67351fff-afa1-4846-beb5-07a4c5d1ade9", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "f77028bb-7a2a-4659-9f8b-c04554ab0691", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "67351fff-afa1-4846-beb5-07a4c5d1ade9", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "19ba5351-3c60-4876-95bb-474f2e9f370d", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "67351fff-afa1-4846-beb5-07a4c5d1ade9", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AnnualPlans_PlanningId",
                 table: "AnnualPlans",
@@ -563,6 +586,11 @@ namespace smeCore.SGP.Migrations
                 name: "IX_Schools_RegionalBoardEducationId",
                 table: "Schools",
                 column: "RegionalBoardEducationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SchoolTerm_SchoolYearId",
+                table: "SchoolTerm",
+                column: "SchoolYearId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentClasses_PlanningId",
@@ -638,6 +666,9 @@ namespace smeCore.SGP.Migrations
 
             migrationBuilder.DropTable(
                 name: "SchoolCalendars");
+
+            migrationBuilder.DropTable(
+                name: "SchoolTerm");
 
             migrationBuilder.DropTable(
                 name: "StudentCodes");

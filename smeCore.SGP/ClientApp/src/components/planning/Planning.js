@@ -20,6 +20,7 @@ export default class Planning extends Component {
             schoolYear: 0,
             classroom: "",
             school: "",
+            schoolCalendar: null,
             calendar: {
                 weeks: [
                     {},
@@ -55,6 +56,7 @@ export default class Planning extends Component {
 
         this.prepareCalendar = this.prepareCalendar.bind(this);
         this.setClassSchedule = this.setClassSchedule.bind(this);
+        this.deleteClassSchedule = this.deleteClassSchedule.bind(this);
 
         this.setAnnualPlan = this.setAnnualPlan.bind(this);
         this.saveAnnualPlan = this.saveAnnualPlan.bind(this);
@@ -102,6 +104,16 @@ export default class Planning extends Component {
             });
 
         fetch('api/Planejamento/ListarODS')
+            .then(response => response.json())
+            .then(data => {
+                for (var i = 0; i < data.length; i++)
+                    data[i].selected = false;
+
+                this.setState({ sustainableDevItems: data });
+            });
+
+        // Fazer verificação para saber qual calendario do ano letivo é necessário carregar
+        fetch('api/Planejamento/CarregarCalendario')
             .then(response => response.json())
             .then(data => {
                 for (var i = 0; i < data.length; i++)
@@ -167,35 +179,84 @@ export default class Planning extends Component {
             classroom: this.state.classroom,
             school: this.state.school,
             date: schedule.fullYear + "-" + schedule.month + "-" + schedule.day + " " + schedule.time,
-            tagColor: schedule.color
+            tagColor: schedule.color,
+            classQuantity: schedule.classQuantity,
+            repeat: schedule.repeat
         };
-        fetch('/api/Planejamento/SalvarHorarioAula', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
-            .then(data => {
-                if (data.status === 200)
-                    alert("Plano de Ciclo salvo com sucesso!");
-            });
+        //fetch('/api/Planejamento/SalvarHorarioAula', {
+        //    method: "post",
+        //    headers: { 'Content-Type': 'application/json' },
+        //    body: JSON.stringify(model)
+        //})
+        //    .then(data => {
+        //        if (data.status === 200)
+        //            alert("Plano de Ciclo salvo com sucesso!");
+        //    });
 
+        var weekIndex = 0;
+        var dayIndex = 0;
         var calendar = this.state.calendar;
         for (var i = 0; i < calendar.weeks.length; i++)
             for (var j = 0; j < calendar.weeks[i].length; j++)
                 if (calendar.weeks[i][j].day === schedule.day && calendar.weeks[i][j].month === schedule.month && calendar.weeks[i][j].year === schedule.fullYear) {
-                    calendar.weeks[i][j].schedules.push({
-                        color: schedule.color,
-                        time: schedule.time,
-                        name: this.state.classroom,
-                        school: schedule.school,
-                        day: schedule.day,
-                        month: schedule.month,
-                        fullYear: schedule.fullYear
-                    });
+                    //calendar.weeks[i][j].schedules.push({
+                    //    color: schedule.color,
+                    //    time: schedule.time,
+                    //    name: this.state.classroom,
+                    //    school: schedule.school,
+                    //    day: schedule.day,
+                    //    month: schedule.month,
+                    //    fullYear: schedule.fullYear
+                    //});
+                    weekIndex = i;
+                    dayIndex = j;
                     break;
                 }
 
+        if (schedule.repeat === "once")
+            calendar.weeks[weekIndex][dayIndex].schedules.push({
+                color: schedule.color,
+                time: schedule.time,
+                name: this.state.classroom,
+                school: schedule.school,
+                day: schedule.day,
+                month: schedule.month,
+                fullYear: schedule.fullYear
+            });
+        else if (schedule.repeat === "bimester") {
+            for (var i = weekIndex; i < calendar.weeks.length; i++)
+                calendar.weeks[i][dayIndex].schedules.push({
+                    color: schedule.color,
+                    time: schedule.time,
+                    name: this.state.classroom,
+                    school: schedule.school,
+                    day: calendar.weeks[i][dayIndex].day,
+                    month: calendar.weeks[i][dayIndex].month,
+                    fullYear: calendar.weeks[i][dayIndex].year
+                });
+        }
+        else {
+            for (var i = weekIndex; i < calendar.weeks.length; i++)
+                calendar.weeks[i][dayIndex].schedules.push({
+                    color: schedule.color,
+                    time: schedule.time,
+                    name: this.state.classroom,
+                    school: schedule.school,
+                    day: calendar.weeks[i][dayIndex].day,
+                    month: calendar.weeks[i][dayIndex].month,
+                    fullYear: calendar.weeks[i][dayIndex].year
+                });
+        }
+
         this.setState({ calendar: calendar });
+    }
+
+    deleteClassSchedule(schedule) {
+        var txt = "";
+        //for (var key in schedule)
+        //    txt += key + ": " + schedule[key] + "\n";
+
+        alert("not implemented\n\n" + schedule);
     }
 
 
@@ -566,7 +627,12 @@ export default class Planning extends Component {
                 <div id="changeClass">
                     <div className="form-inline">
 
-                        <Select id="changeClassTextBox" type="text" value={selectedClass} onChange={this.selectedChange} options={this.state.teacherClasses} />
+                        <Select
+                            id="changeClassTextBox"
+                            type="text"
+                            value={selectedClass}
+                            onChange={this.selectedChange}
+                            options={this.state.teacherClasses} />
 
                         <button type="submit" className="btn btn-primary btn-sm bt-breadcrumb-azul" onClick={this.changeClass} disabled={this.state.selectedClass === null}>Alterar turma</button>
                     </div>
@@ -588,11 +654,30 @@ export default class Planning extends Component {
                         </li>
                     </ul>
                     <div className="tab-content border-azul rounded" id="myTabContent">
-                        <ClassPlan name="classPlan" calendar={this.state.calendar} students={this.state.students} setSchedule={this.setClassSchedule} relatedClasses={this.state.relatedClasses} annualPlan={this.state.annual} {...childProps} />
+                        <ClassPlan
+                            name="classPlan"
+                            calendar={this.state.calendar}
+                            students={this.state.students}
+                            setSchedule={this.setClassSchedule}
+                            deleteSchedule={this.deleteClassSchedule}
+                            relatedClasses={this.state.relatedClasses}
+                            annualPlan={this.state.annual}
+                            {...childProps} />
 
-                        <AnnualPlan name="annualPlan" annual={this.state.annual} setAnnualPlan={this.setAnnualPlan} saveAnnualPlan={this.saveAnnualPlan} learningObjectiveItems={this.state.learningObjectiveItems} {...childProps} />
+                        <AnnualPlan
+                            name="annualPlan"
+                            annual={this.state.annual}
+                            setAnnualPlan={this.setAnnualPlan}
+                            saveAnnualPlan={this.saveAnnualPlan}
+                            learningObjectiveItems={this.state.learningObjectiveItems}
+                            {...childProps} />
 
-                        <CyclePlan name="cyclePlan" cycle={this.state.cycle} setCycle={this.setCycle} saveCyclePlan={this.saveCyclePlan} {...childProps} />
+                        <CyclePlan
+                            name="cyclePlan"
+                            cycle={this.state.cycle}
+                            setCycle={this.setCycle}
+                            saveCyclePlan={this.saveCyclePlan}
+                            {...childProps} />
 
                         <div className="tab-pane fade border-0" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
                             <div className="container-tabpanel">

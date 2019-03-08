@@ -10,7 +10,7 @@ using smeCore.SGP.Contexts;
 namespace smeCore.SGP.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20190307150701_m1")]
+    [Migration("20190308165855_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -278,52 +278,98 @@ namespace smeCore.SGP.Migrations
                     b.ToTable("SchoolClasses");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolTerm", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ClosureEnd");
+
+                    b.Property<DateTime>("ClosureStart");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("ReportCardConsolidation");
+
+                    b.Property<string>("SchoolYearId");
+
+                    b.Property<DateTime>("ValidityEnd");
+
+                    b.Property<DateTime>("ValidityStart");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolYearId");
+
+                    b.ToTable("SchoolTerm");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "30998ed4-998a-455d-9aed-f2fb2aca00a9",
+                            ClosureEnd = new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "1° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            ValidityEnd = new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "1482309b-488b-40c9-9e47-b8e0c4ae4744",
+                            ClosureEnd = new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "2° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            ValidityEnd = new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "f77028bb-7a2a-4659-9f8b-c04554ab0691",
+                            ClosureEnd = new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "3° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            ValidityEnd = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "19ba5351-3c60-4876-95bb-474f2e9f370d",
+                            ClosureEnd = new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "4° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            ValidityEnd = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("smeCore.Models.Academic.SchoolYear", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Bimester1ClosureEnd");
-
-                    b.Property<DateTime>("Bimester1ClosureStart");
-
-                    b.Property<DateTime>("Bimester1ValidityEnd");
-
-                    b.Property<DateTime>("Bimester1ValidityStart");
-
-                    b.Property<DateTime>("Bimester2ClosureEnd");
-
-                    b.Property<DateTime>("Bimester2ClosureStart");
-
-                    b.Property<DateTime>("Bimester2ValidityEnd");
-
-                    b.Property<DateTime>("Bimester2ValidityStart");
-
-                    b.Property<DateTime>("Bimester3ClosureEnd");
-
-                    b.Property<DateTime>("Bimester3ClosureStart");
-
-                    b.Property<DateTime>("Bimester3ValidityEnd");
-
-                    b.Property<DateTime>("Bimester3ValidityStart");
-
-                    b.Property<DateTime>("Bimester4ClosureEnd");
-
-                    b.Property<DateTime>("Bimester4ClosureStart");
-
-                    b.Property<DateTime>("Bimester4ValidityEnd");
-
-                    b.Property<DateTime>("Bimester4ValidityStart");
-
                     b.Property<string>("Name");
-
-                    b.Property<DateTime>("ReportCardConsolidation");
 
                     b.Property<int>("Year");
 
                     b.HasKey("Id");
 
                     b.ToTable("SchoolYears");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            Name = "Ensino Regular",
+                            Year = 2019
+                        });
                 });
 
             modelBuilder.Entity("smeCore.Models.Academic.Student", b =>
@@ -568,6 +614,13 @@ namespace smeCore.SGP.Migrations
                     b.HasOne("smeCore.Models.Academic.School", "School")
                         .WithMany("Classes")
                         .HasForeignKey("SchoolId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolTerm", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.SchoolYear", "SchoolYear")
+                        .WithMany("SchoolTerms")
+                        .HasForeignKey("SchoolYearId");
                 });
 
             modelBuilder.Entity("smeCore.Models.Academic.Student", b =>

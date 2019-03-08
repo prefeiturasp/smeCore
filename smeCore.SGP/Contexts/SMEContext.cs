@@ -62,5 +62,73 @@ namespace smeCore.SGP.Contexts
         { }
 
         #endregion ==================== CONSTRUCTORS ====================
+
+        #region ==================== METHODS ====================
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            smeCore.Models.Academic.SchoolYear schoolYear = new smeCore.Models.Academic.SchoolYear()
+            {
+                Year = 2019,
+                Name = "Ensino Regular"
+            };
+            schoolYear.NewID();
+            modelBuilder.Entity<smeCore.Models.Academic.SchoolYear>().HasData(schoolYear);
+
+            smeCore.Models.Academic.SchoolTerm bimester = new smeCore.Models.Academic.SchoolTerm();
+            bimester.NewID();
+            modelBuilder.Entity<smeCore.Models.Academic.SchoolTerm>().HasData(new
+            {
+                bimester.Id,
+                Name = "1° Bimestre de 2019",
+                ValidityStart = new System.DateTime(2019, 2, 4),
+                ValidityEnd = new System.DateTime(2019, 4, 30),
+                ClosureStart = new System.DateTime(2019, 4, 15),
+                ClosureEnd = new System.DateTime(2019, 5, 18),
+                ReportCardConsolidation = new System.DateTime(2019, 5, 19),
+                SchoolYearId = schoolYear.Id,
+            });
+
+            bimester.NewID();
+            modelBuilder.Entity<smeCore.Models.Academic.SchoolTerm>().HasData(new
+            {
+                bimester.Id,
+                Name = "2° Bimestre de 2019",
+                ValidityStart = new System.DateTime(2019, 5, 2),
+                ValidityEnd = new System.DateTime(2019, 7, 5),
+                ClosureStart = new System.DateTime(2019, 6, 24),
+                ClosureEnd = new System.DateTime(2019, 7, 27),
+                ReportCardConsolidation = new System.DateTime(2019, 7, 28),
+                SchoolYearId = schoolYear.Id,
+            });
+
+            bimester.NewID();
+            modelBuilder.Entity<smeCore.Models.Academic.SchoolTerm>().HasData(new
+            {
+                bimester.Id,
+                Name = "3° Bimestre de 2019",
+                ValidityStart = new System.DateTime(2019, 7, 22),
+                ValidityEnd = new System.DateTime(2019, 9, 30),
+                ClosureStart = new System.DateTime(2019, 9, 16),
+                ClosureEnd = new System.DateTime(2019, 10, 12),
+                ReportCardConsolidation = new System.DateTime(2019, 10, 13),
+                SchoolYearId = schoolYear.Id,
+            });
+
+            bimester.NewID();
+            modelBuilder.Entity<smeCore.Models.Academic.SchoolTerm>().HasData(new
+            {
+                bimester.Id,
+                Name = "4° Bimestre de 2019",
+                ValidityStart = new System.DateTime(2019, 10, 1),
+                ValidityEnd = new System.DateTime(2019, 12, 20),
+                ClosureStart = new System.DateTime(2019, 12, 1),
+                ClosureEnd = new System.DateTime(2019, 12, 21),
+                ReportCardConsolidation = new System.DateTime(2019, 12, 22),
+                SchoolYearId = schoolYear.Id,
+            });
+        }
+
+        #endregion ==================== METHODS ====================
     }
 }

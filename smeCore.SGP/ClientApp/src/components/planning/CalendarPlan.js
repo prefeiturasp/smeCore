@@ -18,7 +18,8 @@ export class CalendarPlan extends Component {
             school: this.props.school,
             user: this.props.user,
             classAppointmentClick: this.props.classAppointmentClick,
-            setSchedule: this.props.setSchedule
+            setSchedule: this.props.setSchedule,
+            deleteSchedule: this.props.deleteSchedule
         };
 
         return (
@@ -38,31 +39,71 @@ export class CalendarPlan extends Component {
                     <tbody>
                         <tr>
                             {this.props.calendar.weeks[0].length !== undefined && this.props.calendar.weeks[0].map(week_day => (
-                                <CalendarDay day={week_day.day} month={week_day.month} fullYear={week_day.year} workday={week_day.workday} name={week_day.name} schedule={week_day.schedules} editable={true} {...childProps} />
+                                <CalendarDay
+                                    day={week_day.day}
+                                    month={week_day.month}
+                                    fullYear={week_day.year}
+                                    workday={week_day.workday}
+                                    name={week_day.name}
+                                    schedule={week_day.schedules}
+                                    editable={true}
+                                    {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.props.calendar.weeks[1].length !== undefined && this.props.calendar.weeks[1].map(week_day => (
-                                <CalendarDay day={week_day.day} month={week_day.month} fullYear={week_day.year} workday={week_day.workday} name={week_day.name} schedule={week_day.schedules} editable={true} {...childProps} />
+                                <CalendarDay
+                                    day={week_day.day}
+                                    month={week_day.month}
+                                    fullYear={week_day.year}
+                                    workday={week_day.workday}
+                                    name={week_day.name}
+                                    schedule={week_day.schedules}
+                                    editable={true}
+                                    {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.props.calendar.weeks[2].length !== undefined && this.props.calendar.weeks[2].map(week_day => (
-                                <CalendarDay day={week_day.day} month={week_day.month} fullYear={week_day.year} workday={week_day.workday} name={week_day.name} schedule={week_day.schedules} editable={true} {...childProps} />
+                                <CalendarDay
+                                    day={week_day.day}
+                                    month={week_day.month}
+                                    fullYear={week_day.year}
+                                    workday={week_day.workday}
+                                    name={week_day.name}
+                                    schedule={week_day.schedules}
+                                    editable={true}
+                                    {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.props.calendar.weeks[3].length !== undefined && this.props.calendar.weeks[3].map(week_day => (
-                                <CalendarDay day={week_day.day} month={week_day.month} fullYear={week_day.year} workday={week_day.workday} name={week_day.name} schedule={week_day.schedules} editable={true} {...childProps} />
+                                <CalendarDay
+                                    day={week_day.day}
+                                    month={week_day.month}
+                                    fullYear={week_day.year}
+                                    workday={week_day.workday}
+                                    name={week_day.name}
+                                    schedule={week_day.schedules}
+                                    editable={true}
+                                    {...childProps} />
                             ))}
                         </tr>
 
                         <tr>
                             {this.props.calendar.weeks[4].length !== undefined && this.props.calendar.weeks[4].map(week_day => (
-                                <CalendarDay day={week_day.day} month={week_day.month} fullYear={week_day.year} workday={week_day.workday} name={week_day.name} schedule={week_day.schedules} editable={true} {...childProps} />
+                                <CalendarDay
+                                    day={week_day.day}
+                                    month={week_day.month}
+                                    fullYear={week_day.year}
+                                    workday={week_day.workday}
+                                    name={week_day.name}
+                                    schedule={week_day.schedules}
+                                    editable={true}
+                                    {...childProps} />
                             ))}
                         </tr>
                     </tbody>

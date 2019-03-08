@@ -268,12 +268,52 @@ namespace smeCore.SGP.Controllers
                 description = "EF-3A",
                 year = 3
             });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-4B",
+                year = 4
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-5C",
+                year = 5
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-6A",
+                year = 6
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-7B",
+                year = 7
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-8C",
+                year = 8
+            });
+            result.schools[0].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-9A",
+                year = 9
+            });
 
             result.schools.Add(new Models.Mocking.School() { name = "EMEF - IDEMIA DE GODOY, PROFA." });
             result.schools[1].classes.Add(new Models.Mocking.MyClass()
             {
                 description = "EF-1B",
                 year = 1
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-2C",
+                year = 2
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-3A",
+                year = 3
             });
             result.schools[1].classes.Add(new Models.Mocking.MyClass()
             {
@@ -290,12 +330,52 @@ namespace smeCore.SGP.Controllers
                 description = "EF-6C",
                 year = 6
             });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-7C",
+                year = 7
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-8B",
+                year = 8
+            });
+            result.schools[1].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-9A",
+                year = 9
+            });
 
             result.schools.Add(new Models.Mocking.School() { name = "EMEF - MAURICIO GOULART" });
             result.schools[2].classes.Add(new Models.Mocking.MyClass()
             {
                 description = "EF-1A",
                 year = 1
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-2A",
+                year = 2
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-3B",
+                year = 3
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-4B",
+                year = 4
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-5C",
+                year = 5
+            });
+            result.schools[2].classes.Add(new Models.Mocking.MyClass()
+            {
+                description = "EF-6A",
+                year = 6
             });
             result.schools[2].classes.Add(new Models.Mocking.MyClass()
             {

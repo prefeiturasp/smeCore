@@ -131,7 +131,7 @@ export class CalendarDay extends Component {
             "School: " + this.state.removeSchedule.school + "\n" +
             "Selected Repeat: " + this.state.modalSelectedRemoveRepeat;
 
-        alert(txt);
+        this.props.deleteSchedule(txt);
     }
 
     render() {
@@ -161,7 +161,7 @@ export class CalendarDay extends Component {
                     ))}
                 </div>
 
-                <div className="modal fade" id={this.state.removeModalId} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal fade" id={this.state.removeModalId} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -184,23 +184,23 @@ export class CalendarDay extends Component {
                                     <div onChange={this.changeRemoveRepeat}>
                                         <div className="custom-control custom-radio">
                                             <input type="radio" id={this.state.removeModalRepeatName + "1"} name={this.state.removeModalRepeatName} className="custom-control-input" value="once" />
-                                            <label className="custom-control-label" for={this.state.removeModalRepeatName + "1"}>Somente o dia</label>
+                                            <label className="custom-control-label" htmlFor={this.state.removeModalRepeatName + "1"}>Somente o dia</label>
                                         </div>
 
                                         <div className="custom-control custom-radio">
                                             <input type="radio" id={this.state.removeModalRepeatName + "2"} name={this.state.removeModalRepeatName} className="custom-control-input" value="bimester" />
-                                            <label className="custom-control-label" for={this.state.removeModalRepeatName + "2"}>Bimestre vigente</label>
+                                            <label className="custom-control-label" htmlFor={this.state.removeModalRepeatName + "2"}>Bimestre vigente</label>
                                         </div>
 
                                         <div className="custom-control custom-radio">
                                             <input type="radio" id={this.state.removeModalRepeatName + "3"} name={this.state.removeModalRepeatName} className="custom-control-input" value="all" />
-                                            <label className="custom-control-label" for={this.state.removeModalRepeatName + "3"}>Todos os Bimestres</label>
+                                            <label className="custom-control-label" htmlFor={this.state.removeModalRepeatName + "3"}>Todos os Bimestres</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={this.removeScheduleClick}>Confirmar</button>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.removeScheduleClick}>Confirmar</button>
                             </div>
                         </div>
                     </div>
@@ -232,12 +232,12 @@ export class CalendarDay extends Component {
                                             <div className="form-inline" onChange={this.changeClassQuantity}>
                                                 <div className="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id={this.state.modalRadioClassQuantityName + "1"} name={this.state.modalRadioClassQuantityName} className="custom-control-input" value="1" />
-                                                    <label className="custom-control-label" for={this.state.modalRadioClassQuantityName + "1"}>1</label>
+                                                    <label className="custom-control-label" htmlFor={this.state.modalRadioClassQuantityName + "1"}>1</label>
                                                 </div>
 
                                                 <div className="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id={this.state.modalRadioClassQuantityName + "2"} name={this.state.modalRadioClassQuantityName} className="custom-control-input" value="2" />
-                                                    <label className="custom-control-label" for={this.state.modalRadioClassQuantityName + "2"}>2</label>
+                                                    <label className="custom-control-label" htmlFor={this.state.modalRadioClassQuantityName + "2"}>2</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,17 +247,17 @@ export class CalendarDay extends Component {
                                             <div onChange={this.changeRepeat}>
                                                 <div className="custom-control custom-radio">
                                                     <input type="radio" id={this.state.modalRadioRepeatName + "1"} name={this.state.modalRadioRepeatName} className="custom-control-input" value="once" />
-                                                    <label className="custom-control-label" for={this.state.modalRadioRepeatName + "1"}>N&atilde;o Repetir</label>
+                                                    <label className="custom-control-label" htmlFor={this.state.modalRadioRepeatName + "1"}>N&atilde;o Repetir</label>
                                                 </div>
 
                                                 <div className="custom-control custom-radio">
                                                     <input type="radio" id={this.state.modalRadioRepeatName + "2"} name={this.state.modalRadioRepeatName} className="custom-control-input" value="bimester" />
-                                                    <label className="custom-control-label" for={this.state.modalRadioRepeatName + "2"}>Repetir no Bimestre vigente</label>
+                                                    <label className="custom-control-label" htmlFor={this.state.modalRadioRepeatName + "2"}>Repetir no Bimestre vigente</label>
                                                 </div>
 
                                                 <div className="custom-control custom-radio">
                                                     <input type="radio" id={this.state.modalRadioRepeatName + "3"} name={this.state.modalRadioRepeatName} className="custom-control-input" value="all" />
-                                                    <label className="custom-control-label" for={this.state.modalRadioRepeatName + "3"}>Repetir para todos os Bimestres</label>
+                                                    <label className="custom-control-label" htmlFor={this.state.modalRadioRepeatName + "3"}>Repetir para todos os Bimestres</label>
                                                 </div>
                                             </div>
                                         </div>

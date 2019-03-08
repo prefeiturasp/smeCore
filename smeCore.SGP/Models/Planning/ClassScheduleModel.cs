@@ -14,5 +14,7 @@ namespace smeCore.SGP.Models.Planning
         public string School { get; set; }
         public DateTime Date { get; set; }
         public string TagColor { get; set; }
+        public int ClassQuantity { get; set; }
+        public string Repeat { get; set; }
     }
 }
