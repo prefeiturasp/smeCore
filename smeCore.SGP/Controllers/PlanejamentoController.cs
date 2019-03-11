@@ -805,6 +805,49 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
+        [HttpGet]
+        public async Task<ActionResult<string>> CalendarioAnoLetivo(string name = "", int year = 0)
+        {
+            if (name == "")
+                name = "Ensino Regular";
+
+            if (year < 2014)
+                year = DateTime.Now.Year;
+
+            SchoolYear schoolYear = await
+                (from current in _db.SchoolYears.Include(x => x.SchoolTerms)
+                 where current.Name.ToLower() == name.ToLower()
+                 && current.Year == year
+                 select current).SingleOrDefaultAsync();
+
+            if (schoolYear == null)
+                return (NotFound());
+            else
+            {
+                SchoolYearModel result = new SchoolYearModel()
+                {
+                    Id = schoolYear.Id,
+                    Name = schoolYear.Name,
+                    Year = schoolYear.Year
+                };
+
+                result.SchoolTerms =
+                    (from current in schoolYear.SchoolTerms
+                     orderby current.Name
+                     select new SchoolTermModel
+                     {
+                         Name = current.Name,
+                         ValidityStart = current.ValidityStart,
+                         ValidityEnd = current.ValidityEnd,
+                         ClosureStart = current.ClosureStart,
+                         ClosureEnd = current.ClosureEnd,
+                         ReportCardConsolidation = current.ReportCardConsolidation
+                     }).ToList();
+
+                return (Ok(result));
+            }
+        }
+
         #endregion -------------------- PUBLIC --------------------
 
         #endregion ==================== METHODS ====================

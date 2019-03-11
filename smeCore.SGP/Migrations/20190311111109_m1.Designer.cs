@@ -10,7 +10,7 @@ using smeCore.SGP.Contexts;
 namespace smeCore.SGP.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20190308165855_m1")]
+    [Migration("20190311111109_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -306,45 +306,45 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "30998ed4-998a-455d-9aed-f2fb2aca00a9",
+                            Id = "72855aa6-ce9c-4afa-8d4a-79cbf89a3cdc",
                             ClosureEnd = new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "1° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
                             ValidityEnd = new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "1482309b-488b-40c9-9e47-b8e0c4ae4744",
+                            Id = "834164dd-fc84-4507-9595-59fe97747b91",
                             ClosureEnd = new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "2° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
                             ValidityEnd = new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "f77028bb-7a2a-4659-9f8b-c04554ab0691",
+                            Id = "1e771e85-16db-4618-955e-baac655e4f05",
                             ClosureEnd = new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "3° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
                             ValidityEnd = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "19ba5351-3c60-4876-95bb-474f2e9f370d",
+                            Id = "e8a7498d-61ae-4127-bc8b-1ce36738c885",
                             ClosureEnd = new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "4° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
                             ValidityEnd = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -366,7 +366,7 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "67351fff-afa1-4846-beb5-07a4c5d1ade9",
+                            Id = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
                             Name = "Ensino Regular",
                             Year = 2019
                         });

@@ -54,6 +54,7 @@ export default class Planning extends Component {
             }
         }
 
+        this.getSchoolCalendar = this.getSchoolCalendar.bind(this);
         this.prepareCalendar = this.prepareCalendar.bind(this);
         this.setClassSchedule = this.setClassSchedule.bind(this);
         this.deleteClassSchedule = this.deleteClassSchedule.bind(this);
@@ -112,18 +113,43 @@ export default class Planning extends Component {
                 this.setState({ sustainableDevItems: data });
             });
 
-        // Fazer verificação para saber qual calendario do ano letivo é necessário carregar
-        fetch('api/Planejamento/CarregarCalendario')
-            .then(response => response.json())
-            .then(data => {
-                for (var i = 0; i < data.length; i++)
-                    data[i].selected = false;
-
-                this.setState({ sustainableDevItems: data });
-            });
+        this.getSchoolCalendar();
     }
 
 
+
+    getSchoolCalendar(name = "", year = 2019) {
+        var parameters = "";
+
+        if (name !== "" || year !== 2019) {
+            parameters += "?";
+
+            if (name !== "")
+                parameters += "name=" + name;
+
+            if (name !== "" && year !== 2019)
+                parameters += "&year=" + year;
+
+            if (name === "" && year !== 2019)
+                parameters += "year=" + year;
+        }
+        
+        fetch('api/Planejamento/CalendarioAnoLetivo' + parameters)
+            .then(data => {
+                if (data.status === 200)
+                    data.json().then(result => {
+                        for (var i = 0; i < result.schoolTerms.length; i++) {
+                            result.schoolTerms[i].validityStart = new Date(result.schoolTerms[i].validityStart);
+                            result.schoolTerms[i].validityEnd = new Date(result.schoolTerms[i].validityEnd);
+                            result.schoolTerms[i].closureStart = new Date(result.schoolTerms[i].closureStart);
+                            result.schoolTerms[i].closureEnd = new Date(result.schoolTerms[i].closureEnd);
+                            result.schoolTerms[i].reportCardConsolidation = new Date(result.schoolTerms[i].reportCardConsolidation);
+                        }
+
+                        this.setState({ schoolCalendar: result });
+                    });
+            });
+    }
 
     prepareCalendar() {
         var calendar = {
@@ -199,19 +225,26 @@ export default class Planning extends Component {
         for (var i = 0; i < calendar.weeks.length; i++)
             for (var j = 0; j < calendar.weeks[i].length; j++)
                 if (calendar.weeks[i][j].day === schedule.day && calendar.weeks[i][j].month === schedule.month && calendar.weeks[i][j].year === schedule.fullYear) {
-                    //calendar.weeks[i][j].schedules.push({
-                    //    color: schedule.color,
-                    //    time: schedule.time,
-                    //    name: this.state.classroom,
-                    //    school: schedule.school,
-                    //    day: schedule.day,
-                    //    month: schedule.month,
-                    //    fullYear: schedule.fullYear
-                    //});
                     weekIndex = i;
                     dayIndex = j;
                     break;
                 }
+
+        var start, end;
+        var today = new Date();
+        debugger;
+
+        for (var i = 0; i < this.state.schoolCalendar.schoolTerms.length; i++)
+            if (this.state.schoolCalendar.schoolTerms[i].validityStart <= today && this.state.schoolCalendar.schoolTerms[i].validityEnd >= today) {
+                start = new Date(this.state.schoolCalendar.schoolTerms[i].validityStart.getFullYear,
+                    this.state.schoolCalendar.schoolTerms[i].validityStart.getMonth(),
+                    this.state.schoolCalendar.schoolTerms[i].validityStart.getDate());
+
+                end = new Date(this.state.schoolCalendar.schoolTerms[i].validityStart.getFullYear,
+                    this.state.schoolCalendar.schoolTerms[i].validityEnd.getMonth(),
+                    this.state.schoolCalendar.schoolTerms[i].validityEnd.getDate());
+                break;
+            }
 
         if (schedule.repeat === "once")
             calendar.weeks[weekIndex][dayIndex].schedules.push({
@@ -224,28 +257,44 @@ export default class Planning extends Component {
                 fullYear: schedule.fullYear
             });
         else if (schedule.repeat === "bimester") {
-            for (var i = weekIndex; i < calendar.weeks.length; i++)
-                calendar.weeks[i][dayIndex].schedules.push({
-                    color: schedule.color,
-                    time: schedule.time,
-                    name: this.state.classroom,
-                    school: schedule.school,
-                    day: calendar.weeks[i][dayIndex].day,
-                    month: calendar.weeks[i][dayIndex].month,
-                    fullYear: calendar.weeks[i][dayIndex].year
-                });
+            for (var i = weekIndex; i < calendar.weeks.length; i++) {
+                var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);
+                debugger;
+                if (date >= start && date <= end)
+                    calendar.weeks[i][dayIndex].schedules.push({
+                        color: schedule.color,
+                        time: schedule.time,
+                        name: this.state.classroom,
+                        school: schedule.school,
+                        day: calendar.weeks[i][dayIndex].day,
+                        month: calendar.weeks[i][dayIndex].month,
+                        fullYear: calendar.weeks[i][dayIndex].year
+                    });
+            }
         }
         else {
-            for (var i = weekIndex; i < calendar.weeks.length; i++)
-                calendar.weeks[i][dayIndex].schedules.push({
-                    color: schedule.color,
-                    time: schedule.time,
-                    name: this.state.classroom,
-                    school: schedule.school,
-                    day: calendar.weeks[i][dayIndex].day,
-                    month: calendar.weeks[i][dayIndex].month,
-                    fullYear: calendar.weeks[i][dayIndex].year
-                });
+            start = new Date(this.state.schoolCalendar.schoolTerms[0].validityStart.getFullYear,
+                this.this.state.schoolCalendar.schoolTerms[0].validityStart.getMonth(),
+                this.this.state.schoolCalendar.schoolTerms[0].validityStart.getDate());
+
+            end = new Date(this.state.schoolCalendar.schoolTerms[this.this.state.schoolCalendar.schoolTerms.length].validityStart.getFullYear,
+                this.this.state.schoolCalendar.schoolTerms[this.this.state.schoolCalendar.schoolTerms.length].validityEnd.getMonth(),
+                this.this.state.schoolCalendar.schoolTerms[this.this.state.schoolCalendar.schoolTerms.length].validityEnd.getDate());
+
+            for (var i = weekIndex; i < calendar.weeks.length; i++) {
+                var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);
+
+                if (date >= start && date <= end)
+                    calendar.weeks[i][dayIndex].schedules.push({
+                        color: schedule.color,
+                        time: schedule.time,
+                        name: this.state.classroom,
+                        school: schedule.school,
+                        day: calendar.weeks[i][dayIndex].day,
+                        month: calendar.weeks[i][dayIndex].month,
+                        fullYear: calendar.weeks[i][dayIndex].year
+                    });
+            }
         }
 
         this.setState({ calendar: calendar });
@@ -610,7 +659,9 @@ export default class Planning extends Component {
             year: this.state.schoolYear,
             classroom: this.state.classroom,
             school: this.state.school,
-            user: this.props.user
+            user: this.props.user,
+            schoolCalendar: this.state.schoolCalendar,
+            getSchoolCalendar: this.getSchoolCalendar
         };
 
         return (
