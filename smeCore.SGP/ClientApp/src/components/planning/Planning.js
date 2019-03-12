@@ -209,15 +209,15 @@ export default class Planning extends Component {
             classQuantity: schedule.classQuantity,
             repeat: schedule.repeat
         };
-        //fetch('/api/Planejamento/SalvarHorarioAula', {
-        //    method: "post",
-        //    headers: { 'Content-Type': 'application/json' },
-        //    body: JSON.stringify(model)
-        //})
-        //    .then(data => {
-        //        if (data.status === 200)
-        //            alert("Plano de Ciclo salvo com sucesso!");
-        //    });
+        fetch('/api/Planejamento/SalvarHorarioAula', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    alert("Plano de Ciclo salvo com sucesso!");
+            });
 
         var weekIndex = 0;
         var dayIndex = 0;
@@ -232,7 +232,6 @@ export default class Planning extends Component {
 
         var start, end;
         var today = new Date();
-        debugger;
 
         for (var i = 0; i < this.state.schoolCalendar.schoolTerms.length; i++)
             if (this.state.schoolCalendar.schoolTerms[i].validityStart <= today && this.state.schoolCalendar.schoolTerms[i].validityEnd >= today) {
@@ -259,7 +258,7 @@ export default class Planning extends Component {
         else if (schedule.repeat === "bimester") {
             for (var i = weekIndex; i < calendar.weeks.length; i++) {
                 var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);
-                debugger;
+                
                 if (date >= start && date <= end)
                     calendar.weeks[i][dayIndex].schedules.push({
                         color: schedule.color,
@@ -273,15 +272,13 @@ export default class Planning extends Component {
             }
         }
         else {
-
-            debugger
             start = new Date(this.state.schoolCalendar.schoolTerms[0].validityStart.getFullYear(),
                 this.state.schoolCalendar.schoolTerms[0].validityStart.getMonth(),
                 this.state.schoolCalendar.schoolTerms[0].validityStart.getDate());
-// Aqui tem que ser -1
-            end = new Date(this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length -1 ].validityStart.getFullYear(),
-                this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length -1 ].validityEnd.getMonth(),
-                this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length -1 ].validityEnd.getDate());
+
+            end = new Date(this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length - 1].validityStart.getFullYear(),
+                this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length - 1].validityEnd.getMonth(),
+                this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length - 1].validityEnd.getDate());
 
             for (var i = weekIndex; i < calendar.weeks.length; i++) {
                 var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);

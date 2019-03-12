@@ -12,6 +12,7 @@ namespace smeCore.Models.Academic
         public string ClassroomDevelopment { get; set; }
         public string ContinuousRecovery { get; set; }
         public string Homework { get; set; }
+        public int Quantity { get; set; }
 
         public virtual Planning Planning { get; set; }
 

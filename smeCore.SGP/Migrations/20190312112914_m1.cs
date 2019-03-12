@@ -439,6 +439,7 @@ namespace smeCore.SGP.Migrations
                     ClassroomDevelopment = table.Column<string>(nullable: true),
                     ContinuousRecovery = table.Column<string>(nullable: true),
                     Homework = table.Column<string>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
                     PlanningId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -507,17 +508,17 @@ namespace smeCore.SGP.Migrations
             migrationBuilder.InsertData(
                 table: "SchoolYears",
                 columns: new[] { "Id", "Name", "Year" },
-                values: new object[] { "fede58b1-0e4b-430f-a115-0ca56d6a7686", "Ensino Regular", 2019 });
+                values: new object[] { "8ab881f6-3691-4c64-bfb6-492263dc6483", "Ensino Regular", 2019 });
 
             migrationBuilder.InsertData(
                 table: "SchoolTerm",
                 columns: new[] { "Id", "ClosureEnd", "ClosureStart", "Name", "ReportCardConsolidation", "SchoolYearId", "ValidityEnd", "ValidityStart" },
                 values: new object[,]
                 {
-                    { "72855aa6-ce9c-4afa-8d4a-79cbf89a3cdc", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "fede58b1-0e4b-430f-a115-0ca56d6a7686", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "834164dd-fc84-4507-9595-59fe97747b91", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "fede58b1-0e4b-430f-a115-0ca56d6a7686", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "1e771e85-16db-4618-955e-baac655e4f05", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "fede58b1-0e4b-430f-a115-0ca56d6a7686", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "e8a7498d-61ae-4127-bc8b-1ce36738c885", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "fede58b1-0e4b-430f-a115-0ca56d6a7686", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { "5fd5d7b0-0a99-4f32-8c0c-a6fa387490a7", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "bb42885a-9851-4504-9639-93dd73b933c1", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "89827e7f-b678-4dd6-adee-cb66eb65eecf", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "85f081c0-bdd6-486d-b606-41b7039fe25a", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(
