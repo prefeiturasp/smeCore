@@ -100,6 +100,48 @@ namespace smeCore.SGP.Controllers
             return (week);
         }
 
+        private async Task<SchoolYearModel> GetSchoolYearCalendar(string name = "", int year = 0)
+        {
+            if (name == "")
+                name = "Ensino Regular";
+
+            if (year < 2014)
+                year = DateTime.Now.Year;
+
+            SchoolYear schoolYear = await
+                (from current in _db.SchoolYears.Include(x => x.SchoolTerms)
+                 where current.Name.ToLower() == name.ToLower()
+                 && current.Year == year
+                 select current).SingleOrDefaultAsync();
+
+            if (schoolYear == null)
+                return (null);
+            else
+            {
+                SchoolYearModel result = new SchoolYearModel()
+                {
+                    Id = schoolYear.Id,
+                    Name = schoolYear.Name,
+                    Year = schoolYear.Year
+                };
+
+                result.SchoolTerms =
+                    (from current in schoolYear.SchoolTerms
+                     orderby current.Name
+                     select new SchoolTermModel
+                     {
+                         Name = current.Name,
+                         ValidityStart = current.ValidityStart,
+                         ValidityEnd = current.ValidityEnd,
+                         ClosureStart = current.ClosureStart,
+                         ClosureEnd = current.ClosureEnd,
+                         ReportCardConsolidation = current.ReportCardConsolidation
+                     }).ToList();
+
+                return (result);
+            }
+        }
+
         #endregion -------------------- PRIVATE --------------------
 
         #region -------------------- PUBLIC --------------------
@@ -585,27 +627,126 @@ namespace smeCore.SGP.Controllers
             if (planning.ClassSchedules == null)
                 planning.ClassSchedules = new List<ClassSchedule>();
 
-            ClassSchedule classSchedule = null;
+            // TODO: Utilizar o correto calendário, se existir algum calendário especial, deve ser utilizado
+            SchoolYearModel calendar = await GetSchoolYearCalendar();
 
-            foreach (ClassSchedule current in planning.ClassSchedules)
-                if (current.Date == model.Date)
-                    classSchedule = current;
-
-            if (classSchedule == null)
+            if (calendar != null)
             {
-                classSchedule = new ClassSchedule();
-                classSchedule.NewID();
-                classSchedule.CreatedAt = DateTime.Now;
-                classSchedule.ModifiedAt = DateTime.Now;
-                classSchedule.Date = model.Date;
-                classSchedule.TagColor = model.TagColor;
-                planning.ClassSchedules.Add(classSchedule);
+                ClassSchedule classSchedule = null;
+                DateTime start = DateTime.Now;
+                DateTime end = DateTime.Now;
+                DateTime today = model.Date;
+
+                for (int i = 0; i < calendar.SchoolTerms.Count; i++)
+                    if (today >= calendar.SchoolTerms[i].ValidityStart && today <= calendar.SchoolTerms[i].ValidityEnd)
+                    {
+                        start = calendar.SchoolTerms[i].ValidityStart;
+                        end = calendar.SchoolTerms[i].ValidityEnd;
+                        break;
+                    }
+
+                if (model.Repeat == "once")
+                {
+                    foreach (ClassSchedule current in planning.ClassSchedules)
+                        if (current.Date == model.Date)
+                        {
+                            classSchedule = current;
+                            break;
+                        }
+
+                    if (classSchedule == null)
+                    {
+                        classSchedule = new ClassSchedule();
+                        classSchedule.NewID();
+                        classSchedule.CreatedAt = DateTime.Now;
+                        classSchedule.ModifiedAt = DateTime.Now;
+                        classSchedule.Date = model.Date;
+                        classSchedule.TagColor = model.TagColor;
+                        classSchedule.Quantity = model.ClassQuantity;
+                        planning.ClassSchedules.Add(classSchedule);
+                    }
+                    else
+                    {
+                        classSchedule.ModifiedAt = DateTime.Now;
+                        classSchedule.TagColor = model.TagColor;
+                        classSchedule.Quantity = model.ClassQuantity;
+                    }
+                }
+                else if (model.Repeat == "bimester")
+                {
+                    while (today <= end)
+                    {
+                        classSchedule = null;
+
+                        foreach (ClassSchedule current in planning.ClassSchedules)
+                            if (current.Date == today)
+                            {
+                                classSchedule = current;
+                                break;
+                            }
+
+                        if (classSchedule == null)
+                        {
+                            classSchedule = new ClassSchedule();
+                            classSchedule.NewID();
+                            classSchedule.CreatedAt = DateTime.Now;
+                            classSchedule.ModifiedAt = DateTime.Now;
+                            classSchedule.Date = today;
+                            classSchedule.TagColor = model.TagColor;
+                            classSchedule.Quantity = model.ClassQuantity;
+                            planning.ClassSchedules.Add(classSchedule);
+                        }
+                        else
+                        {
+                            classSchedule.ModifiedAt = DateTime.Now;
+                            classSchedule.TagColor = model.TagColor;
+                            classSchedule.Quantity = model.ClassQuantity;
+                        }
+
+                        today = today.AddDays(7);
+                    }
+                }
+                else
+                {
+                    start = calendar.SchoolTerms[0].ValidityStart;
+                    end = calendar.SchoolTerms[calendar.SchoolTerms.Count - 1].ValidityEnd;
+
+                    while (today <= end)
+                    {
+                        classSchedule = null;
+
+                        foreach (ClassSchedule current in planning.ClassSchedules)
+                            if (current.Date == today)
+                            {
+                                classSchedule = current;
+                                break;
+                            }
+
+                        if (classSchedule == null)
+                        {
+                            classSchedule = new ClassSchedule();
+                            classSchedule.NewID();
+                            classSchedule.CreatedAt = DateTime.Now;
+                            classSchedule.ModifiedAt = DateTime.Now;
+                            classSchedule.Date = today;
+                            classSchedule.TagColor = model.TagColor;
+                            classSchedule.Quantity = model.ClassQuantity;
+                            planning.ClassSchedules.Add(classSchedule);
+                        }
+                        else
+                        {
+                            classSchedule.ModifiedAt = DateTime.Now;
+                            classSchedule.TagColor = model.TagColor;
+                            classSchedule.Quantity = model.ClassQuantity;
+                        }
+
+                        today = today.AddDays(7);
+                    }
+                } 
             }
             else
-            {
-                classSchedule.ModifiedAt = DateTime.Now;
-                classSchedule.TagColor = model.TagColor;
-            }
+                return (StatusCode(500,"School Year Calendar not found"));
+
 
             try
             {
@@ -808,48 +949,75 @@ namespace smeCore.SGP.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> CalendarioAnoLetivo(string name = "", int year = 0)
         {
-            if (name == "")
-                name = "Ensino Regular";
+            SchoolYearModel result = await GetSchoolYearCalendar(name, year);
 
-            if (year < 2014)
-                year = DateTime.Now.Year;
-
-            SchoolYear schoolYear = await
-                (from current in _db.SchoolYears.Include(x => x.SchoolTerms)
-                 where current.Name.ToLower() == name.ToLower()
-                 && current.Year == year
-                 select current).SingleOrDefaultAsync();
-
-            if (schoolYear == null)
+            if (result == null)
                 return (NotFound());
             else
-            {
-                SchoolYearModel result = new SchoolYearModel()
-                {
-                    Id = schoolYear.Id,
-                    Name = schoolYear.Name,
-                    Year = schoolYear.Year
-                };
-
-                result.SchoolTerms =
-                    (from current in schoolYear.SchoolTerms
-                     orderby current.Name
-                     select new SchoolTermModel
-                     {
-                         Name = current.Name,
-                         ValidityStart = current.ValidityStart,
-                         ValidityEnd = current.ValidityEnd,
-                         ClosureStart = current.ClosureStart,
-                         ClosureEnd = current.ClosureEnd,
-                         ReportCardConsolidation = current.ReportCardConsolidation
-                     }).ToList();
-
                 return (Ok(result));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> MigrarConteudo(CopyClassScheduleModel model)
+        {
+            Planning planningFrom =
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            ClassSchedule scheduleFrom =
+                (from current in planningFrom.ClassSchedules
+                 where current.Date == model.Date
+                 select current).FirstOrDefault();
+
+            Planning planningTo =
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.CopyToSchool
+                 && current.Year == model.Year
+                 && current.Classroom == model.CopyToClassroom
+                 select current).FirstOrDefault();
+
+            List<ClassSchedule> schedulesTo = new List<ClassSchedule>();
+
+            string dates = "";
+
+            foreach (ClassSchedule schedule in planningTo.ClassSchedules)
+                if (model.CopyDates.Contains(schedule.Date) == true)
+                    schedulesTo.Add(schedule);
+                else
+                    dates += "    - " + schedule.Date.ToString("dd/MM/yyyy") + "\n";
+
+            for (int i = 0; i < schedulesTo.Count; i++)
+            {
+                if (model.LearningObjectives == true)
+                    schedulesTo[i].LearninObjectives = scheduleFrom.LearninObjectives;
+                if (model.ClassDevelopment == true)
+                    schedulesTo[i].ClassroomDevelopment = scheduleFrom.ClassroomDevelopment;
+                if (model.Homework == true)
+                    schedulesTo[i].Homework = scheduleFrom.Homework;
             }
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return (StatusCode(500));
+            }
+
+            if (model.CopyDates.Count != schedulesTo.Count)
+                return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+
+            return (Ok());
         }
 
         #endregion -------------------- PUBLIC --------------------
 
         #endregion ==================== METHODS ====================
     }
-}
+} 

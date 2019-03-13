@@ -98,17 +98,56 @@ export class EditAppointment extends Component {
 
     copyContentClick() {
         // Fazer método para salvar os dados
-        var txt = "Selected Class: " + this.state.copyContent.selectedClass.label + "\nDates:\n";
+        //var txt = "Selected Class: " + this.state.copyContent.selectedClass.label + "\nDates:\n";
+        //var dates = [];
+
+        //for (var i = 0; i < this.state.copyContent.selectedDates.length; i++) {
+        //    txt += "    - " + this.state.copyContent.selectedDates[i].value + "\n";
+        //    dates.push(this.state.copyContent.selectedDates[i].value);
+        //}
+
+        //txt +=
+        //    "Learning Objectives: " + this.state.copyContent.learningObjectivesCheckbox + "\n" +
+        //    "Class Development: " + this.state.copyContent.classDevelopmentCheckbox + "\n" +
+        //    "Homework: " + this.state.copyContent.homeworkCheckbox;
+
+        //alert(txt);
+
+
+        // Formata a data no padrão americano (yyyy-mm-dd)
+        function formatDate(date) {
+            var values = date.split("/");
+
+            return (values[2] + "-" + values[1] + "-" + values[0]);
+        };
+
+        var dates = [];
 
         for (var i = 0; i < this.state.copyContent.selectedDates.length; i++)
-            txt += "    - " + this.state.copyContent.selectedDates[i].value + "\n";
+            dates.push(this.state.copyContent.selectedDates[i].value + " " + this.props.time);
 
-        txt +=
-            "Learning Objectives: " + this.state.copyContent.learningObjectivesCheckbox + "\n" +
-            "Class Development: " + this.state.copyContent.classDevelopmentCheckbox + "\n" +
-            "Homework: " + this.state.copyContent.homeworkCheckbox;
-
-        alert(txt);
+        var model = {
+            username: this.props.user.username,
+            year: this.props.year,
+            classroom: this.props.classroom,
+            school: this.props.school,
+            date: formatDate(this.props.date) + " " + this.props.time,
+            copyToClassroom: this.state.copyContent.selectedClass.description,
+            copyToSchool: this.state.copyContent.selectedClass.school,
+            copyDates: dates,
+            learningObjectives: this.state.copyContent.learningObjectivesCheckbox,
+            classDevelopment: this.state.copyContent.classDevelopmentCheckbox,
+            homework: this.state.copyContent.homeworkCheckbox
+        };
+        fetch('/api/Planejamento/MigrarConteudo', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    alert("Conteúdo migrado com sucesso!");
+            });
     }
 
 
@@ -265,7 +304,7 @@ export class EditAppointment extends Component {
                                         ))}
                                     </tbody>
                                 </table>
-                            
+
                             </div>
                         </div>
 
