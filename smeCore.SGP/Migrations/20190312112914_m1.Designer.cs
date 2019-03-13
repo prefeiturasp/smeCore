@@ -10,7 +10,7 @@ using smeCore.SGP.Contexts;
 namespace smeCore.SGP.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20190311111109_m1")]
+    [Migration("20190312112914_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,6 +124,8 @@ namespace smeCore.SGP.Migrations
                     b.Property<DateTime>("ModifiedAt");
 
                     b.Property<string>("PlanningId");
+
+                    b.Property<int>("Quantity");
 
                     b.Property<string>("TagColor");
 
@@ -306,45 +308,45 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "72855aa6-ce9c-4afa-8d4a-79cbf89a3cdc",
+                            Id = "5fd5d7b0-0a99-4f32-8c0c-a6fa387490a7",
                             ClosureEnd = new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "1° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
+                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
                             ValidityEnd = new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "834164dd-fc84-4507-9595-59fe97747b91",
+                            Id = "bb42885a-9851-4504-9639-93dd73b933c1",
                             ClosureEnd = new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "2° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
+                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
                             ValidityEnd = new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "1e771e85-16db-4618-955e-baac655e4f05",
+                            Id = "89827e7f-b678-4dd6-adee-cb66eb65eecf",
                             ClosureEnd = new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "3° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
+                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
                             ValidityEnd = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "e8a7498d-61ae-4127-bc8b-1ce36738c885",
+                            Id = "85f081c0-bdd6-486d-b606-41b7039fe25a",
                             ClosureEnd = new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "4° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
+                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
                             ValidityEnd = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -366,7 +368,7 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fede58b1-0e4b-430f-a115-0ca56d6a7686",
+                            Id = "8ab881f6-3691-4c64-bfb6-492263dc6483",
                             Name = "Ensino Regular",
                             Year = 2019
                         });
