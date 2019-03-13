@@ -740,6 +740,14 @@ namespace smeCore.SGP.Controllers
                             classSchedule.Quantity = model.ClassQuantity;
                         }
 
+                        today = today.AddDays(7);
+                    }
+                }
+            }
+            else
+                return (StatusCode(500, "School Year Calendar not found"));
+
+
             try
             {
                 await _db.SaveChangesAsync();
@@ -1012,4 +1020,4 @@ namespace smeCore.SGP.Controllers
 
         #endregion ==================== METHODS ====================
     }
-} 
+}
