@@ -2,8 +2,8 @@
 import './EditAppointment.css';
 import { MyObjectiveItem } from './MyObjectiveItem';
 import { EditorState } from 'draft-js';
-import { DynamicDatePicker } from '../textbox/DynamicDatePicker';
-import { RichTextBox } from '../textbox/RichTextBox';
+import { DynamicDatePicker } from '../inputs/DynamicDatePicker';
+import { RichTextBox } from '../inputs/RichTextBox';
 import { Student } from './Student';
 import Select from 'react-select';
 

@@ -1,0 +1,44 @@
+﻿.poll-select {
+    background-color: lightgray;
+    font-size: 0.7em;
+}
+
+    .poll-select option.bg-bluescale-5 {
+        background-color: #D17F90;
+    }
+
+    .poll-select option.bg-bluescale-4 {
+        background-color: #BF84AF;
+    }
+
+    .poll-select option.bg-bluescale-3 {
+        background-color: #B089CA;
+    }
+
+    .poll-select option.bg-bluescale-2 {
+        background-color: #A48FE1;
+    }
+
+    .poll-select option.bg-bluescale-1 {
+        background-color: #9C96F6;
+    }
+
+    .poll-select.opt-ps {
+        background-color: #D17F90;
+    }
+
+    .poll-select.opt-ssv {
+        background-color: #BF84AF;
+    }
+
+    .poll-select.opt-scv {
+        background-color: #B089CA;
+    }
+
+    .poll-select.opt-sa {
+        background-color: #A48FE1;
+    }
+
+    .poll-select.opt-a {
+        background-color: #9C96F6;
+    }

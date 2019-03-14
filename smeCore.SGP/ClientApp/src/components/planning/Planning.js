@@ -3,6 +3,7 @@ import './Planning.css';
 import { CyclePlan } from './CyclePlan';
 import { AnnualPlan } from './AnnualPlan';
 import { ClassPlan } from './ClassPlan';
+import { Poll } from './Poll';
 import Select from 'react-select';
 
 export default class Planning extends Component {
@@ -51,7 +52,8 @@ export default class Planning extends Component {
                 knowledgeItems: [],
                 sustainableDevItems: [],
                 lastModifiedBy: "-"
-            }
+            },
+            pollStudents: [],
         }
 
         this.getSchoolCalendar = this.getSchoolCalendar.bind(this);
@@ -67,6 +69,8 @@ export default class Planning extends Component {
         this.getCycleType = this.getCycleType.bind(this);
         this.setCycle = this.setCycle.bind(this);
         this.saveCyclePlan = this.saveCyclePlan.bind(this);
+        
+        this.updatePollStudent = this.updatePollStudent.bind(this);
 
         this.selectedChange = this.selectedChange.bind(this);
         this.changeClass = this.changeClass.bind(this);
@@ -463,6 +467,50 @@ export default class Planning extends Component {
 
 
 
+    updatePollStudent(sequence, subjectName, propertyName, value) {
+        var pollStudents = this.state.pollStudents;
+
+        for (var i = 0; i < pollStudents.length; i++) {
+            if (pollStudents[i].sequence === sequence) {
+                if (subjectName === "portuguese")
+                    switch (propertyName) {
+                        case "t1e":
+                            pollStudents[i].pollResults.portuguese.t1e = value;
+                            break;
+                        case "t1l":
+                            pollStudents[i].pollResults.portuguese.t1l = value;
+                            break;
+                        case "t2e":
+                            pollStudents[i].pollResults.portuguese.t2e = value;
+                            break;
+                        case "t2l":
+                            pollStudents[i].pollResults.portuguese.t2l = value;
+                            break;
+                        case "t3e":
+                            pollStudents[i].pollResults.portuguese.t3e = value;
+                            break;
+                        case "t3l":
+                            pollStudents[i].pollResults.portuguese.t3l = value;
+                            break;
+                        case "t4e":
+                            pollStudents[i].pollResults.portuguese.t4e = value;
+                            break;
+                        case "t4l":
+                            pollStudents[i].pollResults.portuguese.t4l = value;
+                            break;
+                        default:
+                            break;
+                    }
+
+                break;
+            }
+        }
+
+        this.setState({ pollStudents: pollStudents });
+    }
+
+
+
     selectedChange(selectedClass) {
         var relatedClasses = [];
 
@@ -521,6 +569,7 @@ export default class Planning extends Component {
                         this.setState({ calendar: result });
                     });
             });
+        // Carrega os alunos
         fetch('/api/Planejamento/CarregarAlunosMock', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
@@ -529,7 +578,29 @@ export default class Planning extends Component {
             .then(data => {
                 if (data.status === 200)
                     data.json().then(result => {
-                        this.setState({ students: result });
+                        // Cria a estrutura dos alunos para a sondagem
+                        var pollStudents = [];
+
+                        for (var i = 0; i < result.length; i++)
+                            pollStudents.push({
+                                sequence: result[i].sequence,
+                                name: result[i].name,
+                                pollResults: {
+                                    portuguese: {
+                                        t1e: "",
+                                        t1l: "",
+                                        t2e: "",
+                                        t2l: "",
+                                        t3e: "",
+                                        t3l: "",
+                                        t4e: "",
+                                        t4l: ""
+                                    },
+                                    math: {}
+                                }
+                            });
+
+                        this.setState({ students: result, pollStudents: pollStudents });
                     });
             });
 
@@ -700,6 +771,9 @@ export default class Planning extends Component {
                             <a className="nav-link azul-ux" id="planoCiclo-tab" data-toggle="tab" href="#planoCiclo" role="tab" aria-controls="planoCiclo" aria-selected="false">Plano de Ciclo</a>
                         </li>
                         <li className="nav-item">
+                            <a className="nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#sondagem" role="tab" aria-controls="sondagem" aria-selected="false">Sondagem</a>
+                        </li>
+                        <li className="nav-item">
                             <a className="nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#documentos" role="tab" aria-controls="documentos" aria-selected="false">Documentos</a>
                         </li>
                     </ul>
@@ -727,6 +801,12 @@ export default class Planning extends Component {
                             cycle={this.state.cycle}
                             setCycle={this.setCycle}
                             saveCyclePlan={this.saveCyclePlan}
+                            {...childProps} />
+
+                        <Poll
+                            name="poll"
+                            students={this.state.pollStudents}
+                            updatePollStudent={this.updatePollStudent}
                             {...childProps} />
 
                         <div className="tab-pane fade border-0" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
