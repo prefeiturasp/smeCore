@@ -1,19 +1,14 @@
 ﻿import React, { Component } from 'react';
 import './RichTextBox.css';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, RichUtils } from 'draft-js';
 
 export class RichTextBox extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            editorState: EditorState.createEmpty()
-            //editorState: props.editorState
-        };
-
         this.focus = () => this.refs.editor.focus();
-        this.onChange = (editorState) => this.setState({ editorState });
-        //this.onChange = (editorState) => props.editorChange(editorState);
+        //this.onChange = (editorState) => this.setState({ editorState });
+        this.onChange = (editorState) => props.changeText(editorState);
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.onTab = (e) => this._onTab(e);
@@ -22,7 +17,8 @@ export class RichTextBox extends Component {
     }
 
     _handleKeyCommand(command) {
-        const { editorState } = this.state;
+        const editorState = this.props.value;
+        //const { editorState } = this.state;
         const newState = RichUtils.handleKeyCommand(editorState, command);
         if (newState) {
             this.onChange(newState);
@@ -33,13 +29,15 @@ export class RichTextBox extends Component {
 
     _onTab(e) {
         const maxDepth = 4;
-        this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+        this.onChange(RichUtils.onTab(e, this.props.value, maxDepth));
+        //this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
     }
 
     _toggleBlockType(blockType) {
         this.onChange(
             RichUtils.toggleBlockType(
-                this.state.editorState,
+                this.props.value,
+                //this.state.editorState,
                 blockType
             )
         );
@@ -48,19 +46,16 @@ export class RichTextBox extends Component {
     _toggleInlineStyle(inlineStyle) {
         this.onChange(
             RichUtils.toggleInlineStyle(
-                this.state.editorState,
+                this.props.value,
+                //this.state.editorState,
                 inlineStyle
             )
         );
     }
 
     render() {
-        const { editorState } = this.state;
-
-        //var editorState = this.props.editorState;
-
-        //if (editorState === undefined)
-        //    editorState = EditorState.createEmpty();
+        const editorState = this.props.value;
+        //const { editorState } = this.state;
 
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.

@@ -7,66 +7,43 @@ export class CyclePlan extends Component {
     constructor(props) {
         super(props);
 
-        var today = new Date();
-        var month = props.getMonthByIndex(today.getMonth());
+        this.isLoaded = false;
 
         this.state = {
-            SustainableDevItems: [],
-            KnowledgeItems: [],
-            today: today.getDate() + " de " + month + " - " + today.getFullYear(),
-            title: "",
+            cyclePlanningDescription: "",
             lastModifiedBy: "Maria Blábláblá | 29/01/2019"
         };
 
-        this.saveButtonClick = this.saveButtonClick.bind(this);
-    }
-
-    componentDidMount() {
-        fetch('api/Planejamento/ListarMatrizSaberes')
-            .then(response => response.json())
-            .then(data => {
-                for (var i = 0; i < data.length; i++)
-                    data[i].selected = false;
-
-                this.setState({ KnowledgeItems: data, loading: false });
-            });
-
-        fetch('api/Planejamento/ListarODS')
-            .then(response => response.json())
-            .then(data => {
-                for (var i = 0; i < data.length; i++)
-                    data[i].selected = false;
-
-                this.setState({ SustainableDevItems: data, loading: false });
-            });
+        this.onTextChange = this.onTextChange.bind(this);
     }
 
     knowledgeItemClick(item, e) {
-        let data = this.state.KnowledgeItems;
-
-        for (var i = 0; i < data.length; i++)
-            if (data[i].sequence === item.sequence) {
-                data[i].selected = !data[i].selected;
+        var cycle = this.props.cycle;
+        for (var i = 0; i < cycle.knowledgeItems.length; i++)
+            if (cycle.knowledgeItems[i].sequence === item.sequence) {
+                cycle.knowledgeItems[i].selected = !cycle.knowledgeItems[i].selected;
                 break;
             }
 
-        this.setState({ KnowledgeItems: data });
+        this.props.setCycle(cycle);
     }
 
     sustainableDevItemClick(item, e) {
-        let data = this.state.SustainableDevItems;
-
-        for (var i = 0; i < data.length; i++)
-            if (data[i].sequence === item.sequence) {
-                data[i].selected = !data[i].selected;
+        var cycle = this.props.cycle;
+        for (var i = 0; i < cycle.sustainableDevItems.length; i++)
+            if (cycle.sustainableDevItems[i].sequence === item.sequence) {
+                cycle.sustainableDevItems[i].selected = !cycle.sustainableDevItems[i].selected;
                 break;
             }
 
-        this.setState({ SustainableDevItems: data });
+        this.props.setCycle(cycle);
     }
 
-    saveButtonClick() {
-        alert("not implemented");
+    onTextChange(event) {
+        var cycle = this.props.cycle;
+        cycle.description = event.target.value;
+
+        this.props.setCycle(cycle);
     }
 
     render() {
@@ -74,16 +51,16 @@ export class CyclePlan extends Component {
             <div className="tab-pane fade border-left border-right border-bottom" id="planoCiclo" role="tabpanel" aria-labelledby="planoCiclo-tab">
                 <nav className="container-tabpanel navbar">
                     <div className="form-inline">
-                        <button className="btn btn-outline-primary btn-sm">{this.state.today}</button>
+                        <button className="btn btn-outline-primary btn-sm">{this.props.todayDate}</button>
                     </div>
 
                     <ul className="nav navbar-nav ml-auto">
                         <li className="nav-item">
                             <div className="form-inline">
 
-                                <span className="text-muted text-color-purple">Última acesso: {this.state.lastModifiedBy}</span>&nbsp;
+                                <span className="text-muted text-color-purple px-2">Última acesso: {this.props.cycle.lastModifiedBy}</span>&nbsp;
 
-                                <button className="btn btn-warning" onClick={this.saveButtonClick} disabled={this.props.year <= 0}>Salvar</button>
+                                <button className="btn btn-warning text-white" onClick={this.props.saveCyclePlan} disabled={this.props.year <= 0}>Salvar</button>
                             </div>
                         </li>
                     </ul>
@@ -93,7 +70,7 @@ export class CyclePlan extends Component {
 
                 <div id="cyclePlan-info" className="container-tabpanel-content">
                     <div className="container row">
-                        <h5 className="">Plano de Ciclo | planoDeCiclo</h5>
+                        <h5 className="">Plano de Ciclo {this.props.cycle.name}</h5>
                     </div>
 
                     <div className="vertical-spacing-2" />
@@ -109,8 +86,10 @@ export class CyclePlan extends Component {
                                     <span className="small-text">Levem em consideração os diversos ritmos de aprendizagem para planejar e traçar o percurso de cada Ciclo de Aprendizagem</span>
                                 </div>
                             </div>
+
                             <div className="vertical-spacing" />
-                            <textarea className="form-control" rows="5" id="cyclePlanning-textarea"></textarea>
+
+                            <textarea className="form-control" rows="5" id="cyclePlanningDescription" value={this.props.cycle.description} onChange={this.onTextChange}></textarea>
                         </div>
 
                         <div className="col-12 col-md-6 col-lg-6 col-xl-6">
@@ -137,7 +116,7 @@ export class CyclePlan extends Component {
                                     <hr className="header-rule" />
 
                                     <ul className="list-unstyled">
-                                        {this.state.KnowledgeItems.map(knowledgeItem => (
+                                        {this.props.cycle.knowledgeItems.map(knowledgeItem => (
                                             <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)} />
                                         ))}
                                     </ul>
@@ -151,7 +130,7 @@ export class CyclePlan extends Component {
                                     <hr className="header-rule" />
 
                                     <ul className="list-unstyled">
-                                        {this.state.SustainableDevItems.map(sustainableDevItem => (
+                                        {this.props.cycle.sustainableDevItems.map(sustainableDevItem => (
                                             <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} selected={sustainableDevItem.selected} buttonClick={this.sustainableDevItemClick.bind(this, sustainableDevItem)} />
                                         ))}
                                     </ul>

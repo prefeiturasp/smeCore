@@ -8,20 +8,52 @@ export class Appointment extends Component {
         this.state = {
             color: "dot color-" + props.color
         };
+
+        this.classAppointmentClick = this.classAppointmentClick.bind(this);
+        this.removeAppointment = this.removeAppointment.bind(this);
     }
 
-    abrirModal() {
+    classAppointmentClick() {
+        var properties = {
+            color: this.state.color,
+            time: this.props.time,
+            day: this.props.day,
+            month: this.props.month,
+            fullYear: this.props.fullYear
+        };
+
+        this.props.classAppointmentClick(properties);
+    }
+
+    removeAppointment() {
+        this.props.removeAppointment({
+            name: this.props.name,
+            color: this.state.color,
+            time: this.props.time,
+            day: this.props.day,
+            month: this.props.month,
+            fullYear: this.props.fullYear,
+            school: this.props.school
+        });
     }
 
     render() {
+        var classroom = this.props.name;//.substring(this.props.name.indexOf("-"), this.props.name.length);
+
         return (
-            <div className="appointment">
-                <div className="border-bottom form-inline d-flex justify-content-center container-appointment">
+            <div className="appointment d-flex border-bottom mx-2">
+                <div className="form-inline d-flex container-appointment" onClick={this.classAppointmentClick}>
                     <div className={this.state.color}></div>&nbsp;
-                    <div className="appointment-hora">{this.props.time}</div>&nbsp;
-                    <div className="appointment-classe">{this.props.name}</div>&nbsp;
-                    <div className="appointment-separador">-</div>&nbsp;
-                    <div className="font-weight-bold appointment-escola">{this.props.school}</div>
+                    <div className="appointment-hora"><small>{this.props.time}</small></div>&nbsp;
+                    <div className="appointment-classe"><small>{classroom}</small></div>&nbsp;
+                    <div className="appointment-separador"><small>-</small></div>&nbsp;
+                    <div className="font-weight-bold appointment-escola"><small>{this.props.school}</small></div>
+                </div>
+
+                <div className="d-flex flex-fill flex-row-reverse">
+                    <button type="button" className="close" aria-label="Close" onClick={this.removeAppointment} data-toggle="modal" data-target={"#" + this.props.removeModalId}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             </div>
         );

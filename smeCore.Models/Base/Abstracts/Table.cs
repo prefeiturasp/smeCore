@@ -14,7 +14,7 @@ namespace smeCore.Models.Base.Abstracts
 
         #region ==================== METHODS ====================
 
-        public void NewID()
+        public virtual void NewID()
         {
             this.Id = Guid.NewGuid().ToString();
         }

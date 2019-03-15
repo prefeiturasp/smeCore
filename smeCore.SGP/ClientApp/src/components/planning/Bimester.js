@@ -23,7 +23,7 @@ export class Bimester extends Component {
             learningObjectiveItems: [],
             objectiveItems: [],
             lastYearValue: "0",
-            textareaName: "annualPlanning-textarea" + props.name,
+            textareaName: "annualPlanningTextarea" + props.name,
             objectivesId: "myObjectives" + props.name,
             loadLearningObjectiveItems: true
         };
@@ -66,17 +66,24 @@ export class Bimester extends Component {
             this.learningObjectiveItems = this.props.learningObjectiveItems;
         }
 
-        if (this.props.selected !== null) {
+        if (this.props.selected !== null && this.props.selected.length > 0) {
+            this.selectedLearningObjectiveItems = [];
+
             for (var i = 0; i < this.learningObjectiveItems.length; i++) {
-                if (this.props.selected.includes(this.learningObjectiveItems[i].code) === true)
+                if (this.props.selected.includes(this.learningObjectiveItems[i].code) === true) {
                     this.learningObjectiveItems[i].selected = true;
+                    this.selectedLearningObjectiveItems.push(this.learningObjectiveItems[i].code);
+                }
                 else
                     this.learningObjectiveItems[i].selected = false;
             }
         }
-        else
+        else {
             for (var i = 0; i < this.learningObjectiveItems.length; i++)
                 this.learningObjectiveItems[i].selected = false;
+
+            this.selectedLearningObjectiveItems = [];
+        }
 
         return (
             <div className="w-auto shadows-box-bimester rounded">
@@ -148,7 +155,7 @@ export class Bimester extends Component {
                                             <li>Avaliação</li>
                                         </ul>
 
-                                        <textarea className="form-control" rows="5" id={this.state.textareaName}></textarea>
+                                        <textarea className="form-control" rows="5" id={this.state.textareaName} value={this.props.textarea} onChange={this.props.textareaChange}></textarea>
                                     </div>
                                 </div>
                             </div>

@@ -1,0 +1,30 @@
+﻿.dot {
+    height: 0.7em;
+    width: 0.7em;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.color-bluescale-5 {
+    background-color: #D17F90;
+}
+
+.color-bluescale-4 {
+    background-color: #BF84AF;
+}
+
+.color-bluescale-3 {
+    background-color: #B089CA;
+}
+
+.color-bluescale-2 {
+    background-color: #A48FE1;
+}
+
+.color-bluescale-1 {
+    background-color: #9C96F6;
+}
+
+.poll-select-container {
+    width: 9%;
+}

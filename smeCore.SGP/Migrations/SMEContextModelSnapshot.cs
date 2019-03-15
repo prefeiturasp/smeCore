@@ -70,18 +70,75 @@ namespace smeCore.SGP.Migrations
                     b.ToTable("ClassAbsences");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Academic.ClassMode", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Acronym");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClassModes");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.ClassModeCalendar", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClassModeId");
+
+                    b.Property<string>("SchoolYearId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassModeId");
+
+                    b.HasIndex("SchoolYearId");
+
+                    b.ToTable("ClassModeCalendars");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.ClassPoll", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("PollPortugueseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PollPortugueseId")
+                        .IsUnique();
+
+                    b.ToTable("ClassPolls");
+                });
+
             modelBuilder.Entity("smeCore.Models.Academic.ClassSchedule", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ClassroomDevelopment");
+
+                    b.Property<string>("ContinuousRecovery");
+
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<string>("Homework");
+
+                    b.Property<string>("LearninObjectives");
+
                     b.Property<DateTime>("ModifiedAt");
 
                     b.Property<string>("PlanningId");
+
+                    b.Property<int>("Quantity");
 
                     b.Property<string>("TagColor");
 
@@ -141,9 +198,13 @@ namespace smeCore.SGP.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<string>("DisciplineId");
+
                     b.Property<DateTime>("ModifiedAt");
 
                     b.Property<string>("School");
+
+                    b.Property<string>("SchoolClassId");
 
                     b.Property<string>("UserId");
 
@@ -151,7 +212,205 @@ namespace smeCore.SGP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("SchoolClassId");
+
                     b.ToTable("Plannings");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.PollPortuguese", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("T1E");
+
+                    b.Property<string>("T1L");
+
+                    b.Property<string>("T2E");
+
+                    b.Property<string>("T2L");
+
+                    b.Property<string>("T3E");
+
+                    b.Property<string>("T3L");
+
+                    b.Property<string>("T4E");
+
+                    b.Property<string>("T4L");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PollPortugueses");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.RegionalBoardEducation", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Acronym");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RegionalBoardEducations");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.School", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("RegionalBoardEducationId");
+
+                    b.Property<int>("SchoolType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegionalBoardEducationId");
+
+                    b.ToTable("Schools");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolCalendar", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("SchoolId");
+
+                    b.Property<string>("SchoolYearId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasIndex("SchoolYearId");
+
+                    b.ToTable("SchoolCalendars");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolClass", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClassModeId");
+
+                    b.Property<string>("Classroom");
+
+                    b.Property<int>("OfferedSeats");
+
+                    b.Property<string>("SchoolId");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassModeId");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("SchoolClasses");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolTerm", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ClosureEnd");
+
+                    b.Property<DateTime>("ClosureStart");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("ReportCardConsolidation");
+
+                    b.Property<string>("SchoolYearId");
+
+                    b.Property<DateTime>("ValidityEnd");
+
+                    b.Property<DateTime>("ValidityStart");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolYearId");
+
+                    b.ToTable("SchoolTerm");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1bf95102-1817-4194-a0d6-ad68bf690bf8",
+                            ClosureEnd = new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "1° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            ValidityEnd = new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "6ade712a-761c-4ae8-a75d-db177ef32bed",
+                            ClosureEnd = new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "2° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            ValidityEnd = new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "26a864c7-80ba-4e95-929a-62a2b3c4f1f3",
+                            ClosureEnd = new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "3° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            ValidityEnd = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "83e4be82-780b-430b-94ef-b302b7d7011c",
+                            ClosureEnd = new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ClosureStart = new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "4° Bimestre de 2019",
+                            ReportCardConsolidation = new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            ValidityEnd = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ValidityStart = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolYear", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SchoolYears");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "11269eea-e7da-4d95-a405-86114777c919",
+                            Name = "Ensino Regular",
+                            Year = 2019
+                        });
                 });
 
             modelBuilder.Entity("smeCore.Models.Academic.Student", b =>
@@ -174,7 +433,11 @@ namespace smeCore.SGP.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DisciplineId");
+                    b.Property<string>("PlanningId");
+
+                    b.Property<string>("PollsId");
+
+                    b.Property<string>("SchoolClassId");
 
                     b.Property<string>("StudentId");
 
@@ -182,7 +445,12 @@ namespace smeCore.SGP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DisciplineId");
+                    b.HasIndex("PlanningId");
+
+                    b.HasIndex("PollsId")
+                        .IsUnique();
+
+                    b.HasIndex("SchoolClassId");
 
                     b.HasIndex("StudentId");
 
@@ -280,6 +548,28 @@ namespace smeCore.SGP.Migrations
                     b.ToTable("Codes");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Organization.StudentCode", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CodeId");
+
+                    b.Property<string>("StudentId");
+
+                    b.Property<DateTime>("Validity");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentCodes");
+                });
+
             modelBuilder.Entity("smeCore.Models.Organization.UserCode", b =>
                 {
                     b.Property<string>("Id")
@@ -314,11 +604,76 @@ namespace smeCore.SGP.Migrations
                         .HasForeignKey("StudentClassId");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Academic.ClassModeCalendar", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.ClassMode", "ClassMode")
+                        .WithMany("SpecialCalendars")
+                        .HasForeignKey("ClassModeId");
+
+                    b.HasOne("smeCore.Models.Academic.SchoolYear", "SchoolYear")
+                        .WithMany("ClassModeCalendars")
+                        .HasForeignKey("SchoolYearId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.ClassPoll", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.PollPortuguese", "PollPortuguese")
+                        .WithOne("ClassPoll")
+                        .HasForeignKey("smeCore.Models.Academic.ClassPoll", "PollPortugueseId");
+                });
+
             modelBuilder.Entity("smeCore.Models.Academic.ClassSchedule", b =>
                 {
                     b.HasOne("smeCore.Models.Academic.Planning", "Planning")
                         .WithMany("ClassSchedules")
                         .HasForeignKey("PlanningId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.Planning", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.Discipline", "Discipline")
+                        .WithMany("Plannings")
+                        .HasForeignKey("DisciplineId");
+
+                    b.HasOne("smeCore.Models.Academic.SchoolClass", "SchoolClass")
+                        .WithMany("Plannings")
+                        .HasForeignKey("SchoolClassId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.School", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.RegionalBoardEducation", "RegionalBoardEducation")
+                        .WithMany("Schools")
+                        .HasForeignKey("RegionalBoardEducationId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolCalendar", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.School", "School")
+                        .WithMany("SchoolCalendars")
+                        .HasForeignKey("SchoolId");
+
+                    b.HasOne("smeCore.Models.Academic.SchoolYear", "SchoolYear")
+                        .WithMany("SchoolCalendars")
+                        .HasForeignKey("SchoolYearId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolClass", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.ClassMode", "ClassMode")
+                        .WithMany("SchoolClasses")
+                        .HasForeignKey("ClassModeId");
+
+                    b.HasOne("smeCore.Models.Academic.School", "School")
+                        .WithMany("Classes")
+                        .HasForeignKey("SchoolId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.SchoolTerm", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.SchoolYear", "SchoolYear")
+                        .WithMany("SchoolTerms")
+                        .HasForeignKey("SchoolYearId");
                 });
 
             modelBuilder.Entity("smeCore.Models.Academic.Student", b =>
@@ -330,9 +685,17 @@ namespace smeCore.SGP.Migrations
 
             modelBuilder.Entity("smeCore.Models.Academic.StudentClass", b =>
                 {
-                    b.HasOne("smeCore.Models.Academic.Discipline", "Discipline")
-                        .WithMany("StudentsClasses")
-                        .HasForeignKey("DisciplineId");
+                    b.HasOne("smeCore.Models.Academic.Planning", "Planning")
+                        .WithMany("StudentClasses")
+                        .HasForeignKey("PlanningId");
+
+                    b.HasOne("smeCore.Models.Academic.ClassPoll", "Polls")
+                        .WithOne("StudentClass")
+                        .HasForeignKey("smeCore.Models.Academic.StudentClass", "PollsId");
+
+                    b.HasOne("smeCore.Models.Academic.SchoolClass", "SchoolClass")
+                        .WithMany("StudentClasses")
+                        .HasForeignKey("SchoolClassId");
 
                     b.HasOne("smeCore.Models.Academic.Student", "Student")
                         .WithMany("Classes")
@@ -355,6 +718,17 @@ namespace smeCore.SGP.Migrations
                     b.HasOne("smeCore.Models.Authentication.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("smeCore.Models.Entity.Profile", "UserId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Organization.StudentCode", b =>
+                {
+                    b.HasOne("smeCore.Models.Organization.Code", "Code")
+                        .WithMany()
+                        .HasForeignKey("CodeId");
+
+                    b.HasOne("smeCore.Models.Academic.Student", "Student")
+                        .WithMany("Codes")
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("smeCore.Models.Organization.UserCode", b =>

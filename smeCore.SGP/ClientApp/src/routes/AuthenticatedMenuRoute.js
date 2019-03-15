@@ -9,7 +9,7 @@ export default ({ component: C, props: cProps, ...rest }) =>
             ? (
                 <div>
                     <TopMenu {...cProps} />
-                    <div className="content">
+                    <div className="content pb-5">
                         <C {...props} {...cProps} />
                     </div>
                     <Footer />

@@ -32,6 +32,31 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190215114037_m1.cs" />
+    <Compile Remove="Migrations\20190215114037_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190219173741_m1.cs" />
+    <Compile Remove="Migrations\20190219173741_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190220164354_m1.cs" />
+    <Compile Remove="Migrations\20190220164354_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190221133310_m1.cs" />
+    <Compile Remove="Migrations\20190221133310_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190227185031_m1.cs" />
+    <Compile Remove="Migrations\20190227185031_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190307150701_m1.cs" />
+    <Compile Remove="Migrations\20190307150701_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190308130752_m1.cs" />
+    <Compile Remove="Migrations\20190308130752_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190308165855_m1.cs" />
+    <Compile Remove="Migrations\20190308165855_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190311111109_m1.cs" />
+    <Compile Remove="Migrations\20190311111109_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190312112914_m1.cs" />
+    <Compile Remove="Migrations\20190312112914_m1.Designer.cs" />
+    <Compile Remove="Migrations\20190314164428_m1.cs" />
+    <Compile Remove="Migrations\20190314164428_m1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\smeCore.Models\smeCore.Models.csproj" />
   </ItemGroup>
 
