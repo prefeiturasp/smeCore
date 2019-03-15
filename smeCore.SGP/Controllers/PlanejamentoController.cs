@@ -920,13 +920,24 @@ namespace smeCore.SGP.Controllers
                         person.Student.Classes.Add(new StudentClass()
                         {
                             Year = DateTime.Now.Year,
-                            Planning = planning
+                            Planning = planning,
+                            Polls = new ClassPoll()
                         });
                         person.Student.Classes[0].NewID();
+                        person.Student.Classes[0].Polls.NewID();
+                        person.Student.Classes[0].Polls.PollPortuguese = new PollPortuguese();
+                        person.Student.Classes[0].Polls.PollPortuguese.NewID();
                     }
 
-                    await _db.Profiles.AddRangeAsync(people);
-                    await _db.SaveChangesAsync();
+                    try
+                    {
+                        await _db.Profiles.AddRangeAsync(people);
+                        await _db.SaveChangesAsync();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                 }
 
                 List<Models.Mocking.Student> result =
@@ -938,6 +949,51 @@ namespace smeCore.SGP.Controllers
                          Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
                          Name = student.Profile.Name,
                          Attendance = 100
+                     }).ToList();
+
+                return (Ok(result.OrderBy(x => x.Sequence)));
+            }
+
+            return (NotFound());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> CarregarAlunosSondagem(PlanningModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            if (planning != null)
+            {
+                List<Models.Planning.StudentPollModel> result =
+                    (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+                     join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
+                     join poll in _db.ClassPolls.Include(x => x.PollPortuguese).Include(x => x.StudentClass) on studentClasses equals poll.StudentClass
+                     where studentClasses.Planning == planning
+                     select new Models.Planning.StudentPollModel()
+                     {
+                         Id = student.Id,
+                         Name = student.Profile.Name,
+                         Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                         PollResults = new PollResultsModel()
+                         {
+                             Portuguese = new PollPortugueseModel()
+                             {
+                                 T1e = poll.PollPortuguese.T1E,
+                                 T1l = poll.PollPortuguese.T1L,
+                                 T2e = poll.PollPortuguese.T2E,
+                                 T2l = poll.PollPortuguese.T2L,
+                                 T3e = poll.PollPortuguese.T3E,
+                                 T3l = poll.PollPortuguese.T3L,
+                                 T4e = poll.PollPortuguese.T4E,
+                                 T4l = poll.PollPortuguese.T4L,
+                             }
+                         }
                      }).ToList();
 
                 return (Ok(result.OrderBy(x => x.Sequence)));
@@ -1014,6 +1070,45 @@ namespace smeCore.SGP.Controllers
                 return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
 
             return (Ok());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> SalvarSondagem(PollModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            if (planning != null)
+            {
+                foreach (StudentPollModel student in model.Students)
+                {
+                    ClassPoll current = await
+                        (from poll in _db.ClassPolls.Include(x => x.StudentClass).Include(x => x.PollPortuguese)
+                         join studentClass in _db.StudentClasses.Include(x => x.Student) on poll.StudentClass equals studentClass
+                         where studentClass.Student.Id == student.Id
+                         select poll).FirstOrDefaultAsync();
+
+                    current.PollPortuguese.T1E = student.PollResults.Portuguese.T1e;
+                    current.PollPortuguese.T1L = student.PollResults.Portuguese.T1l;
+                    current.PollPortuguese.T2E = student.PollResults.Portuguese.T2e;
+                    current.PollPortuguese.T2L = student.PollResults.Portuguese.T2l;
+                    current.PollPortuguese.T3E = student.PollResults.Portuguese.T3e;
+                    current.PollPortuguese.T3L = student.PollResults.Portuguese.T3l;
+                    current.PollPortuguese.T4E = student.PollResults.Portuguese.T4e;
+                    current.PollPortuguese.T4L = student.PollResults.Portuguese.T4l;
+
+                    await _db.SaveChangesAsync();
+                }
+
+                return (Ok());
+            }
+
+            return (NotFound());
         }
 
         #endregion -------------------- PUBLIC --------------------

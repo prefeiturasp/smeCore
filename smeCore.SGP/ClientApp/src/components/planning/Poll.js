@@ -14,7 +14,7 @@ export class Poll extends Component {
                     <ul className="nav navbar-nav ml-auto">
                         <li className="nav-item">
                             <div className="form-inline">
-                                <button className="btn btn-warning text-white" disabled={this.props.year <= 0}>Salvar</button>
+                                <button className="btn btn-warning text-white" onClick={this.props.savePollStudent} disabled={this.props.year <= 0}>Salvar</button>
                             </div>
                         </li>
                     </ul>

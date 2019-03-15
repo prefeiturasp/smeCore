@@ -13,6 +13,9 @@ namespace smeCore.Models.Academic
         public virtual Planning Planning { get; set; }
         public virtual SchoolClass SchoolClass { get; set; }
 
+        public string PollsId { get; set; }
+        public virtual ClassPoll Polls { get; set; }
+
         #endregion ==================== ATTRIBUTES ====================
     }
 }

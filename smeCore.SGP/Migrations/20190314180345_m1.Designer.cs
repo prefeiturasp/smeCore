@@ -10,7 +10,7 @@ using smeCore.SGP.Contexts;
 namespace smeCore.SGP.Migrations
 {
     [DbContext(typeof(SMEContext))]
-    [Migration("20190312112914_m1")]
+    [Migration("20190314180345_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,21 @@ namespace smeCore.SGP.Migrations
                     b.HasIndex("SchoolYearId");
 
                     b.ToTable("ClassModeCalendars");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Academic.ClassPoll", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("PollPortugueseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PollPortugueseId")
+                        .IsUnique();
+
+                    b.ToTable("ClassPolls");
                 });
 
             modelBuilder.Entity("smeCore.Models.Academic.ClassSchedule", b =>
@@ -206,6 +221,32 @@ namespace smeCore.SGP.Migrations
                     b.ToTable("Plannings");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Academic.PollPortuguese", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("T1E");
+
+                    b.Property<string>("T1L");
+
+                    b.Property<string>("T2E");
+
+                    b.Property<string>("T2L");
+
+                    b.Property<string>("T3E");
+
+                    b.Property<string>("T3L");
+
+                    b.Property<string>("T4E");
+
+                    b.Property<string>("T4L");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PollPortugueses");
+                });
+
             modelBuilder.Entity("smeCore.Models.Academic.RegionalBoardEducation", b =>
                 {
                     b.Property<string>("Id")
@@ -308,45 +349,45 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5fd5d7b0-0a99-4f32-8c0c-a6fa387490a7",
+                            Id = "1bf95102-1817-4194-a0d6-ad68bf690bf8",
                             ClosureEnd = new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "1° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
                             ValidityEnd = new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "bb42885a-9851-4504-9639-93dd73b933c1",
+                            Id = "6ade712a-761c-4ae8-a75d-db177ef32bed",
                             ClosureEnd = new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "2° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
                             ValidityEnd = new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "89827e7f-b678-4dd6-adee-cb66eb65eecf",
+                            Id = "26a864c7-80ba-4e95-929a-62a2b3c4f1f3",
                             ClosureEnd = new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "3° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
                             ValidityEnd = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "85f081c0-bdd6-486d-b606-41b7039fe25a",
+                            Id = "83e4be82-780b-430b-94ef-b302b7d7011c",
                             ClosureEnd = new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "4° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "8ab881f6-3691-4c64-bfb6-492263dc6483",
+                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
                             ValidityEnd = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -368,7 +409,7 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8ab881f6-3691-4c64-bfb6-492263dc6483",
+                            Id = "11269eea-e7da-4d95-a405-86114777c919",
                             Name = "Ensino Regular",
                             Year = 2019
                         });
@@ -396,6 +437,8 @@ namespace smeCore.SGP.Migrations
 
                     b.Property<string>("PlanningId");
 
+                    b.Property<string>("PollsId");
+
                     b.Property<string>("SchoolClassId");
 
                     b.Property<string>("StudentId");
@@ -405,6 +448,9 @@ namespace smeCore.SGP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PlanningId");
+
+                    b.HasIndex("PollsId")
+                        .IsUnique();
 
                     b.HasIndex("SchoolClassId");
 
@@ -571,6 +617,13 @@ namespace smeCore.SGP.Migrations
                         .HasForeignKey("SchoolYearId");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Academic.ClassPoll", b =>
+                {
+                    b.HasOne("smeCore.Models.Academic.PollPortuguese", "PollPortuguese")
+                        .WithOne("ClassPoll")
+                        .HasForeignKey("smeCore.Models.Academic.ClassPoll", "PollPortugueseId");
+                });
+
             modelBuilder.Entity("smeCore.Models.Academic.ClassSchedule", b =>
                 {
                     b.HasOne("smeCore.Models.Academic.Planning", "Planning")
@@ -637,6 +690,10 @@ namespace smeCore.SGP.Migrations
                     b.HasOne("smeCore.Models.Academic.Planning", "Planning")
                         .WithMany("StudentClasses")
                         .HasForeignKey("PlanningId");
+
+                    b.HasOne("smeCore.Models.Academic.ClassPoll", "Polls")
+                        .WithOne("StudentClass")
+                        .HasForeignKey("smeCore.Models.Academic.StudentClass", "PollsId");
 
                     b.HasOne("smeCore.Models.Academic.SchoolClass", "SchoolClass")
                         .WithMany("StudentClasses")

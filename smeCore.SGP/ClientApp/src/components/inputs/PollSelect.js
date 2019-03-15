@@ -38,7 +38,7 @@ export class PollSelect extends Component {
         return (
             <div>
                 <select id={"pollItem-" + this.props.name + "-" + this.props.sequence} className={this.getColor(this.props.value)} onChange={this.onOptionChange}>
-                    {this.props.value === "" ? <option defaultValue hidden className="text-muted">Selecione</option> : <option hidden className="text-muted">Selecione</option>} 
+                    {this.props.value === "" ? <option defaultValue hidden className="text-muted" value="">Selecione</option> : <option hidden className="text-muted" value="">Selecione</option>} 
                     {this.props.value === "ps" ? <option selected className="text-white bg-bluescale-5" value="ps">PS</option> : <option className="text-white bg-bluescale-5" value="ps">PS</option>} 
                     {this.props.value === "ssv" ? <option selected className="text-white bg-bluescale-4" value="ssv">SSV</option> : <option className="text-white bg-bluescale-4" value="ssv">SSV</option>}
                     {this.props.value === "scv" ? <option selected className="text-white bg-bluescale-3" value="scv">SCV</option> : <option className="text-white bg-bluescale-3" value="scv">SCV</option>}

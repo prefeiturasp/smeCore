@@ -71,6 +71,7 @@ export default class Planning extends Component {
         this.saveCyclePlan = this.saveCyclePlan.bind(this);
         
         this.updatePollStudent = this.updatePollStudent.bind(this);
+        this.savePollStudent = this.savePollStudent.bind(this);
 
         this.selectedChange = this.selectedChange.bind(this);
         this.changeClass = this.changeClass.bind(this);
@@ -509,6 +510,26 @@ export default class Planning extends Component {
         this.setState({ pollStudents: pollStudents });
     }
 
+    savePollStudent() {
+        var model = {
+            username: this.props.user.username,
+            year: this.state.schoolYear,
+            classroom: this.state.classroom,
+            school: this.state.school,
+            students: this.state.pollStudents
+        }
+
+        fetch('/api/Planejamento/SalvarSondagem', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    alert("Sondagem salva com sucesso!");
+            });
+    }
+
 
 
     selectedChange(selectedClass) {
@@ -558,6 +579,7 @@ export default class Planning extends Component {
             classroom: planningModel.classroom,
             school: planningModel.school
         };
+        // Carrega Calendário
         fetch('/api/Planejamento/AbrirCalendarioAula', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
@@ -578,29 +600,19 @@ export default class Planning extends Component {
             .then(data => {
                 if (data.status === 200)
                     data.json().then(result => {
-                        // Cria a estrutura dos alunos para a sondagem
-                        var pollStudents = [];
-
-                        for (var i = 0; i < result.length; i++)
-                            pollStudents.push({
-                                sequence: result[i].sequence,
-                                name: result[i].name,
-                                pollResults: {
-                                    portuguese: {
-                                        t1e: "",
-                                        t1l: "",
-                                        t2e: "",
-                                        t2l: "",
-                                        t3e: "",
-                                        t3l: "",
-                                        t4e: "",
-                                        t4l: ""
-                                    },
-                                    math: {}
-                                }
-                            });
-
-                        this.setState({ students: result, pollStudents: pollStudents });
+                        this.setState({ students: result });
+                    });
+            });
+        // Carrega os alunos da Sondagem
+        fetch('/api/Planejamento/CarregarAlunosSondagem', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(classPlanModel)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    data.json().then(result => {
+                        this.setState({ pollStudents: result });
                     });
             });
 
@@ -807,6 +819,7 @@ export default class Planning extends Component {
                             name="poll"
                             students={this.state.pollStudents}
                             updatePollStudent={this.updatePollStudent}
+                            savePollStudent={this.savePollStudent}
                             {...childProps} />
 
                         <div className="tab-pane fade border-0" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">

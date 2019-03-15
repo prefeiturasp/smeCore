@@ -1,6 +1,7 @@
 ﻿.poll-select {
-    background-color: lightgray;
+    background-color: white;
     font-size: 0.7em;
+    color: lightgray;
 }
 
     .poll-select option.bg-bluescale-5 {

@@ -79,6 +79,25 @@ namespace smeCore.SGP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PollPortugueses",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    T1E = table.Column<string>(nullable: true),
+                    T1L = table.Column<string>(nullable: true),
+                    T2E = table.Column<string>(nullable: true),
+                    T2L = table.Column<string>(nullable: true),
+                    T3E = table.Column<string>(nullable: true),
+                    T3L = table.Column<string>(nullable: true),
+                    T4E = table.Column<string>(nullable: true),
+                    T4L = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PollPortugueses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RegionalBoardEducations",
                 columns: table => new
                 {
@@ -127,6 +146,24 @@ namespace smeCore.SGP.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassPolls",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    PollPortugueseId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassPolls", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassPolls_PollPortugueses_PollPortugueseId",
+                        column: x => x.PollPortugueseId,
+                        principalTable: "PollPortugueses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -461,7 +498,8 @@ namespace smeCore.SGP.Migrations
                     Year = table.Column<int>(nullable: false),
                     StudentId = table.Column<string>(nullable: true),
                     PlanningId = table.Column<string>(nullable: true),
-                    SchoolClassId = table.Column<string>(nullable: true)
+                    SchoolClassId = table.Column<string>(nullable: true),
+                    PollsId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -470,6 +508,12 @@ namespace smeCore.SGP.Migrations
                         name: "FK_StudentClasses_Plannings_PlanningId",
                         column: x => x.PlanningId,
                         principalTable: "Plannings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StudentClasses_ClassPolls_PollsId",
+                        column: x => x.PollsId,
+                        principalTable: "ClassPolls",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -508,17 +552,17 @@ namespace smeCore.SGP.Migrations
             migrationBuilder.InsertData(
                 table: "SchoolYears",
                 columns: new[] { "Id", "Name", "Year" },
-                values: new object[] { "8ab881f6-3691-4c64-bfb6-492263dc6483", "Ensino Regular", 2019 });
+                values: new object[] { "11269eea-e7da-4d95-a405-86114777c919", "Ensino Regular", 2019 });
 
             migrationBuilder.InsertData(
                 table: "SchoolTerm",
                 columns: new[] { "Id", "ClosureEnd", "ClosureStart", "Name", "ReportCardConsolidation", "SchoolYearId", "ValidityEnd", "ValidityStart" },
                 values: new object[,]
                 {
-                    { "5fd5d7b0-0a99-4f32-8c0c-a6fa387490a7", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "bb42885a-9851-4504-9639-93dd73b933c1", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "89827e7f-b678-4dd6-adee-cb66eb65eecf", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "85f081c0-bdd6-486d-b606-41b7039fe25a", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "8ab881f6-3691-4c64-bfb6-492263dc6483", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { "1bf95102-1817-4194-a0d6-ad68bf690bf8", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "6ade712a-761c-4ae8-a75d-db177ef32bed", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "26a864c7-80ba-4e95-929a-62a2b3c4f1f3", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "83e4be82-780b-430b-94ef-b302b7d7011c", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -541,6 +585,12 @@ namespace smeCore.SGP.Migrations
                 name: "IX_ClassModeCalendars_SchoolYearId",
                 table: "ClassModeCalendars",
                 column: "SchoolYearId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassPolls_PollPortugueseId",
+                table: "ClassPolls",
+                column: "PollPortugueseId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClassSchedules_PlanningId",
@@ -597,6 +647,12 @@ namespace smeCore.SGP.Migrations
                 name: "IX_StudentClasses_PlanningId",
                 table: "StudentClasses",
                 column: "PlanningId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentClasses_PollsId",
+                table: "StudentClasses",
+                column: "PollsId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentClasses_SchoolClassId",
@@ -696,6 +752,9 @@ namespace smeCore.SGP.Migrations
                 name: "Plannings");
 
             migrationBuilder.DropTable(
+                name: "ClassPolls");
+
+            migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
@@ -703,6 +762,9 @@ namespace smeCore.SGP.Migrations
 
             migrationBuilder.DropTable(
                 name: "SchoolClasses");
+
+            migrationBuilder.DropTable(
+                name: "PollPortugueses");
 
             migrationBuilder.DropTable(
                 name: "Profiles");
