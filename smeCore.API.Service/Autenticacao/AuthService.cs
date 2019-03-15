@@ -9,6 +9,7 @@ using smeCore.Library.Extensions;
 using smeCore.Models.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
@@ -80,7 +81,7 @@ namespace smeCore.API.Service.Autenticacao
                         return null;
                 }
 
-               return CreateUser(credential, apiURLSettings.AuthenticateURL, cookies, result);
+               return await CreateUser(credential, apiURLSettings.AuthenticateURL, cookies, result);
             }
         }
 
@@ -94,10 +95,13 @@ namespace smeCore.API.Service.Autenticacao
             return new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(data) }; // Encoda os dados no formato correto dentro da requisição            
         }
 
-        private static ClientUser CreateUser(Credential credential, string url, CookieContainer cookies, string result)
+        private async Task<ClientUser> CreateUser(Credential credential, string url, CookieContainer cookies, string result)
         {
             // Cria o usuário
-            ClientUser user = new ClientUser() { Username = credential.Username };
+            ClientUser user = await GetUser(credential.Username);
+
+            if (user == null)
+                user = new ClientUser() { Username = credential.Username };
 
             // Pega os cookies da pagina
             user.Cookies = cookies.GetCookies(new Uri(url)).Cast<Cookie>();
@@ -112,6 +116,11 @@ namespace smeCore.API.Service.Autenticacao
             user.Identity.scope = result.ExtractDataByName("scope");
             user.Identity.state = result.ExtractDataByName("state");
             user.Identity.sesion_state = result.ExtractDataByName("session_state");
+
+            user.SgpToken = new SgpToken();
+            user.SgpToken.Token = CreateToken(user); // Cria o token de acesso
+            user.SgpToken.RefreshToken = CreateRefreshToken(); // Cria o refresh token
+
             return user;
         }
 
@@ -262,6 +271,42 @@ namespace smeCore.API.Service.Autenticacao
             {
                 return response.IsSuccessStatusCode;
             }
+        }
+
+        /// <summary>
+        /// Método para encontrar um usuário pelo username. Não está implementado corretamente ainda.
+        /// </summary>
+        /// <param name="username">Nome de usuário a ser retornado</param>
+        /// <returns>Usuário com o username especificado.</returns>
+        private async Task<ClientUser> GetUser(string username)
+        {
+            string connectionString = @"Server=10.49.16.23\SME_PRD;Database=GestaoPedagogica;User Id=Caique.Santos;Password=Antares2014;";
+            ClientUser clientUser = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("API_SMECORE_GET_USER_INFO", con);
+                    cmd.Parameters.Add(new SqlParameter("@usu_login", username));
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader;
+
+                    con.Open();
+                    reader = cmd.ExecuteReader();
+                    reader.Read();
+
+                    clientUser = new ClientUser() { Username = username };
+                    clientUser.Name = reader["nome"].ToString();
+                    clientUser.Email = reader["email"].ToString();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+
+            return clientUser;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace smeCore.API.Controllers.Authentication
 
             if (newToken.IsNotNull() && newRefreshToken.IsNotNull())
             {
-                return Ok(new { token = newToken, refreshToken = newRefreshToken });
+                return Ok(new SgpToken { Token = newToken, RefreshToken = newRefreshToken });
             }
 
             return Unauthorized();
@@ -95,9 +95,11 @@ namespace smeCore.API.Controllers.Authentication
             ClientUser user = await authService.Authenticate(credential);
 
             if (user == null)
+            {
                 return Unauthorized();
-            else
-                return Ok(user);
+            }
+
+            return Ok(user);
         }
 
         /// <summary>
