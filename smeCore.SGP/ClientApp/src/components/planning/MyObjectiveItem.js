@@ -31,7 +31,7 @@ export class MyObjectiveItem extends Component {
 
                 <div id={this.state.collapseId} className="collapse" aria-labelledby="headingOne" data-parent={this.state.reference}>
                     <div className="card-body">
-                        <textarea className="form-control" rows="5" id={this.state.textarea}></textarea>
+                        <textarea className="form-control" rows="5" id={this.props.id} value={this.props.value} onChange={this.props.changeLearningObjective}></textarea>
                     </div>
                 </div>
             </li>

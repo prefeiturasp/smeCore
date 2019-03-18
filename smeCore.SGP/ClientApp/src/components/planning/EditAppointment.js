@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
 import './EditAppointment.css';
 import { MyObjectiveItem } from './MyObjectiveItem';
-import { EditorState } from 'draft-js';
 import { DynamicDatePicker } from '../inputs/DynamicDatePicker';
 import { RichTextBox } from '../inputs/RichTextBox';
 import { Student } from './Student';
@@ -27,10 +26,7 @@ export class EditAppointment extends Component {
                 learningObjectivesCheckbox: false,
                 classDevelopmentCheckbox: false,
                 homeworkCheckbox: false
-            },
-            classDevelopment: EditorState.createEmpty(),
-            continuousRecovery: EditorState.createEmpty(),
-            homework: EditorState.createEmpty()
+            }
         };
 
         this.selectedChange = this.selectedChange.bind(this);
@@ -43,6 +39,7 @@ export class EditAppointment extends Component {
         this.changeClassDevelopment = this.changeClassDevelopment.bind(this);
         this.changeContinuousRecovery = this.changeContinuousRecovery.bind(this);
         this.changeHomework = this.changeHomework.bind(this);
+        this.changeLearningObjective = this.changeLearningObjective.bind(this);
     }
 
     selectedChange(selectedClass) {
@@ -97,23 +94,6 @@ export class EditAppointment extends Component {
     }
 
     copyContentClick() {
-        // Fazer método para salvar os dados
-        //var txt = "Selected Class: " + this.state.copyContent.selectedClass.label + "\nDates:\n";
-        //var dates = [];
-
-        //for (var i = 0; i < this.state.copyContent.selectedDates.length; i++) {
-        //    txt += "    - " + this.state.copyContent.selectedDates[i].value + "\n";
-        //    dates.push(this.state.copyContent.selectedDates[i].value);
-        //}
-
-        //txt +=
-        //    "Learning Objectives: " + this.state.copyContent.learningObjectivesCheckbox + "\n" +
-        //    "Class Development: " + this.state.copyContent.classDevelopmentCheckbox + "\n" +
-        //    "Homework: " + this.state.copyContent.homeworkCheckbox;
-
-        //alert(txt);
-
-
         // Formata a data no padrão americano (yyyy-mm-dd)
         function formatDate(date) {
             var values = date.split("/");
@@ -153,31 +133,37 @@ export class EditAppointment extends Component {
 
 
     changeClassDevelopment(change) {
-        this.setState({ classDevelopment: change });
+        var editClassSchedule = this.props.editClassSchedule;
+        editClassSchedule.classDevelopment = change;
+
+        this.props.updateEditClassSchedule(editClassSchedule);
     }
 
     changeContinuousRecovery(change) {
-        this.setState({ continuousRecovery: change });
+        var editClassSchedule = this.props.editClassSchedule;
+        editClassSchedule.continuousRecovery = change;
+
+        this.props.updateEditClassSchedule(editClassSchedule);
     }
 
     changeHomework(change) {
-        this.setState({ homework: change });
+        var editClassSchedule = this.props.editClassSchedule;
+        editClassSchedule.homework = change;
+
+        this.props.updateEditClassSchedule(editClassSchedule);
+    }
+
+    changeLearningObjective(event) {
+        var editClassSchedule = this.props.editClassSchedule;
+        editClassSchedule.learningObjectives[event.target.id] = event.target.value;
+
+        this.props.updateEditClassSchedule(editClassSchedule);
     }
 
 
 
     render() {
         var copyContent = this.state.copyContent;
-
-        // Fazer validação de qual bimestre usar
-        var objectives = this.props.annualPlan.bimester1;
-        var selectedObjectives = [];
-
-        for (var i = 0; i < objectives.length; i++)
-            selectedObjectives.push({
-                name: objectives[i],
-                date: this.props.date
-            });
 
         return (
             <div className="editAppointment">
@@ -268,8 +254,8 @@ export class EditAppointment extends Component {
                         <hr className="header-rule" />
 
                         <ul className="list-unstyled">
-                            {selectedObjectives.map(myObjectiveItem => (
-                                <MyObjectiveItem name={myObjectiveItem.name} date={myObjectiveItem.date} parent="EditAppointment" />
+                            {Object.entries(this.props.editClassSchedule.learningObjectives).map(([key, value]) => (
+                                <MyObjectiveItem id={key} name={key} value={value} parent="EditAppointment" changeLearningObjective={this.changeLearningObjective} />
                             ))}
                         </ul>
                     </div>
@@ -322,7 +308,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample1" className="collapse">
-                                <RichTextBox changeText={this.changeClassDevelopment} value={this.state.classDevelopment} />
+                                <RichTextBox changeText={this.changeClassDevelopment} value={this.props.editClassSchedule.classDevelopment} />
                             </div>
                         </div>
 
@@ -340,7 +326,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample2" className="collapse">
-                                <RichTextBox changeText={this.changeContinuousRecovery} value={this.state.continuousRecovery} />
+                                <RichTextBox changeText={this.changeContinuousRecovery} value={this.props.editClassSchedule.continuousRecovery} />
                             </div>
                         </div>
 
@@ -358,7 +344,7 @@ export class EditAppointment extends Component {
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample3" className="collapse">
-                                <RichTextBox changeText={this.changeHomework} value={this.state.homework} />
+                                <RichTextBox changeText={this.changeHomework} value={this.props.editClassSchedule.homework} />
                             </div>
                         </div>
                     </div>

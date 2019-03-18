@@ -4,76 +4,16 @@
         <name>smeCore.API</name>
     </assembly>
     <members>
-        <member name="T:smeCore.API.Contexts.SMEContext">
-            <summary>
-            DataBase Context do smeCore.
-            </summary>
-        </member>
-        <member name="P:smeCore.API.Contexts.SMEContext.LoggedUsers">
-            <summary>
-            DbSet para mapear os usuários logados no sistema.
-            </summary>
-        </member>
-        <member name="M:smeCore.API.Contexts.SMEContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{smeCore.API.Contexts.SMEContext})">
-            <summary>
-            Construtor padrão do SMEContext
-            </summary>
-            <param name="options">Dependência de configuração/inicialização do SMECore</param>
-        </member>
         <member name="T:smeCore.API.Controllers.Authentication.AuthController">
             <summary>
             Controller da API responsável pela autenticação do usuário.
             </summary>
         </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,smeCore.API.Contexts.SMEContext)">
+        <member name="M:smeCore.API.Controllers.Authentication.AuthController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,smeCore.API.Service.Interface.AuthInterfaces.IAuthService)">
             <summary>
             Construtor padrão para o AuthController, faz injeção de dependências de IConfiguration e SMEContext.
             </summary>
             <param name="config">Depêndencia de configurações</param>
-            <param name="db">Depêndencia de dataContext (SMEContext)</param>
-        </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.Authenticate(smeCore.Models.Authentication.Credential)">
-            <summary>
-            Método para validar as credenciais de login do usuário.
-            </summary>
-            <param name="credential">Objeto que contém informações da credencial do usuário</param>
-            <returns>Objeto contendo informações do usuário encontrado, caso não seja encontrado nenhum usuário com correspondente a credencial enviada o método retorna nulo.</returns>
-        </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CreateToken(smeCore.Models.Authentication.ClientUser)">
-            <summary>
-            Método para gerar o token de acesso.
-            </summary>
-            <param name="user">Objeto contendo informações do usuário</param>
-            <returns>Token gerado à partir das informações do usuário.</returns>
-        </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CreateRefreshToken">
-            <summary>
-            Método para gerar um refresh token para revalidar acesso do usuário sem a necessidade de um novo login.
-            </summary>
-            <returns>Refresh token para revalidação do usuário</returns>
-        </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.CleanString(System.String,System.String[])">
-            <summary>
-            Método para limpar a string removendo caracteres indesejados
-            </summary>
-            <param name="originalString">String original a ser retirado os caracteres</param>
-            <param name="parameters">Vetor de caracteres a serem removidas</param>
-            <returns>String sem os caracteres contidos no vetor 'parameters'</returns>
-        </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.GetUser(System.String)">
-            <summary>
-            Método para encontrar um usuário pelo username. Não está implementado corretamente ainda.
-            </summary>
-            <param name="username">Nome de usuário a ser retornado</param>
-            <returns>Usuário com o username especificado.</returns>
-        </member>
-        <member name="M:smeCore.API.Controllers.Authentication.AuthController.ExtractDataByName(System.String,System.String)">
-            <summary>
-            Método para extrair atributos de uma página html (raw) pela propriedade 'name'. Só funciona se a propriedade 'name' estiver antes do 'value'.
-            </summary>
-            <param name="source">Fonte do html (raw)</param>
-            <param name="name">Nome do atributo desejado</param>
-            <returns>Valor (value) do atributo desejado</returns>
         </member>
         <member name="M:smeCore.API.Controllers.Authentication.AuthController.LoginJWT(smeCore.Models.Authentication.Credential)">
             <summary>

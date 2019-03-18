@@ -791,6 +791,84 @@ namespace smeCore.SGP.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult<string>> SalvarDesenvolvimentoAula(EditClassScheduleModel model)
+        {
+            Planning planning = await
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefaultAsync();
+
+            if (planning != null)
+            {
+                ClassSchedule classSchedule = await
+                    (from current in _db.ClassSchedules
+                     where current.Date == model.Date
+                     select current).SingleOrDefaultAsync();
+
+                if (classSchedule != null)
+                {
+                    classSchedule.LearninObjectives = JsonConvert.SerializeObject(model.LearningObjectives);
+                    classSchedule.ClassroomDevelopment = model.ClassDevelopment;
+                    classSchedule.ContinuousRecovery = model.ContinuousRecovery;
+                    classSchedule.Homework = model.Homework;
+
+                    try
+                    {
+                        await _db.SaveChangesAsync();
+                    }
+                    catch (Exception error)
+                    {
+                        return (StatusCode(500, error));
+                    }
+
+                    return (Ok());
+                }
+            }
+
+            return (NotFound("Planejamento e aula não encontrados."));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> AbrirDesenvolvimentoAula(EditClassScheduleModel model)
+        {
+            Planning planning = await
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefaultAsync();
+
+            if (planning != null)
+            {
+                ClassSchedule classSchedule = await
+                    (from current in _db.ClassSchedules
+                     where current.Date == model.Date
+                     select current).SingleOrDefaultAsync();
+
+                if (classSchedule != null)
+                {
+                    EditClassScheduleModel result = new EditClassScheduleModel()
+                    {
+                        Date = classSchedule.Date,
+                        LearningObjectives = JsonConvert.DeserializeObject<Dictionary<string, string>>(classSchedule.LearninObjectives),
+                        StudentsAbsence = new List<StudentAbsenceModel>(),
+                        ClassDevelopment = classSchedule.ClassroomDevelopment,
+                        ContinuousRecovery = classSchedule.ContinuousRecovery,
+                        Homework = classSchedule.Homework
+                    };
+
+                    return (Ok(result));
+                }
+            }
+            
+            return (NotFound());
+        }
+
+        [HttpPost]
         public async Task<ActionResult<string>> AbrirCalendarioAula(ClassScheduleModel model)
         {
             Planning planning =

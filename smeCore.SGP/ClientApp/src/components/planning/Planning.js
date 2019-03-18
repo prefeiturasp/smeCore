@@ -5,6 +5,7 @@ import { AnnualPlan } from './AnnualPlan';
 import { ClassPlan } from './ClassPlan';
 import { Poll } from './Poll';
 import Select from 'react-select';
+import { convertToRaw } from 'draft-js';
 
 export default class Planning extends Component {
     constructor(props) {
@@ -60,6 +61,7 @@ export default class Planning extends Component {
         this.prepareCalendar = this.prepareCalendar.bind(this);
         this.setClassSchedule = this.setClassSchedule.bind(this);
         this.deleteClassSchedule = this.deleteClassSchedule.bind(this);
+        this.saveEditClassSchedule = this.saveEditClassSchedule.bind(this);
 
         this.setAnnualPlan = this.setAnnualPlan.bind(this);
         this.saveAnnualPlan = this.saveAnnualPlan.bind(this);
@@ -310,6 +312,31 @@ export default class Planning extends Component {
         //    txt += key + ": " + schedule[key] + "\n";
 
         alert("not implemented\n\n" + schedule);
+    }
+
+    saveEditClassSchedule(editClassSchedule) {
+        var model = {
+            username: this.props.user.username,
+            year: this.state.schoolYear,
+            classroom: this.state.classroom,
+            school: this.state.school,
+            date: editClassSchedule.date,
+            learningObjectives: editClassSchedule.learningObjectives,
+            studentsAbsence: [],
+            classDevelopment: JSON.stringify(convertToRaw(editClassSchedule.classDevelopment.getCurrentContent())),
+            continuousRecovery: JSON.stringify(convertToRaw(editClassSchedule.continuousRecovery.getCurrentContent())),
+            homework: JSON.stringify(convertToRaw(editClassSchedule.homework.getCurrentContent()))
+        }
+
+        fetch('/api/Planejamento/SalvarDesenvolvimentoAula', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    alert("Aula registrada com sucesso!");
+            });
     }
 
 
@@ -798,6 +825,7 @@ export default class Planning extends Component {
                             deleteSchedule={this.deleteClassSchedule}
                             relatedClasses={this.state.relatedClasses}
                             annualPlan={this.state.annual}
+                            saveEditClassSchedule={this.saveEditClassSchedule}
                             {...childProps} />
 
                         <AnnualPlan

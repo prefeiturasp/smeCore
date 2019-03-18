@@ -2,6 +2,7 @@
 import './ClassPlan.css';
 import { CalendarPlan } from './CalendarPlan';
 import { EditAppointment } from './EditAppointment';
+import { EditorState, convertFromRaw } from 'draft-js';
 
 export class ClassPlan extends Component {
     constructor(props) {
@@ -12,11 +13,21 @@ export class ClassPlan extends Component {
         this.editAppointmentDate = "";
 
         this.state = {
-            showEditAppointment: false
+            showEditAppointment: false,
+            editClassSchedule: {
+                date: null,
+                learningObjectives: {},
+                studentsAbsence: [],
+                classDevelopment: EditorState.createEmpty(),
+                continuousRecovery: EditorState.createEmpty(),
+                homework: EditorState.createEmpty()
+            },
         };
 
         this.editAppointmentClick = this.editAppointmentClick.bind(this);
         this.backButtonClick = this.backButtonClick.bind(this);
+        this.saveButtonClick = this.saveButtonClick.bind(this);
+        this.updateEditClassSchedule = this.updateEditClassSchedule.bind(this);
     }
 
     editAppointmentClick(properties) {
@@ -27,19 +38,72 @@ export class ClassPlan extends Component {
             (properties.month > 9 ? properties.month : "0" + properties.month) + "/" +
             properties.fullYear;
 
-        this.setState(state => ({
-            showEditAppointment: true
-        }));
+        // Fazer validação de qual bimestre usar
+        var objectives = this.props.annualPlan.bimester1;
+        var editClassSchedule = {
+            date: null,
+            learningObjectives: {},
+            studentsAbsence: [],
+            classDevelopment: EditorState.createEmpty(),
+            continuousRecovery: EditorState.createEmpty(),
+            homework: EditorState.createEmpty()
+        };
+
+        for (var i = 0; i < objectives.length; i++)
+            editClassSchedule.learningObjectives[objectives[i]] = "";
+
+        editClassSchedule.date = properties.fullYear + "-" +
+            (properties.month > 9 ? properties.month : "0" + properties.month) + "-" +
+            (properties.day > 9 ? properties.day : "0" + properties.day) + " " +
+            properties.time;
+        
+        // Fazer método para buscar aula já realizada (carregar tela salva)
+        var model = {
+            username: this.props.user.username,
+            year: this.props.year,
+            classroom: this.props.classroom,
+            school: this.props.school,
+            date: editClassSchedule.date,
+        }
+
+        fetch('/api/Planejamento/AbrirDesenvolvimentoAula', {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(model)
+        })
+            .then(data => {
+                if (data.status === 200)
+                    data.json().then(result => {
+                        result.date = editClassSchedule.date;
+                        result.classDevelopment = EditorState.createWithContent(convertFromRaw(JSON.parse(result.classDevelopment)));
+                        result.continuousRecovery = EditorState.createWithContent(convertFromRaw(JSON.parse(result.continuousRecovery)));
+                        result.homework = EditorState.createWithContent(convertFromRaw(JSON.parse(result.homework)));
+
+                        this.setState({
+                            showEditAppointment: true,
+                            editClassSchedule: result
+                        });
+                    });
+                else
+                    this.setState({
+                        showEditAppointment: true,
+                        editClassSchedule: editClassSchedule
+                    });
+            });
     }
 
     backButtonClick() {
-        this.setState(state => ({
+        this.setState({
             showEditAppointment: false
-        }));
+        });
     }
 
     saveButtonClick() {
-        alert("not implemented");
+        this.props.saveEditClassSchedule(this.state.editClassSchedule);
+    }
+
+    updateEditClassSchedule(editClassSchedule) {
+        this.setState({ editClassSchedule: editClassSchedule });
     }
 
     render() {
@@ -86,6 +150,8 @@ export class ClassPlan extends Component {
                         students={this.props.students}
                         annualPlan={this.props.annualPlan}
                         relatedClasses={this.props.relatedClasses}
+                        editClassSchedule={this.state.editClassSchedule}
+                        updateEditClassSchedule={this.updateEditClassSchedule}
                         {...childProps} />)
                 }
             </div>
