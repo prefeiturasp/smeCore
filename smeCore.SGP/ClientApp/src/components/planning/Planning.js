@@ -557,7 +557,7 @@ export default class Planning extends Component {
             });
     }
 
-
+    
 
     selectedChange(selectedClass) {
         var relatedClasses = [];
@@ -770,7 +770,8 @@ export default class Planning extends Component {
             school: this.state.school,
             user: this.props.user,
             schoolCalendar: this.state.schoolCalendar,
-            getSchoolCalendar: this.getSchoolCalendar
+            getSchoolCalendar: this.getSchoolCalendar,
+            showMessage: this.props.showMessage
         };
 
         return (
