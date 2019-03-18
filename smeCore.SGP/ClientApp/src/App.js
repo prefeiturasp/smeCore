@@ -29,6 +29,9 @@ class App extends Component {
         this.setUser = this.setUser.bind(this);
 
         this.showMessage = this.showMessage.bind(this);
+
+        this.apiGet = this.apiGet.bind(this);
+        this.apiPost = this.apiPost.bind(this);
     }
 
     userHasAuthenticated(authenticated) {
@@ -77,6 +80,20 @@ class App extends Component {
 
 
 
+    apiPost(url, data) {
+        return (fetch(url, {
+            method: "post",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }));
+    }
+
+    apiGet(url) {
+        return (fetch(url));
+    }
+
+
+
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
@@ -86,6 +103,8 @@ class App extends Component {
             setUser: this.setUser,
             user: this.state.user,
             showMessage: this.showMessage,
+            apiGet: this.apiGet,
+            apiPost: this.apiPost
         };
 
         return (

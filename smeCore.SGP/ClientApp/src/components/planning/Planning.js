@@ -83,7 +83,7 @@ export default class Planning extends Component {
         this.prepareCalendar();
 
         var url = '/api/Planejamento/CarregarTurmasProfessor?username=' + this.props.user.username;
-        fetch(url)
+        this.props.apiGet(url)
             .then(response => response.json())
             .then(data => {
                 var result = []
@@ -102,7 +102,7 @@ export default class Planning extends Component {
                 this.setState({ teacherClasses: result });
             });
 
-        fetch('api/Planejamento/ListarMatrizSaberes')
+        this.props.apiGet('api/Planejamento/ListarMatrizSaberes')
             .then(response => response.json())
             .then(data => {
                 for (var i = 0; i < data.length; i++)
@@ -111,7 +111,7 @@ export default class Planning extends Component {
                 this.setState({ knowledgeItems: data });
             });
 
-        fetch('api/Planejamento/ListarODS')
+        this.props.apiGet('api/Planejamento/ListarODS')
             .then(response => response.json())
             .then(data => {
                 for (var i = 0; i < data.length; i++)
@@ -141,7 +141,7 @@ export default class Planning extends Component {
                 parameters += "year=" + year;
         }
         
-        fetch('api/Planejamento/CalendarioAnoLetivo' + parameters)
+        this.props.apiGet('api/Planejamento/CalendarioAnoLetivo' + parameters)
             .then(data => {
                 if (data.status === 200)
                     data.json().then(result => {
@@ -216,11 +216,7 @@ export default class Planning extends Component {
             classQuantity: schedule.classQuantity,
             repeat: schedule.repeat
         };
-        fetch('/api/Planejamento/SalvarHorarioAula', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
+        this.props.apiPost('/api/Planejamento/SalvarHorarioAula', model)
             .then(data => {
                 if (data.status === 200)
                     alert("Plano de Ciclo salvo com sucesso!");
@@ -327,12 +323,7 @@ export default class Planning extends Component {
             continuousRecovery: JSON.stringify(convertToRaw(editClassSchedule.continuousRecovery.getCurrentContent())),
             homework: JSON.stringify(convertToRaw(editClassSchedule.homework.getCurrentContent()))
         }
-
-        fetch('/api/Planejamento/SalvarDesenvolvimentoAula', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
+        this.props.apiPost('/api/Planejamento/SalvarDesenvolvimentoAula', model)
             .then(data => {
                 if (data.status === 200)
                     alert("Aula registrada com sucesso!");
@@ -361,11 +352,7 @@ export default class Planning extends Component {
             descriptionB4: this.state.annual.annualPlanningTextareaB4
         };
 
-        fetch('/api/Planejamento/SalvarPlanoAnual', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
+        this.props.apiPost('/api/Planejamento/SalvarPlanoAnual', model)
             .then(data => {
                 if (data.status === 200)
                     alert("Plano de Ciclo salvo com sucesso!");
@@ -482,11 +469,7 @@ export default class Planning extends Component {
             modifiedBy: this.props.user.username
         }
 
-        fetch('/api/Planejamento/SalvarPlanoCiclo', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
+        this.props.apiPost('/api/Planejamento/SalvarPlanoCiclo', model)
             .then(data => {
                 if (data.status === 200)
                     alert("Plano de Ciclo salvo com sucesso!");
@@ -546,11 +529,7 @@ export default class Planning extends Component {
             students: this.state.pollStudents
         }
 
-        fetch('/api/Planejamento/SalvarSondagem', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(model)
-        })
+        this.props.apiPost('/api/Planejamento/SalvarSondagem', model)
             .then(data => {
                 if (data.status === 200)
                     alert("Sondagem salva com sucesso!");
@@ -583,7 +562,7 @@ export default class Planning extends Component {
 
         // Carrega informações do Planejamento Anual (objetivos de aprendizagem) atrvés do ano letivo
         var url = "api/Planejamento/ListarObjetivosAprendizagem?ano=" + planningModel.schoolYear;
-        fetch(url)
+        this.props.apiGet(url)
             .then(response => response.json())
             .then(data => {
                 for (var i = 0; i < data.length; i++)
@@ -607,11 +586,7 @@ export default class Planning extends Component {
             school: planningModel.school
         };
         // Carrega Calendário
-        fetch('/api/Planejamento/AbrirCalendarioAula', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(classPlanModel)
-        })
+        this.props.apiPost('/api/Planejamento/AbrirCalendarioAula', classPlanModel)
             .then(data => {
                 if (data.status === 200)
                     data.json().then(result => {
@@ -619,11 +594,7 @@ export default class Planning extends Component {
                     });
             });
         // Carrega os alunos
-        fetch('/api/Planejamento/CarregarAlunosMock', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(classPlanModel)
-        })
+        this.props.apiPost('/api/Planejamento/CarregarAlunosMock', classPlanModel)
             .then(data => {
                 if (data.status === 200)
                     data.json().then(result => {
@@ -631,11 +602,7 @@ export default class Planning extends Component {
                     });
             });
         // Carrega os alunos da Sondagem
-        fetch('/api/Planejamento/CarregarAlunosSondagem', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(classPlanModel)
-        })
+        this.props.apiPost('/api/Planejamento/CarregarAlunosSondagem', classPlanModel)
             .then(data => {
                 if (data.status === 200)
                     data.json().then(result => {
@@ -652,11 +619,8 @@ export default class Planning extends Component {
             classroom: planningModel.classroom,
             school: planningModel.school
         };
-        fetch('/api/Planejamento/AbrirPlanoAnual', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(annualPlanModel)
-        })
+
+        this.props.apiPost('/api/Planejamento/AbrirPlanoAnual', annualPlanModel)
             .then(data => {
                 var index = planningModel.classroom.indexOf("-") + 1;
                 var year = planningModel.classroom.substring(index, index + 1);
@@ -704,11 +668,8 @@ export default class Planning extends Component {
             school: planningModel.school,
             type: this.getCycleType(planningModel.schoolYear)
         };
-        fetch('/api/Planejamento/AbrirPlanoCiclo', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(cyclePlanModel)
-        })
+
+        this.props.apiPost('/api/Planejamento/AbrirPlanoCiclo', cyclePlanModel)
             .then(data => {
                 if (data.status === 200) {
                     data.json().then(result => {
