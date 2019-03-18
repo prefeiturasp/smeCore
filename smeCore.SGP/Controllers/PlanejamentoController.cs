@@ -791,6 +791,15 @@ namespace smeCore.SGP.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult<string>> RemoverHorarioAula(ClassScheduleModel model)
+        {
+
+
+
+            return (Ok());
+        }
+
+        [HttpPost]
         public async Task<ActionResult<string>> SalvarDesenvolvimentoAula(EditClassScheduleModel model)
         {
             Planning planning = await

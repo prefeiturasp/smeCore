@@ -131,7 +131,16 @@ export class CalendarDay extends Component {
             "School: " + this.state.removeSchedule.school + "\n" +
             "Selected Repeat: " + this.state.modalSelectedRemoveRepeat;
 
-        this.props.deleteSchedule(txt);
+        this.props.deleteSchedule({
+            day: this.props.day,
+            month: this.props.month,
+            fullYear: this.props.fullYear,
+            date: this.props.fullYear + "-" +
+                (this.props.month > 9 ? this.props.month : "0" + this.props.month) + "-" +
+                (this.props.day > 9 ? this.props.day : "0" + this.props.day),
+            time: this.state.removeSchedule.time,
+            repeat: this.state.modalSelectedRemoveRepeat
+        });
     }
 
     render() {

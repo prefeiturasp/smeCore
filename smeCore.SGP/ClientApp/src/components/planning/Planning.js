@@ -303,11 +303,90 @@ export default class Planning extends Component {
     }
 
     deleteClassSchedule(schedule) {
-        var txt = "";
-        //for (var key in schedule)
-        //    txt += key + ": " + schedule[key] + "\n";
+        var model = {
+            username: this.props.user.username,
+            year: this.state.schoolYear,
+            classroom: this.state.classroom,
+            school: this.state.school,
+            date: schedule.fullYear + "-" + schedule.month + "-" + schedule.day + " " + schedule.time,
+            repeat: schedule.repeat
+        };
 
-        alert("not implemented\n\n" + schedule);
+        this.props.apiPost('/api/Planejamento/RemoverHorarioAula', model)
+            .then(data => {
+                if (data.status === 200)
+                    alert("Plano de Ciclo salvo com sucesso!");
+            });
+
+        var weekIndex = 0;
+        var dayIndex = 0;
+        var calendar = this.state.calendar;
+        for (var i = 0; i < calendar.weeks.length; i++)
+            for (var j = 0; j < calendar.weeks[i].length; j++)
+                if (calendar.weeks[i][j].day === schedule.day && calendar.weeks[i][j].month === schedule.month && calendar.weeks[i][j].year === schedule.fullYear) {
+                    weekIndex = i;
+                    dayIndex = j;
+                    break;
+                }
+
+        var start, end;
+        var today = new Date();
+
+        for (var i = 0; i < this.state.schoolCalendar.schoolTerms.length; i++)
+            if (this.state.schoolCalendar.schoolTerms[i].validityStart <= today && this.state.schoolCalendar.schoolTerms[i].validityEnd >= today) {
+                start = new Date(this.state.schoolCalendar.schoolTerms[i].validityStart.getFullYear(),
+                    this.state.schoolCalendar.schoolTerms[i].validityStart.getMonth(),
+                    this.state.schoolCalendar.schoolTerms[i].validityStart.getDate());
+
+                end = new Date(this.state.schoolCalendar.schoolTerms[i].validityStart.getFullYear(),
+                    this.state.schoolCalendar.schoolTerms[i].validityEnd.getMonth(),
+                    this.state.schoolCalendar.schoolTerms[i].validityEnd.getDate());
+                break;
+            }
+
+        if (schedule.repeat === "once") {
+            for (var i = 0; i < calendar.weeks[weekIndex][dayIndex].schedules.length; i++)
+                if (calendar.weeks[weekIndex][dayIndex].schedules[i].time === schedule.time) {
+                    calendar.weeks[weekIndex][dayIndex].schedules.splice(i, 1);
+                    break;
+                }
+        }
+        else if (schedule.repeat === "bimester") {
+            for (var i = weekIndex; i < calendar.weeks.length; i++) {
+                var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);
+
+                if (date >= start && date <= end) {
+                    for (var j = 0; j < calendar.weeks[i][dayIndex].schedules.length; i++)
+                        if (calendar.weeks[i][dayIndex].schedules[j].time === schedule.time) {
+                            calendar.weeks[i][dayIndex].schedules.splice(j, 1);
+                            break;
+                        }
+                }
+            }
+        }
+        else {
+            start = new Date(this.state.schoolCalendar.schoolTerms[0].validityStart.getFullYear(),
+                this.state.schoolCalendar.schoolTerms[0].validityStart.getMonth(),
+                this.state.schoolCalendar.schoolTerms[0].validityStart.getDate());
+
+            end = new Date(this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length - 1].validityStart.getFullYear(),
+                this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length - 1].validityEnd.getMonth(),
+                this.state.schoolCalendar.schoolTerms[this.state.schoolCalendar.schoolTerms.length - 1].validityEnd.getDate());
+
+            for (var i = weekIndex; i < calendar.weeks.length; i++) {
+                var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);
+
+                if (date >= start && date <= end) {
+                    for (var j = 0; j < calendar.weeks[i][dayIndex].schedules.length; i++)
+                        if (calendar.weeks[i][dayIndex].schedules[j].time === schedule.time) {
+                            calendar.weeks[i][dayIndex].schedules.splice(j, 1);
+                            break;
+                        }
+                }
+            }
+        }
+
+        this.setState({ calendar: calendar });
     }
 
     saveEditClassSchedule(editClassSchedule) {
