@@ -793,10 +793,89 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> RemoverHorarioAula(ClassScheduleModel model)
         {
+            Planning planning =
+                (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
 
+            if (planning != null)
+            {
+                // TODO: Utilizar o correto calendário, se existir algum calendário especial, deve ser utilizado
+                SchoolYearModel calendar = await GetSchoolYearCalendar();
 
+                if (calendar != null)
+                {
+                    ClassSchedule classSchedule = null;
+                    DateTime start = DateTime.Now;
+                    DateTime end = DateTime.Now;
+                    DateTime today = model.Date;
 
-            return (Ok());
+                    for (int i = 0; i < calendar.SchoolTerms.Count; i++)
+                        if (today >= calendar.SchoolTerms[i].ValidityStart && today <= calendar.SchoolTerms[i].ValidityEnd)
+                        {
+                            start = calendar.SchoolTerms[i].ValidityStart;
+                            end = calendar.SchoolTerms[i].ValidityEnd;
+                            break;
+                        }
+
+                    if (model.Repeat == "once")
+                    {
+                        foreach (ClassSchedule current in planning.ClassSchedules)
+                            if (current.Date == model.Date)
+                            {
+                                _db.ClassSchedules.Remove(current);
+                                break;
+                            }
+                    }
+                    else if (model.Repeat == "bimester")
+                    {
+                        while (today <= end)
+                        {
+                            foreach (ClassSchedule current in planning.ClassSchedules)
+                                if (current.Date == today)
+                                {
+                                    _db.ClassSchedules.Remove(current);
+                                    break;
+                                }
+
+                            today = today.AddDays(7);
+                        }
+                    }
+                    else
+                    {
+                        start = calendar.SchoolTerms[0].ValidityStart;
+                        end = calendar.SchoolTerms[calendar.SchoolTerms.Count - 1].ValidityEnd;
+
+                        while (today <= end)
+                        {
+                            foreach (ClassSchedule current in planning.ClassSchedules)
+                                if (current.Date == today)
+                                {
+                                    _db.ClassSchedules.Remove(current);
+                                    break;
+                                }
+
+                            today = today.AddDays(7);
+                        }
+                    }
+
+                    try
+                    {
+                        await _db.SaveChangesAsync();
+
+                        return (Ok());
+                    }
+                    catch (Exception error)
+                    {
+                        return (StatusCode(500, error));
+                    }
+                }
+            }
+
+            return (NotFound());
         }
 
         [HttpPost]
