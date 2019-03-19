@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import './TopMenu.css';
 
 export class TopMenu extends Component {
@@ -56,16 +57,20 @@ export class TopMenu extends Component {
                         <div className="col-12 col-lg-4 borda-right-menu">
                             <div className="row h-100">
                                 <div className="col-4  ml-0 mr-0 pl-0  pr-0">
-                                    <button type="button" className="btn btn-primary background-color-menu1 border-0 w-100 h-100 sem-border">
-                                        <img className="icones-top-menu townhallIcon" src="/img/Icon_admin.svg" alt="icone admin" id="adminIcon" />
-                                        <span className="h6 font-weight-light no-white-space d-none d-sm-block texto">Administração</span>
-                                    </button>
+                                    <Link to="/Admin">
+                                        <button type="button" className="btn btn-primary background-color-menu1 border-0 w-100 h-100 sem-border">
+                                            <img className="icones-top-menu townhallIcon" src="/img/Icon_admin.svg" alt="icone admin" id="adminIcon" />
+                                            <span className="h6 font-weight-light no-white-space d-none d-sm-block texto">Administração</span>
+                                        </button>
+                                    </Link>
                                 </div>
                                 <div className="col-4  ml-0 mr-0 pl-0  pr-0">
-                                    <button type="button" className="btn btn-primary background-color-menu2 border-0 w-100 h-100 sem-border">
-                                        <img className="icones-top-menu townhallIcon" src="/img/Icon_registro_rollover.svg" alt="icone registro" id="registerIcon" />
-                                        <span className="h6 font-weight-light no-white-space d-none d-sm-block texto-bold">Registro de Classe</span>
-                                    </button>
+                                    <Link to="/Planejamento">
+                                        <button type="button" className="btn btn-primary background-color-menu2 border-0 w-100 h-100 sem-border">
+                                            <img className="icones-top-menu townhallIcon" src="/img/Icon_registro_rollover.svg" alt="icone registro" id="registerIcon" />
+                                            <span className="h6 font-weight-light no-white-space d-none d-sm-block texto-bold">Registro de Classe</span>
+                                        </button>
+                                    </Link>
                                 </div>
                                 <div className="col-4  ml-0 mr-0 pl-0  pr-0">
                                     <button type="button" className="btn btn-primary background-color-menu3 border-0 w-100 h-100 sem-border">

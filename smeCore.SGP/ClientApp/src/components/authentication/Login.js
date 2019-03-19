@@ -93,7 +93,12 @@ export default class Login extends Component {
                         username: credential.username,
                         token: data.token,
                         refreshToken: data.refreshToken,
-                        lastAuthentication: new Date()
+                        lastAuthentication: new Date(),
+                        //TODO: Pegar valores do perfil do usuário
+                        roles: [
+                            "Admin",
+                            "Supervisor"
+                        ]
                     }
 
                     this.props.logginUser(user);

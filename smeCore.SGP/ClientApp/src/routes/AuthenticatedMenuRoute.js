@@ -5,7 +5,8 @@ import { Footer } from "../components/navigation/Footer";
 
 export default ({ component: C, props: cProps, ...rest }) =>
     <Route {...rest}
-        render={props => cProps.isAuthenticated
+        render={
+            props => cProps.isAuthenticated
             ? (
                 <div>
                     <TopMenu {...cProps} />
@@ -15,6 +16,6 @@ export default ({ component: C, props: cProps, ...rest }) =>
                     <Footer />
                 </div>
             )
-            : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`}
-            />}
+            : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`} />
+        }
     />;
