@@ -71,7 +71,7 @@ export default class Planning extends Component {
         this.getCycleType = this.getCycleType.bind(this);
         this.setCycle = this.setCycle.bind(this);
         this.saveCyclePlan = this.saveCyclePlan.bind(this);
-        
+
         this.updatePollStudent = this.updatePollStudent.bind(this);
         this.savePollStudent = this.savePollStudent.bind(this);
 
@@ -140,7 +140,7 @@ export default class Planning extends Component {
             if (name === "" && year !== 2019)
                 parameters += "year=" + year;
         }
-        
+
         this.props.apiGet('api/Planejamento/CalendarioAnoLetivo' + parameters)
             .then(data => {
                 if (data.status === 200)
@@ -219,7 +219,7 @@ export default class Planning extends Component {
         this.props.apiPost('/api/Planejamento/SalvarHorarioAula', model)
             .then(data => {
                 if (data.status === 200)
-                    alert("Plano de Ciclo salvo com sucesso!");
+                    this.props.showMessage("Plano de Ciclo salvo com sucesso!", "Sucesso");
             });
 
         var weekIndex = 0;
@@ -247,7 +247,7 @@ export default class Planning extends Component {
                     this.state.schoolCalendar.schoolTerms[i].validityEnd.getDate());
                 break;
             }
-       
+
         if (schedule.repeat === "once")
             calendar.weeks[weekIndex][dayIndex].schedules.push({
                 color: schedule.color,
@@ -261,7 +261,7 @@ export default class Planning extends Component {
         else if (schedule.repeat === "bimester") {
             for (var i = weekIndex; i < calendar.weeks.length; i++) {
                 var date = new Date(calendar.weeks[i][dayIndex].year, calendar.weeks[i][dayIndex].month - 1, calendar.weeks[i][dayIndex].day);
-                
+
                 if (date >= start && date <= end)
                     calendar.weeks[i][dayIndex].schedules.push({
                         color: schedule.color,
@@ -405,7 +405,7 @@ export default class Planning extends Component {
         this.props.apiPost('/api/Planejamento/SalvarDesenvolvimentoAula', model)
             .then(data => {
                 if (data.status === 200)
-                    alert("Aula registrada com sucesso!");
+                    this.props.showMessage("Desenvolvimento de aula salvo com sucesso!", "Sucesso");
             });
     }
 
@@ -434,10 +434,11 @@ export default class Planning extends Component {
         this.props.apiPost('/api/Planejamento/SalvarPlanoAnual', model)
             .then(data => {
                 if (data.status === 200)
-                    alert("Plano de Ciclo salvo com sucesso!");
+                    this.props.showMessage("Plano anual salvo com sucesso!", "Sucesso");
+
+
             });
     }
-
 
 
     getMonthByIndex(index) {
@@ -551,7 +552,7 @@ export default class Planning extends Component {
         this.props.apiPost('/api/Planejamento/SalvarPlanoCiclo', model)
             .then(data => {
                 if (data.status === 200)
-                    alert("Plano de Ciclo salvo com sucesso!");
+                    this.props.showMessage("Plano de ciclo salvo com sucesso!", "Sucesso");
             });
     }
 
@@ -611,11 +612,11 @@ export default class Planning extends Component {
         this.props.apiPost('/api/Planejamento/SalvarSondagem', model)
             .then(data => {
                 if (data.status === 200)
-                    alert("Sondagem salva com sucesso!");
+                    this.props.showMessage("Sondagem salva com sucesso!", "Sucesso");
             });
     }
 
-    
+
 
     selectedChange(selectedClass) {
         var relatedClasses = [];
@@ -723,7 +724,7 @@ export default class Planning extends Component {
                         this.setState({ annual: annual });
                     });
                 }
-                
+
                 if (data.status === 404) {
                     var annual = {
                         classroomLabel: year + "°" + classroom,
