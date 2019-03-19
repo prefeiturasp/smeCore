@@ -40,6 +40,9 @@ export class EditAppointment extends Component {
         this.changeContinuousRecovery = this.changeContinuousRecovery.bind(this);
         this.changeHomework = this.changeHomework.bind(this);
         this.changeLearningObjective = this.changeLearningObjective.bind(this);
+
+        this.orderByFrequency = this.orderByFrequency.bind(this);
+        this.orderByName = this.orderByName.bind(this);
     }
 
     selectedChange(selectedClass) {
@@ -162,6 +165,16 @@ export class EditAppointment extends Component {
 
 
 
+    orderByFrequency() {
+        this.props.frequencyOrderBySequence();
+    }
+
+    orderByName() {
+        this.props.frequencyOrderByName();
+    }
+
+
+
     render() {
         var copyContent = this.state.copyContent;
 
@@ -276,8 +289,8 @@ export class EditAppointment extends Component {
                                 <table className="table table-sm table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col"><i class="fas fa-sort-numeric-down font-weight-light text-color-purple"></i></th>
-                                            <th scope="col"><i class="fas fa-sort-alpha-down font-weight-light text-color-purple"></i></th>
+                                            <th scope="col" className="clickable" onClick={this.orderByFrequency}><i className="fas fa-sort-numeric-down font-weight-light text-color-purple"></i></th>
+                                            <th scope="col" className="clickable" onClick={this.orderByName}><i className="fas fa-sort-alpha-down font-weight-light text-color-purple"></i></th>
                                             <th scope="col"><span className="font-weight-light text-color-purple">Faltas</span></th>
                                             <th scope="col"><span className="font-weight-light text-color-purple">% Aula</span></th>
                                             <th scope="col"><span className="font-weight-light text-color-purple">Alertas</span></th>

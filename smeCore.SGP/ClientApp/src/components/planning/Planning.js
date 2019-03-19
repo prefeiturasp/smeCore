@@ -59,6 +59,8 @@ export default class Planning extends Component {
 
         this.getSchoolCalendar = this.getSchoolCalendar.bind(this);
         this.prepareCalendar = this.prepareCalendar.bind(this);
+        this.frequencyOrderBySequence = this.frequencyOrderBySequence.bind(this);
+        this.frequencyOrderByName = this.frequencyOrderByName.bind(this);
         this.setClassSchedule = this.setClassSchedule.bind(this);
         this.deleteClassSchedule = this.deleteClassSchedule.bind(this);
         this.saveEditClassSchedule = this.saveEditClassSchedule.bind(this);
@@ -203,6 +205,27 @@ export default class Planning extends Component {
         calendar.weeks[4] = getWeek(today);
 
         this.setState({ calendar: calendar });
+    }
+
+    frequencyOrderBySequence() {
+        var students = this.state.students.sort(function (a, b) {
+            if (a.sequence > b.sequence)
+                return (1);
+            if (a.sequence < b.sequence)
+                return (-1);
+
+            return (0);
+        });
+
+        this.setState({ students: students });
+    }
+
+    frequencyOrderByName() {
+        var students = this.state.students.sort(function (a, b) {
+            return (a.name.localeCompare(b.name));
+        });
+
+        this.setState({ students: students });
     }
 
     setClassSchedule(schedule) {
@@ -868,6 +891,8 @@ export default class Planning extends Component {
                             relatedClasses={this.state.relatedClasses}
                             annualPlan={this.state.annual}
                             saveEditClassSchedule={this.saveEditClassSchedule}
+                            frequencyOrderBySequence={this.frequencyOrderBySequence}
+                            frequencyOrderByName={this.frequencyOrderByName}
                             {...childProps} />
 
                         <AnnualPlan

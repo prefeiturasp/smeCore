@@ -143,6 +143,10 @@
     height: 0.7em;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 @media (min-width: 768px) {
     #changeClassTextBox {
         margin-right: 5px;

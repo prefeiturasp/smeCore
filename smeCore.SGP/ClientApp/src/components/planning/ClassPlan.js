@@ -152,6 +152,8 @@ export class ClassPlan extends Component {
                         relatedClasses={this.props.relatedClasses}
                         editClassSchedule={this.state.editClassSchedule}
                         updateEditClassSchedule={this.updateEditClassSchedule}
+                        frequencyOrderBySequence={this.props.frequencyOrderBySequence}
+                        frequencyOrderByName={this.props.frequencyOrderByName}
                         {...childProps} />)
                 }
             </div>
