@@ -18,7 +18,7 @@ class App extends Component {
                 lastAuthentication: null
             },
             messageWindow: {
-                title: "",
+                status: "",
                 message: ""
             }
         };
@@ -64,11 +64,11 @@ class App extends Component {
         this.setState({ user: user });
     }
 
-
-
-    showMessage(message, title = "Aviso") {
+    showMessage(message, status, title = "Aviso") {
+        debugger;
         this.setState({
             messageWindow: {
+                status: status,
                 title: title,
                 message: message
             }
@@ -118,13 +118,16 @@ class App extends Component {
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title" id="messageWindowModalLabel">{this.state.messageWindow.title}</h5>
+                                    {this.state.messageWindow.status === 'sucesso' && <h5 className="modal-title" id="messageWindowModalLabel">Sucesso!</h5>}
+                                    {this.state.messageWindow.status === 'erro' && <h5 className="modal-title" id="messageWindowModalLabel">Erro!</h5>}
                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div className="modal-body">
-                                    {this.state.messageWindow.message}
+                                    {this.state.messageWindow.status === 'erro' && <i class="fa fa-window-close" aria-hidden="true"></i>}
+                                    {this.state.messageWindow.status === 'sucesso' && <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>}
+                                    { ' ' + this.state.messageWindow.message}
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-primary" data-dismiss="modal">Ok</button>
