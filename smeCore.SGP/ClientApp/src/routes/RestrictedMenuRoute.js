@@ -3,13 +3,20 @@ import { Route, Redirect } from 'react-router-dom';
 import { TopMenu } from '../components/navigation/TopMenu';
 import { Footer } from "../components/navigation/Footer";
 
-export default ({ component: C, props: cProps, ...rest }) => {
+export default ({ component: C, props: cProps, ...rest }) =>
+    <Route {...rest}
+        render={
+            props => {
+                if (cProps.isAuthenticated === false)
+                    return (<Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`} />);
 
-    return (
-        <Route {...rest}
-            render={
-                props => cProps.isAuthenticated && cProps.user.roles.indexOf("Admin") >= 0
-                    ? (
+                const roles = [
+                    "Admin",
+                    "Supervisor"
+                ];
+
+                if (roles.some(role => cProps.user.roles.indexOf(role) >= 0))
+                    return (
                         <div>
                             <TopMenu {...cProps} />
                             <div className="content pb-5">
@@ -17,9 +24,9 @@ export default ({ component: C, props: cProps, ...rest }) => {
                             </div>
                             <Footer />
                         </div>
-                    )
-                    : <Redirect to="/restricted" />
+                    );
+                else
+                    return (<Redirect to="/Unauthorized" />);
             }
-        />
-    );
-}
+        }
+    />;

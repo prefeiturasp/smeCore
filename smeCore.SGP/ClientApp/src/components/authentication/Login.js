@@ -14,49 +14,7 @@ export default class Login extends Component {
         this.changeEvent = this.changeEvent.bind(this);
         this.loginButtomClick = this.loginButtomClick.bind(this);
 
-        // Verifica se o usuário já está autenticado
-        var user = JSON.parse(sessionStorage.getItem("user"));
-
-        if (user !== null) {
-            user.lastAuthentication = new Date(user.lastAuthentication);
-            var currentTime = new Date();
-
-            var diff = currentTime - user.lastAuthentication;
-            //var diffDays = Math.floor(diff / 86400000); // days
-            //var diffHrs = Math.floor((diff % 86400000) / 3600000); // hours
-            var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000); // minutes
-
-            if (diffMins <= 10) { // Faz verificação se o token ainda é válido
-                this.props.setUser(user);
-                this.props.userHasAuthenticated(true);
-            }
-            else if (diffMins <= 30) { // Faz verificação se o refreshToken ainda é válido, caso seja atualiza o token
-                var credential = {
-                    username: user.username,
-                    refreshToken: user.refreshToken
-                };
-
-                fetch('/api/Auth/RefreshLogin', {
-                    method: "post",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(credential)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status !== 401) {
-                            var user = {
-                                name: "",
-                                username: credential.username,
-                                token: data.token,
-                                refreshToken: data.refreshToken,
-                                lastAuthentication: new Date()
-                            }
-
-                            this.props.logginUser(user);
-                        }
-                    });
-            }
-        }
+        this.props.validateUser();
     }
 
     validateForm() {
@@ -77,12 +35,8 @@ export default class Login extends Component {
             username: this.state.username,
             password: this.state.password
         };
-
-        fetch('/api/Auth/Login', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credential)
-        })
+        
+        this.props.apiPost("/api/Auth/Login", credential)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 401)

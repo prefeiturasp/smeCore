@@ -27,6 +27,7 @@ class App extends Component {
         this.loggoutUser = this.loggoutUser.bind(this);
         this.logginUser = this.logginUser.bind(this);
         this.setUser = this.setUser.bind(this);
+        this.validateUser = this.validateUser.bind(this);
 
         this.showMessage = this.showMessage.bind(this);
 
@@ -62,6 +63,55 @@ class App extends Component {
 
     setUser(user) {
         this.setState({ user: user });
+    }
+
+    validateUser() {
+        // Verifica se o usuário já está autenticado
+        var user = JSON.parse(sessionStorage.getItem("user"));
+
+        if (user !== null) {
+            user.lastAuthentication = new Date(user.lastAuthentication);
+            var currentTime = new Date();
+
+            var diff = currentTime - user.lastAuthentication;
+            //var diffDays = Math.floor(diff / 86400000); // days
+            //var diffHrs = Math.floor((diff % 86400000) / 3600000); // hours
+            var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000); // minutes
+
+            if (diffMins <= 10) { // Faz verificação se o token ainda é válido
+                this.setState({
+                    user: user,
+                    isAuthenticated: true
+                });
+            }
+            else if (diffMins <= 30) { // Faz verificação se o refreshToken ainda é válido, caso seja atualiza o token
+                var credential = {
+                    username: user.username,
+                    refreshToken: user.refreshToken
+                };
+
+                this.apiPost("/api/Auth/RefreshLogin", credential)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status !== 401) {
+                            var user = {
+                                name: "",
+                                username: credential.username,
+                                token: data.token,
+                                refreshToken: data.refreshToken,
+                                lastAuthentication: new Date(),
+                                //TODO: Pegar valores do perfil do usuário
+                                roles: [
+                                    "Admin",
+                                    "Supervisor"
+                                ]
+                            }
+
+                            this.logginUser(user);
+                        }
+                    });
+            }
+        }
     }
 
     showMessage(message, status, title = "Aviso") {
@@ -101,6 +151,7 @@ class App extends Component {
             loggoutUser: this.loggoutUser,
             logginUser: this.logginUser,
             setUser: this.setUser,
+            validateUser: this.validateUser,
             user: this.state.user,
             showMessage: this.showMessage,
             apiGet: this.apiGet,
