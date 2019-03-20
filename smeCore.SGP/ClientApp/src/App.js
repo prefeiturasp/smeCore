@@ -165,7 +165,7 @@ class App extends Component {
                 <div>
                     <button id="messageWindowButton" type="button" className="btn btn-primary d-none" data-toggle="modal" data-target="#messageWindowModal"></button>
 
-                    <div className="modal fade" id="messageWindowModal" tabindex="-1" role="dialog" aria-labelledby="messageWindowModalLabel" aria-hidden="true">
+                    <div className="modal fade" id="messageWindowModal" tabIndex="-1" role="dialog" aria-labelledby="messageWindowModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -176,8 +176,8 @@ class App extends Component {
                                     </button>
                                 </div>
                                 <div className="modal-body">
-                                    {this.state.messageWindow.status === 'erro' && <i class="fa fa-window-close" aria-hidden="true"></i>}
-                                    {this.state.messageWindow.status === 'sucesso' && <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>}
+                                    {this.state.messageWindow.status === 'erro' && <i className="fa fa-window-close" aria-hidden="true"></i>}
+                                    {this.state.messageWindow.status === 'sucesso' && <i className="fa fa-check-circle fa-2x" aria-hidden="true"></i>}
                                     { ' ' + this.state.messageWindow.message}
                                 </div>
                                 <div className="modal-footer">

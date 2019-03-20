@@ -109,7 +109,7 @@ export class Bimester extends Component {
 
                                 <ul className="list-unstyled">
                                     {this.learningObjectiveItems !== null && this.learningObjectiveItems.map(learningObjectiveItem => (
-                                        <LearningObjectiveItem father={this.props.name} name={learningObjectiveItem.code} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} selected={learningObjectiveItem.selected} />
+                                        <LearningObjectiveItem key={learningObjectiveItem.code} father={this.props.name} name={learningObjectiveItem.code} description={learningObjectiveItem.description} itemClick={this.learningObjectiveItemClick.bind(this, learningObjectiveItem)} selected={learningObjectiveItem.selected} />
                                     ))}
                                 </ul>
                             </div>
@@ -129,7 +129,7 @@ export class Bimester extends Component {
                                     <div>
                                         <ul className="list-unstyled form-inline">
                                             {this.selectedLearningObjectiveItems !== null && this.selectedLearningObjectiveItems.map(objectiveItem => (
-                                                <ObjectiveItem name={objectiveItem} itemClick={this.objectiveItemClick.bind(this, objectiveItem)} />
+                                                <ObjectiveItem key={objectiveItem} name={objectiveItem} itemClick={this.objectiveItemClick.bind(this, objectiveItem)} />
                                             ))}
                                         </ul>
                                     </div>

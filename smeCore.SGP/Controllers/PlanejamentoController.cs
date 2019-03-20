@@ -82,6 +82,7 @@ namespace smeCore.SGP.Controllers
 
                 DayScheduleModel day = new DayScheduleModel()
                 {
+                    Key = i,
                     Name = today.Day + "-" + today.Month + "-" + today.Year,
                     FullDate = today,
                     Day = today.Day,
@@ -978,6 +979,7 @@ namespace smeCore.SGP.Controllers
                      && current.Date <= calendar.Weeks[4][6].FullDate
                      select new ClassScheduleModel
                      {
+                         Id = current.Id,
                          Date = current.Date,
                          TagColor = current.TagColor
                      }).ToList();
@@ -992,6 +994,7 @@ namespace smeCore.SGP.Controllers
                              && current.Date.Year == calendar.Weeks[i][j].Year
                              select new ScheduleModel
                              {
+                                 Id = current.Id,
                                  Color = current.TagColor,
                                  Time = current.Date.ToShortTimeString(),
                                  Name = model.Classroom,

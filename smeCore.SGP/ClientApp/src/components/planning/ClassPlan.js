@@ -125,7 +125,7 @@ export class ClassPlan extends Component {
                         <ul className="nav navbar-nav ml-auto">
                             <li className="nav-item">
                                 <div className="form-inline">
-                                    <button className="btn btn-outline-primary" onClick={this.backButtonClick}><i class="fas fa-arrow-left"></i> Voltar</button>
+                                    <button className="btn btn-outline-primary" onClick={this.backButtonClick}><i className="fas fa-arrow-left"></i> Voltar</button>
                                     &nbsp;
                                     <button className="btn btn-warning text-white" onClick={this.saveButtonClick}>Salvar</button>
                                 </div>

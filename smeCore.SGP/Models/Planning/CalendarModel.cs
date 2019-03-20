@@ -8,6 +8,7 @@ namespace smeCore.SGP.Models.Planning
 {
     public class ScheduleModel
     {
+        public string Id { get; set; }
         public string Color { get; set; }
         public string Time { get; set; }
         public string Name { get; set; }
@@ -19,6 +20,7 @@ namespace smeCore.SGP.Models.Planning
 
     public class DayScheduleModel
     {
+        public int Key { get; set; }
         public string Name { get; set; }
         public DateTime FullDate { get; set; }
         public int Day { get; set; }

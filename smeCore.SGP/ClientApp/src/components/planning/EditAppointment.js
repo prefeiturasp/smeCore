@@ -19,7 +19,7 @@ export class EditAppointment extends Component {
                 selectedDates: [
                     {
                         id: "copyContentDatePicker0",
-                        value: null
+                        value: undefined
                     }
                 ],
                 sequence: 0,
@@ -194,20 +194,20 @@ export class EditAppointment extends Component {
                     </div>
 
                     <div className="ml-auto form-inline">
-                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Listao.aspx" role="button">Listão <i class="fas fa-list-alt"></i></a>
+                        <a className="btn btn-primary" href="http://sgp.sme.prefeitura.sp.gov.br/Academico/ControleTurma/Listao.aspx" role="button">Listão <i className="fas fa-list-alt"></i></a>
                         <div className="spacing"></div>
-                        <button className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Migrar Conteúdo <i class="fas fa-share-square"></i></button>
+                        <button className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Migrar Conteúdo <i className="fas fa-share-square"></i></button>
 
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title text-secondary" id="exampleModalLongTitle">Copiar conte&uacute;do</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h4 className="modal-title text-secondary" id="exampleModalLongTitle">Copiar conte&uacute;do</h4>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div className="modal-body">
                                         <div className="w-100">
                                             <label className="float-left font-weight-light">Para a turma:</label>
                                             <br />
@@ -218,7 +218,7 @@ export class EditAppointment extends Component {
                                             <label className="float-left font-weight-light">Aula do dia:</label>
                                             <div>
                                                 {copyContent.selectedDates.map(item => (
-                                                    <DynamicDatePicker id={item.id} value={item.value} dateChange={this.dateChange} removeDate={this.removeDate} />
+                                                    <DynamicDatePicker key={item.id} id={item.id} value={item.value} dateChange={this.dateChange} removeDate={this.removeDate} />
                                                 ))}
                                             </div>
                                         </div>
@@ -230,23 +230,23 @@ export class EditAppointment extends Component {
                                         <div className="w-100 pt-4">
                                             <label className="float-left font-weight-light">Selecione o conte&uacute;do:</label>
 
-                                            <div class="form-check w-100 d-flex justify-content-start pt-2">
+                                            <div className="form-check w-100 d-flex justify-content-start pt-2">
                                                 <input type="checkbox" className="form-check-input" id="learningObjectivesCheckbox" onChange={this.checkboxChange} checked={this.state.copyContent.learningObjectivesCheckbox} />
-                                                <label className="form-check-label" for="learningObjectivesCheckbox"><small className="font-weight-bold">Objetivos de aprendizagem e meus objetivos (Curr&iacute;culo da Cidade)</small></label>
+                                                <label className="form-check-label" htmlFor="learningObjectivesCheckbox"><small className="font-weight-bold">Objetivos de aprendizagem e meus objetivos (Curr&iacute;culo da Cidade)</small></label>
                                             </div>
 
-                                            <div class="form-check w-100 d-flex justify-content-start pt-2">
+                                            <div className="form-check w-100 d-flex justify-content-start pt-2">
                                                 <input type="checkbox" className="form-check-input" id="classDevelopmentCheckbox" onChange={this.checkboxChange} checked={this.state.copyContent.classDevelopmentCheckbox} />
-                                                <label className="form-check-label" for="classDevelopmentCheckbox"><small className="font-weight-bold">Desenvolvimento da aula</small></label>
+                                                <label className="form-check-label" htmlFor="classDevelopmentCheckbox"><small className="font-weight-bold">Desenvolvimento da aula</small></label>
                                             </div>
 
-                                            <div class="form-check w-100 d-flex justify-content-start pt-2">
+                                            <div className="form-check w-100 d-flex justify-content-start pt-2">
                                                 <input type="checkbox" className="form-check-input" id="homeworkCheckbox" onChange={this.checkboxChange} checked={this.state.copyContent.homeworkCheckbox} />
-                                                <label className="form-check-label" for="homeworkCheckbox"><small className="font-weight-bold">Li&ccedil;&atilde;o de casa</small></label>
+                                                <label className="form-check-label" htmlFor="homeworkCheckbox"><small className="font-weight-bold">Li&ccedil;&atilde;o de casa</small></label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div className="modal-footer">
                                         <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
                                         <button type="button" className="btn btn-primary" onClick={this.copyContentClick}>Confirmar</button>
                                     </div>
@@ -268,7 +268,7 @@ export class EditAppointment extends Component {
 
                         <ul className="list-unstyled">
                             {Object.entries(this.props.editClassSchedule.learningObjectives).map(([key, value]) => (
-                                <MyObjectiveItem id={key} name={key} value={value} parent="EditAppointment" changeLearningObjective={this.changeLearningObjective} />
+                                <MyObjectiveItem key={key} id={key} name={key} value={value} parent="EditAppointment" changeLearningObjective={this.changeLearningObjective} />
                             ))}
                         </ul>
                     </div>
@@ -279,7 +279,7 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Frequência (preenchimento obrigatório)</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
+                                    <i className="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
@@ -299,7 +299,7 @@ export class EditAppointment extends Component {
 
                                     <tbody>
                                         {this.props.students.map(student => (
-                                            <Student sequence={student.sequence} name={student.name} attendance={student.attendance} />
+                                            <Student key={student.sequence} sequence={student.sequence} name={student.name} attendance={student.attendance} />
                                         ))}
                                     </tbody>
                                 </table>
@@ -314,14 +314,14 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Desenvolvimento da aula</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
+                                    <i className="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample1" className="collapse">
-                                <RichTextBox changeText={this.changeClassDevelopment} value={this.props.editClassSchedule.classDevelopment} />
+                                <RichTextBox name="desenvolvimentoAula" changeText={this.changeClassDevelopment} value={this.props.editClassSchedule.classDevelopment} />
                             </div>
                         </div>
 
@@ -332,14 +332,14 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Recuperação contínua</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
+                                    <i className="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample2" className="collapse">
-                                <RichTextBox changeText={this.changeContinuousRecovery} value={this.props.editClassSchedule.continuousRecovery} />
+                                <RichTextBox name="recuperacaoContinua" changeText={this.changeContinuousRecovery} value={this.props.editClassSchedule.continuousRecovery} />
                             </div>
                         </div>
 
@@ -350,14 +350,14 @@ export class EditAppointment extends Component {
                                 <h5 className="font-weight-light text-color-purple">Lição de casa</h5>
 
                                 <div className="d-flex flex-fill flex-row-reverse">
-                                    <i class="fas fa-chevron-circle-down text-secondary"></i>
+                                    <i className="fas fa-chevron-circle-down text-secondary"></i>
                                 </div>
                             </div>
 
                             <hr className="header-rule" />
 
                             <div id="multiCollapseExample3" className="collapse">
-                                <RichTextBox changeText={this.changeHomework} value={this.props.editClassSchedule.homework} />
+                                <RichTextBox name="licaoCasa" changeText={this.changeHomework} value={this.props.editClassSchedule.homework} />
                             </div>
                         </div>
                     </div>

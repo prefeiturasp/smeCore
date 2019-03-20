@@ -37,13 +37,13 @@ export class PollSelect extends Component {
     render() {
         return (
             <div>
-                <select id={"pollItem-" + this.props.name + "-" + this.props.sequence} className={this.getColor(this.props.value)} onChange={this.onOptionChange}>
-                    {this.props.value === "" ? <option defaultValue hidden className="text-muted" value="">Selecione</option> : <option hidden className="text-muted" value="">Selecione</option>} 
-                    {this.props.value === "ps" ? <option selected className="text-white bg-bluescale-5" value="ps">PS</option> : <option className="text-white bg-bluescale-5" value="ps">PS</option>} 
-                    {this.props.value === "ssv" ? <option selected className="text-white bg-bluescale-4" value="ssv">SSV</option> : <option className="text-white bg-bluescale-4" value="ssv">SSV</option>}
-                    {this.props.value === "scv" ? <option selected className="text-white bg-bluescale-3" value="scv">SCV</option> : <option className="text-white bg-bluescale-3" value="scv">SCV</option>}
-                    {this.props.value === "sa" ? <option selected className="text-white bg-bluescale-2" value="sa">SA</option> : <option className="text-white bg-bluescale-2" value="sa">SA</option>}
-                    {this.props.value === "a" ? <option selected className="text-white bg-bluescale-1" value="a">A</option> : <option className="text-white bg-bluescale-1" value="a">A</option>}
+                <select id={"pollItem-" + this.props.name + "-" + this.props.sequence} value={this.props.value} className={this.getColor(this.props.value)} onChange={this.onOptionChange}>
+                    <option defaultValue hidden className="text-muted" value="">Selecione</option>
+                    <option className="text-white bg-bluescale-5" value="ps">PS</option>
+                    <option className="text-white bg-bluescale-4" value="ssv">SSV</option>
+                    <option className="text-white bg-bluescale-3" value="scv">SCV</option>
+                    <option className="text-white bg-bluescale-2" value="sa">SA</option>
+                    <option className="text-white bg-bluescale-1" value="a">A</option>
                 </select>
             </div>
         );

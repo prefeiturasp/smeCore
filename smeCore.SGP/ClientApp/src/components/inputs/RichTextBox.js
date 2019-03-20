@@ -84,11 +84,13 @@ export class RichTextBox extends Component {
                 </div>
                 <div className="d-flex">
                     <InlineStyleControls
+                        name={this.props.name}
                         editorState={editorState}
                         onToggle={this.toggleInlineStyle}
                     />
                     <div className="vertical-separator" />
                     <BlockStyleControls
+                        name={this.props.name}
                         editorState={editorState}
                         onToggle={this.toggleBlockType}
                     />
@@ -147,8 +149,8 @@ const BLOCK_TYPES = [
     //{ label: 'H5', style: 'header-five' },
     //{ label: 'H6', style: 'header-six' },
     //{ label: 'Blockquote', style: 'blockquote' },
-    { label: <i class="fas fa-list-ul"></i>, style: 'unordered-list-item' },
-    { label: <i class="fas fa-list-ol"></i>, style: 'ordered-list-item' },
+    { label: <i className="fas fa-list-ul"></i>, style: 'unordered-list-item' },
+    { label: <i className="fas fa-list-ol"></i>, style: 'ordered-list-item' },
     //{ label: 'Code Block', style: 'code-block' },
 ];
 
@@ -162,9 +164,9 @@ const BlockStyleControls = (props) => {
 
     return (
         <div className="RichEditor-controls">
-            {BLOCK_TYPES.map((type) =>
+            {BLOCK_TYPES.map((type) => 
                 <StyleButton
-                    key={type.label}
+                    key={props.name + "BlockStyleControl" + type.style}
                     active={type.style === blockType}
                     label={type.label}
                     onToggle={props.onToggle}
@@ -186,9 +188,9 @@ const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div className="RichEditor-controls">
-            {INLINE_STYLES.map(type =>
+            {INLINE_STYLES.map(type => 
                 <StyleButton
-                    key={type.label}
+                    key={props.name + "InlineStyleControl" + type.label.type}
                     active={currentStyle.has(type.style)}
                     label={type.label}
                     onToggle={props.onToggle}

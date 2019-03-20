@@ -185,6 +185,7 @@ export default class Planning extends Component {
                     week[i].workday = true;
 
                 week[i].name = current.getDate() + "-" + current.getMonth() + "-" + current.getFullYear();
+                week[i].key = i;
             }
 
             return (week);

@@ -40,6 +40,7 @@ export class CalendarPlan extends Component {
                         <tr>
                             {this.props.calendar.weeks[0].length !== undefined && this.props.calendar.weeks[0].map(week_day => (
                                 <CalendarDay
+                                    key={week_day.key}
                                     day={week_day.day}
                                     month={week_day.month}
                                     fullYear={week_day.year}
@@ -54,6 +55,7 @@ export class CalendarPlan extends Component {
                         <tr>
                             {this.props.calendar.weeks[1].length !== undefined && this.props.calendar.weeks[1].map(week_day => (
                                 <CalendarDay
+                                    key={week_day.key}
                                     day={week_day.day}
                                     month={week_day.month}
                                     fullYear={week_day.year}
@@ -68,6 +70,7 @@ export class CalendarPlan extends Component {
                         <tr>
                             {this.props.calendar.weeks[2].length !== undefined && this.props.calendar.weeks[2].map(week_day => (
                                 <CalendarDay
+                                    key={week_day.key}
                                     day={week_day.day}
                                     month={week_day.month}
                                     fullYear={week_day.year}
@@ -82,6 +85,7 @@ export class CalendarPlan extends Component {
                         <tr>
                             {this.props.calendar.weeks[3].length !== undefined && this.props.calendar.weeks[3].map(week_day => (
                                 <CalendarDay
+                                    key={week_day.key}
                                     day={week_day.day}
                                     month={week_day.month}
                                     fullYear={week_day.year}
@@ -96,6 +100,7 @@ export class CalendarPlan extends Component {
                         <tr>
                             {this.props.calendar.weeks[4].length !== undefined && this.props.calendar.weeks[4].map(week_day => (
                                 <CalendarDay
+                                    key={week_day.key}
                                     day={week_day.day}
                                     month={week_day.month}
                                     fullYear={week_day.year}

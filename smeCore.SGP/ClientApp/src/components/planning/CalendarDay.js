@@ -125,12 +125,6 @@ export class CalendarDay extends Component {
     }
 
     removeScheduleClick() {
-        var txt =
-            "Name: " + this.state.removeSchedule.name + "\n" +
-            "Time: " + this.state.removeSchedule.time + "\n" +
-            "School: " + this.state.removeSchedule.school + "\n" +
-            "Selected Repeat: " + this.state.modalSelectedRemoveRepeat;
-
         this.props.deleteSchedule({
             day: this.props.day,
             month: this.props.month,
@@ -156,6 +150,7 @@ export class CalendarDay extends Component {
                 <div className="appointments">
                     {this.props.schedule !== undefined && this.props.schedule.map(appointment => (
                         <Appointment
+                            key={appointment.id}
                             day={appointment.day}
                             month={appointment.month}
                             fullYear={appointment.fullYear}

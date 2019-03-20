@@ -8,6 +8,7 @@ namespace smeCore.SGP.Models.Planning
 {
     public class ClassScheduleModel
     {
+        public string Id { get; set; }
         public string Username { get; set; }
         public int Year { get; set; }
         public string Classroom { get; set; }

@@ -117,7 +117,7 @@ export class CyclePlan extends Component {
 
                                     <ul className="list-unstyled">
                                         {this.props.cycle.knowledgeItems.map(knowledgeItem => (
-                                            <KnowledgeItem sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)} />
+                                            <KnowledgeItem key={knowledgeItem.sequence} sequence={knowledgeItem.sequence} title={knowledgeItem.title} selected={knowledgeItem.selected} buttonClick={this.knowledgeItemClick.bind(this, knowledgeItem)} />
                                         ))}
                                     </ul>
                                 </div>
@@ -131,7 +131,7 @@ export class CyclePlan extends Component {
 
                                     <ul className="list-unstyled">
                                         {this.props.cycle.sustainableDevItems.map(sustainableDevItem => (
-                                            <SustainableDevItem sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} selected={sustainableDevItem.selected} buttonClick={this.sustainableDevItemClick.bind(this, sustainableDevItem)} />
+                                            <SustainableDevItem key={sustainableDevItem.sequence} sequence={sustainableDevItem.sequence} name={sustainableDevItem.name} selected={sustainableDevItem.selected} buttonClick={this.sustainableDevItemClick.bind(this, sustainableDevItem)} />
                                         ))}
                                     </ul>
                                 </div>
