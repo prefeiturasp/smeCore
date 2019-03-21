@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Routes from './Routes';
+import ReactGA from 'react-ga';
 
 class App extends Component {
     static displayName = App.name;
@@ -33,6 +34,12 @@ class App extends Component {
 
         this.apiGet = this.apiGet.bind(this);
         this.apiPost = this.apiPost.bind(this);
+
+
+
+        // Configuração do Google Analytics
+        ReactGA.initialize('UA-85250794-12');
+        ReactGA.pageview('/Planejamento');
     }
 
     userHasAuthenticated(authenticated) {
