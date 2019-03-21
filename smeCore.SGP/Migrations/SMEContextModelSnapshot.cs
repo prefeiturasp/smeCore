@@ -347,45 +347,45 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1bf95102-1817-4194-a0d6-ad68bf690bf8",
+                            Id = "a49de97c-c94f-45b0-a6de-9ba1c4591d40",
                             ClosureEnd = new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "1° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            SchoolYearId = "b36ce928-fa73-4fa1-8b9d-95781562c0c5",
                             ValidityEnd = new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "6ade712a-761c-4ae8-a75d-db177ef32bed",
+                            Id = "313808ae-61dd-44f9-b4ed-aefd276052d9",
                             ClosureEnd = new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "2° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            SchoolYearId = "b36ce928-fa73-4fa1-8b9d-95781562c0c5",
                             ValidityEnd = new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "26a864c7-80ba-4e95-929a-62a2b3c4f1f3",
+                            Id = "e146330b-d623-4842-9759-ae50518513f2",
                             ClosureEnd = new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "3° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            SchoolYearId = "b36ce928-fa73-4fa1-8b9d-95781562c0c5",
                             ValidityEnd = new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "83e4be82-780b-430b-94ef-b302b7d7011c",
+                            Id = "dfc9b2a3-1a6a-487f-860e-082030e5bf10",
                             ClosureEnd = new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ClosureStart = new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "4° Bimestre de 2019",
                             ReportCardConsolidation = new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SchoolYearId = "11269eea-e7da-4d95-a405-86114777c919",
+                            SchoolYearId = "b36ce928-fa73-4fa1-8b9d-95781562c0c5",
                             ValidityEnd = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ValidityStart = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -407,7 +407,7 @@ namespace smeCore.SGP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "11269eea-e7da-4d95-a405-86114777c919",
+                            Id = "b36ce928-fa73-4fa1-8b9d-95781562c0c5",
                             Name = "Ensino Regular",
                             Year = 2019
                         });
@@ -457,6 +457,72 @@ namespace smeCore.SGP.Migrations
                     b.ToTable("StudentClasses");
                 });
 
+            modelBuilder.Entity("smeCore.Models.Authentication.AccessPermission", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("Location");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccessPermission");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a432b866-b3fd-42d6-afd6-5d9df94f8a44",
+                            CreatedAt = new DateTime(2019, 3, 21, 15, 21, 55, 1, DateTimeKind.Local).AddTicks(6443),
+                            Location = "/Admin",
+                            ModifiedAt = new DateTime(2019, 3, 21, 15, 21, 55, 6, DateTimeKind.Local).AddTicks(9706),
+                            Name = "Área Administrativa"
+                        });
+                });
+
+            modelBuilder.Entity("smeCore.Models.Authentication.AccessPermissionRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccessPermissionId");
+
+                    b.Property<string>("RoleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccessPermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AccessPermissionRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a31f89c8-0ad1-473b-9333-e529f24b4f34",
+                            AccessPermissionId = "a432b866-b3fd-42d6-afd6-5d9df94f8a44",
+                            RoleId = "1a1541b9-48d8-4987-b5d9-c44e9889d216"
+                        },
+                        new
+                        {
+                            Id = "0c8f495d-9362-4c54-8b45-467054c395d5",
+                            AccessPermissionId = "a432b866-b3fd-42d6-afd6-5d9df94f8a44",
+                            RoleId = "10f71a3e-9d19-4b39-87f8-aad934db2bc4"
+                        },
+                        new
+                        {
+                            Id = "170e2ef8-8dda-43fb-8402-ae30fefdd54d",
+                            AccessPermissionId = "a432b866-b3fd-42d6-afd6-5d9df94f8a44",
+                            RoleId = "c5197d8d-9565-4041-8f5f-09b2aec6577a"
+                        });
+                });
+
             modelBuilder.Entity("smeCore.Models.Authentication.LoggedUser", b =>
                 {
                     b.Property<string>("Id")
@@ -485,6 +551,23 @@ namespace smeCore.SGP.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1a1541b9-48d8-4987-b5d9-c44e9889d216",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = "10f71a3e-9d19-4b39-87f8-aad934db2bc4",
+                            Name = "Diretor"
+                        },
+                        new
+                        {
+                            Id = "c5197d8d-9565-4041-8f5f-09b2aec6577a",
+                            Name = "Professor"
+                        });
                 });
 
             modelBuilder.Entity("smeCore.Models.Authentication.User", b =>
@@ -700,6 +783,17 @@ namespace smeCore.SGP.Migrations
                     b.HasOne("smeCore.Models.Academic.Student", "Student")
                         .WithMany("Classes")
                         .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("smeCore.Models.Authentication.AccessPermissionRole", b =>
+                {
+                    b.HasOne("smeCore.Models.Authentication.AccessPermission", "AccessPermission")
+                        .WithMany("AccessPermissionRoles")
+                        .HasForeignKey("AccessPermissionId");
+
+                    b.HasOne("smeCore.Models.Authentication.Role", "Role")
+                        .WithMany("AccessPermissionRoles")
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("smeCore.Models.Authentication.UserRole", b =>

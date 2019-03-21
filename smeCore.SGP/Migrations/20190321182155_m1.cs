@@ -8,6 +8,21 @@ namespace smeCore.SGP.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AccessPermission",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Location = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessPermission", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ClassModes",
                 columns: table => new
                 {
@@ -182,6 +197,31 @@ namespace smeCore.SGP.Migrations
                         name: "FK_Schools_RegionalBoardEducations_RegionalBoardEducationId",
                         column: x => x.RegionalBoardEducationId,
                         principalTable: "RegionalBoardEducations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessPermissionRole",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AccessPermissionId = table.Column<string>(nullable: true),
+                    RoleId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessPermissionRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccessPermissionRole_AccessPermission_AccessPermissionId",
+                        column: x => x.AccessPermissionId,
+                        principalTable: "AccessPermission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AccessPermissionRole_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -550,20 +590,55 @@ namespace smeCore.SGP.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AccessPermission",
+                columns: new[] { "Id", "CreatedAt", "Location", "ModifiedAt", "Name" },
+                values: new object[] { "a432b866-b3fd-42d6-afd6-5d9df94f8a44", new DateTime(2019, 3, 21, 15, 21, 55, 1, DateTimeKind.Local).AddTicks(6443), "/Admin", new DateTime(2019, 3, 21, 15, 21, 55, 6, DateTimeKind.Local).AddTicks(9706), "Área Administrativa" });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { "1a1541b9-48d8-4987-b5d9-c44e9889d216", "Admin" },
+                    { "10f71a3e-9d19-4b39-87f8-aad934db2bc4", "Diretor" },
+                    { "c5197d8d-9565-4041-8f5f-09b2aec6577a", "Professor" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "SchoolYears",
                 columns: new[] { "Id", "Name", "Year" },
-                values: new object[] { "11269eea-e7da-4d95-a405-86114777c919", "Ensino Regular", 2019 });
+                values: new object[] { "b36ce928-fa73-4fa1-8b9d-95781562c0c5", "Ensino Regular", 2019 });
+
+            migrationBuilder.InsertData(
+                table: "AccessPermissionRole",
+                columns: new[] { "Id", "AccessPermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { "a31f89c8-0ad1-473b-9333-e529f24b4f34", "a432b866-b3fd-42d6-afd6-5d9df94f8a44", "1a1541b9-48d8-4987-b5d9-c44e9889d216" },
+                    { "0c8f495d-9362-4c54-8b45-467054c395d5", "a432b866-b3fd-42d6-afd6-5d9df94f8a44", "10f71a3e-9d19-4b39-87f8-aad934db2bc4" },
+                    { "170e2ef8-8dda-43fb-8402-ae30fefdd54d", "a432b866-b3fd-42d6-afd6-5d9df94f8a44", "c5197d8d-9565-4041-8f5f-09b2aec6577a" }
+                });
 
             migrationBuilder.InsertData(
                 table: "SchoolTerm",
                 columns: new[] { "Id", "ClosureEnd", "ClosureStart", "Name", "ReportCardConsolidation", "SchoolYearId", "ValidityEnd", "ValidityStart" },
                 values: new object[,]
                 {
-                    { "1bf95102-1817-4194-a0d6-ad68bf690bf8", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "6ade712a-761c-4ae8-a75d-db177ef32bed", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "26a864c7-80ba-4e95-929a-62a2b3c4f1f3", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "83e4be82-780b-430b-94ef-b302b7d7011c", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "11269eea-e7da-4d95-a405-86114777c919", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { "a49de97c-c94f-45b0-a6de-9ba1c4591d40", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "313808ae-61dd-44f9-b4ed-aefd276052d9", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "e146330b-d623-4842-9759-ae50518513f2", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "dfc9b2a3-1a6a-487f-860e-082030e5bf10", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessPermissionRole_AccessPermissionId",
+                table: "AccessPermissionRole",
+                column: "AccessPermissionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessPermissionRole_RoleId",
+                table: "AccessPermissionRole",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnnualPlans_PlanningId",
@@ -704,6 +779,9 @@ namespace smeCore.SGP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccessPermissionRole");
+
+            migrationBuilder.DropTable(
                 name: "AnnualPlans");
 
             migrationBuilder.DropTable(
@@ -735,6 +813,9 @@ namespace smeCore.SGP.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AccessPermission");
 
             migrationBuilder.DropTable(
                 name: "StudentClasses");

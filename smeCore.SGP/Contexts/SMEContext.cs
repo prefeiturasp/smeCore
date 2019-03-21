@@ -69,6 +69,7 @@ namespace smeCore.SGP.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Seed data para o Calendário Escolar
             smeCore.Models.Academic.SchoolYear schoolYear = new smeCore.Models.Academic.SchoolYear()
             {
                 Year = 2019,
@@ -129,6 +130,43 @@ namespace smeCore.SGP.Contexts
                 ReportCardConsolidation = new System.DateTime(2019, 12, 22),
                 SchoolYearId = schoolYear.Id,
             });
+
+
+
+
+            // Seed data para Permissões de Acesso
+            smeCore.Models.Authentication.AccessPermission accessPermission = new smeCore.Models.Authentication.AccessPermission()
+            {
+                CreatedAt = System.DateTime.Now,
+                ModifiedAt = System.DateTime.Now,
+                Name = "Área Administrativa",
+                Location = "/Admin"
+            };
+            accessPermission.NewID();
+            modelBuilder.Entity<smeCore.Models.Authentication.AccessPermission>().HasData(accessPermission);
+
+            System.Collections.Generic.List<smeCore.Models.Authentication.Role> roles = new System.Collections.Generic.List<smeCore.Models.Authentication.Role>()
+            {
+                new smeCore.Models.Authentication.Role() { Name = "Admin" },
+                new smeCore.Models.Authentication.Role() { Name = "Diretor" },
+                new smeCore.Models.Authentication.Role() { Name = "Professor" }
+            };
+
+            smeCore.Models.Authentication.AccessPermissionRole accessPermissionRole = new smeCore.Models.Authentication.AccessPermissionRole();
+
+            for (int i = 0; i < roles.Count; i++)
+            {
+                roles[i].NewID();
+                modelBuilder.Entity<smeCore.Models.Authentication.Role>().HasData(roles[i]);
+
+                accessPermissionRole.NewID();
+                modelBuilder.Entity<smeCore.Models.Authentication.AccessPermissionRole>().HasData(new
+                {
+                    accessPermissionRole.Id,
+                    AccessPermissionId = accessPermission.Id,
+                    RoleId = roles[i].Id
+                });
+            }
         }
 
         #endregion ==================== METHODS ====================

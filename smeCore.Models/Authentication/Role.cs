@@ -9,6 +9,7 @@ namespace smeCore.Models.Authentication
         public string Name { get; set; }
 
         public virtual List<UserRole> UserRoles { get; set; }
+        public virtual List<AccessPermissionRole> AccessPermissionRoles { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
     }

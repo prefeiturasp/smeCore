@@ -10,6 +10,17 @@ class App extends Component {
         super(props);
 
         this.state = {
+            permissions: [
+                {
+                    name: "Área Administrativa",
+                    location: "/Admin",
+                    roles: [
+                        "Admin",
+                        "Diretor",
+                        "Professor"
+                    ]
+                },
+            ],
             isAuthenticated: false,
             user: {
                 name: "",
@@ -40,6 +51,17 @@ class App extends Component {
         // Configuração do Google Analytics
         ReactGA.initialize('UA-85250794-12');
         ReactGA.pageview('/Planejamento');
+    }
+
+    componentDidMount() {
+        // Pega as permissões de acesso
+        //this.apiPost("/api/Auth/GetAccessPermissions")
+        //    .then(data => {
+        //        if (data.status === 200)
+        //            data.json().then(result => {
+        //                this.setState({ permissions: result });
+        //            });
+        //    });
     }
 
     userHasAuthenticated(authenticated) {
@@ -137,12 +159,18 @@ class App extends Component {
 
 
 
-    apiPost(url, data) {
-        return (fetch(url, {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        }));
+    apiPost(url, data = null) {
+        if (data !== null)
+            return (fetch(url, {
+                method: "post",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }));
+        else
+            return (fetch(url, {
+                method: "post",
+                headers: { 'Content-Type': 'application/json' }
+            }));
     }
 
     apiGet(url) {
@@ -153,6 +181,7 @@ class App extends Component {
 
     render() {
         const childProps = {
+            permissions: this.state.permissions,
             isAuthenticated: this.state.isAuthenticated,
             userHasAuthenticated: this.userHasAuthenticated,
             loggoutUser: this.loggoutUser,
