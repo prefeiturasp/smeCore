@@ -1103,9 +1103,9 @@ namespace smeCore.SGP.Controllers
                         await _db.Profiles.AddRangeAsync(people);
                         await _db.SaveChangesAsync();
                     }
-                    catch (Exception e)
+                    catch (Exception error)
                     {
-
+                        return (StatusCode(500, error));
                     }
                 }
 

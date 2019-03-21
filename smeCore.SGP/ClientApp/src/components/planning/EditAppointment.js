@@ -68,7 +68,7 @@ export class EditAppointment extends Component {
         var copyContent = this.state.copyContent;
         copyContent.selectedDates.push({
             id: "copyContentDatePicker" + (++copyContent.sequence),
-            value: null
+            value: undefined
         });
 
         this.setState({ copyContent: copyContent });
