@@ -146,7 +146,8 @@ class App extends Component {
     showMessage(message, status, title = "Aviso") {
         debugger;
         this.setState({
-            messageWindow: {
+           
+            messageWindow: { 
                 status: status,
                 title: title,
                 message: message
@@ -211,10 +212,10 @@ class App extends Component {
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div className="modal-body">
-                                    {this.state.messageWindow.status === 'erro' && <i className="fa fa-window-close" aria-hidden="true"></i>}
-                                    {this.state.messageWindow.status === 'sucesso' && <i className="fa fa-check-circle fa-2x" aria-hidden="true"></i>}
-                                    { ' ' + this.state.messageWindow.message}
+                                <div className="modal-body d-flex align-items-stretch">
+                                    {this.state.messageWindow.status === 'erro' && <i className="fa fa-window-close fa-2x pr-2" aria-hidden="true"></i>}
+                                    {this.state.messageWindow.status === 'sucesso' && <i className="fa fa-check-circle fa-2x pr-2" aria-hidden="true"></i>}
+                                    <h4> {this.state.messageWindow.message} </h4>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-primary" data-dismiss="modal">Ok</button>

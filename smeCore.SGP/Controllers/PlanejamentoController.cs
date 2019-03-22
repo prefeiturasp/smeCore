@@ -918,8 +918,8 @@ namespace smeCore.SGP.Controllers
             }
 
             return (NotFound("Planejamento e aula não encontrados."));
-        }
-
+            }
+      
         [HttpPost]
         public async Task<ActionResult<string>> AbrirDesenvolvimentoAula(EditClassScheduleModel model)
         {
@@ -937,9 +937,11 @@ namespace smeCore.SGP.Controllers
                     (from current in _db.ClassSchedules
                      where current.Date == model.Date
                      select current).SingleOrDefaultAsync();
-
+ 
                 if (classSchedule != null)
                 {
+                    classSchedule.LearninObjectives = classSchedule.LearninObjectives == null ? "" : classSchedule.LearninObjectives;
+
                     EditClassScheduleModel result = new EditClassScheduleModel()
                     {
                         Date = classSchedule.Date,
@@ -1185,6 +1187,11 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> MigrarConteudo(CopyClassScheduleModel model)
         {
+            string dates = "";
+            // Verifica se existe Plano de aula para as datas.
+            // Se existir pegar esse plano de aula novo e copiar os conteudos.
+            // Se não existir retornar mensagem contendo as datas que não existem
+
             Planning planningFrom =
                 (from current in _db.Plannings.Include(x => x.ClassSchedules)
                  where current.UserId == model.Username
@@ -1198,7 +1205,7 @@ namespace smeCore.SGP.Controllers
                  where current.Date == model.Date
                  select current).FirstOrDefault();
 
-            Planning planningTo =
+                Planning planningTo =
                 (from current in _db.Plannings.Include(x => x.ClassSchedules)
                  where current.UserId == model.Username
                  && current.School == model.CopyToSchool
@@ -1206,39 +1213,58 @@ namespace smeCore.SGP.Controllers
                  && current.Classroom == model.CopyToClassroom
                  select current).FirstOrDefault();
 
-            List<ClassSchedule> schedulesTo = new List<ClassSchedule>();
-
-            string dates = "";
-
-            foreach (ClassSchedule schedule in planningTo.ClassSchedules)
-                if (model.CopyDates.Contains(schedule.Date) == true)
-                    schedulesTo.Add(schedule);
-                else
-                    dates += "    - " + schedule.Date.ToString("dd/MM/yyyy") + "\n";
-
-            for (int i = 0; i < schedulesTo.Count; i++)
+            if (planningTo == null)
             {
-                if (model.LearningObjectives == true)
-                    schedulesTo[i].LearninObjectives = scheduleFrom.LearninObjectives;
-                if (model.ClassDevelopment == true)
-                    schedulesTo[i].ClassroomDevelopment = scheduleFrom.ClassroomDevelopment;
-                if (model.Homework == true)
-                    schedulesTo[i].Homework = scheduleFrom.Homework;
+                 foreach(var data in model.CopyDates)
+                {
+                    dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
+                }
+                return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
             }
 
+            else if (planningTo.ClassSchedules == null)
+            {
+                foreach (var data in model.CopyDates)
+                {
+                    dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
+                }
+                return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+            }
+            foreach (ClassSchedule schedule in planningTo.ClassSchedules)
+                
+                if (model.CopyDates.Contains(schedule.Date) == true)
+                {
+                    if (model.LearningObjectives == true)
+                        schedule.LearninObjectives = scheduleFrom.LearninObjectives;
+                    if (model.ClassDevelopment == true)
+                        schedule.ClassroomDevelopment = scheduleFrom.ClassroomDevelopment;
+                    if (model.Homework == true)
+                        schedule.Homework = scheduleFrom.Homework;
+                }
+
+                else
+                {
+                    dates += "    - " + schedule.Date.ToString("dd/MM/yyyy") + "\n";
+                }
             try
             {
-                await _db.SaveChangesAsync();
+                if (!string.IsNullOrEmpty(dates))
+                {
+                    return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+                }
+                   
+                else
+                {
+                    await _db.SaveChangesAsync();
+                    return (Ok());
+                }
             }
             catch
             {
                 return (StatusCode(500));
             }
 
-            if (model.CopyDates.Count != schedulesTo.Count)
-                return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
-
-            return (Ok());
+          
         }
 
         [HttpPost]

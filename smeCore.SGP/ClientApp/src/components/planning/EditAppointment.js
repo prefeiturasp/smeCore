@@ -43,6 +43,12 @@ export class EditAppointment extends Component {
 
         this.orderByFrequency = this.orderByFrequency.bind(this);
         this.orderByName = this.orderByName.bind(this);
+        this.clearModal = this.clearModal.bind(this);
+
+    }
+
+    clearModal() {
+        this.setState({ copyContent: null });
     }
 
     selectedChange(selectedClass) {
@@ -65,29 +71,36 @@ export class EditAppointment extends Component {
     }
 
     addDate() {
+
         var copyContent = this.state.copyContent;
-        copyContent.selectedDates.push({
-            id: "copyContentDatePicker" + (++copyContent.sequence),
-            value: undefined
-        });
+        if (copyContent.selectedDates.length < 5)
+            copyContent.selectedDates.push({
+                id: "copyContentDatePicker" + (++copyContent.sequence),
+                value: undefined
+            });
 
         this.setState({ copyContent: copyContent });
     }
 
     removeDate(dateId) {
         var copyContent = this.state.copyContent;
-        var removeIndex = -1;
+        if (copyContent.selectedDates.length > 1) {
 
-        for (var i = 0; i < copyContent.selectedDates.length; i++)
-            if (copyContent.selectedDates[i].id === dateId) {
-                removeIndex = i;
-                break;
-            }
+            var removeIndex = -1;
 
-        copyContent.selectedDates.splice(removeIndex, 1);
+            for (var i = 0; i < copyContent.selectedDates.length; i++)
+                if (copyContent.selectedDates[i].id === dateId) {
+                    removeIndex = i;
+                    break;
+                }
 
-        this.setState({ copyContent: copyContent })
+            copyContent.selectedDates.splice(removeIndex, 1);
+
+            this.setState({ copyContent: copyContent })
+        }
     }
+
+    
 
     checkboxChange(event) {
         var copyContent = this.state.copyContent;
@@ -128,12 +141,22 @@ export class EditAppointment extends Component {
             body: JSON.stringify(model)
         })
             .then(data => {
-                if (data.status === 200)
+                if (data.status === 200) {
+                    //this.props.showMessage("Conteúdo migrado com sucesso!", "sucesso");
                     alert("Conteúdo migrado com sucesso!");
+                }
+                   
+               
+                else if (data.status === 404)
+                    data.json().then(result => {
+                        //  this.props.showMessage(result, "erro");
+                        alert(result);
+                    });
+                else if (data.status === 500)
+                    //this.props.showMessage("Ocorreu um erro!", "erro");
+                    alert("Ocorreu um erro!")
             });
     }
-
-
 
     changeClassDevelopment(change) {
         var editClassSchedule = this.props.editClassSchedule;
@@ -248,7 +271,7 @@ export class EditAppointment extends Component {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                        <button type="button" className="btn btn-primary" onClick={this.copyContentClick}>Confirmar</button>
+                                        <button type="button" className="btn btn-primary" data-dismiss="modal"/* disabled={this.state.copyContent.selectedClass === null || this.state.copyContent.selectedDates[0].value == undefined}*/ onClick={this.copyContentClick}>Confirmar</button>
                                     </div>
                                 </div>
                             </div>

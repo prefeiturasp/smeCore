@@ -432,7 +432,8 @@ export default class Planning extends Component {
         }
         this.props.apiPost('/api/Planejamento/SalvarDesenvolvimentoAula', model)
             .then(data => {
-                if (data.status === 200)
+                debugger;
+                if (data.status === 200) 
                     this.props.showMessage("Plano de aula salvo com sucesso", "sucesso");
                 else if (data.status === 500)
                     this.props.showMessage("Ocorreu um erro", "erro");

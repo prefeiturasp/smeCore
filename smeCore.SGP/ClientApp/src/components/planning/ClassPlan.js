@@ -28,7 +28,18 @@ export class ClassPlan extends Component {
         this.backButtonClick = this.backButtonClick.bind(this);
         this.saveButtonClick = this.saveButtonClick.bind(this);
         this.updateEditClassSchedule = this.updateEditClassSchedule.bind(this);
+        this.defaultStateOrConverter = this.defaultStateOrConverter.bind(this);
     }
+    defaultStateOrConverter(results) {
+        if (results === null) {
+            results = EditorState.createEmpty();;
+        }
+        else {
+            results = EditorState.createWithContent(convertFromRaw(JSON.parse(results)));
+        }
+
+        return results;
+    };
 
     editAppointmentClick(properties) {
         this.editAppontimentColor = properties.color;
@@ -75,9 +86,11 @@ export class ClassPlan extends Component {
                 if (data.status === 200)
                     data.json().then(result => {
                         result.date = editClassSchedule.date;
-                        result.classDevelopment = EditorState.createWithContent(convertFromRaw(JSON.parse(result.classDevelopment)));
-                        result.continuousRecovery = EditorState.createWithContent(convertFromRaw(JSON.parse(result.continuousRecovery)));
-                        result.homework = EditorState.createWithContent(convertFromRaw(JSON.parse(result.homework)));
+                        result.classDevelopment = this.defaultStateOrConverter(result.classDevelopment);
+                        result.continuousRecovery = this.defaultStateOrConverter(result.continuousRecovery);
+                        result.homework = this.defaultStateOrConverter(result.homework);
+                        if (result.learningObjectives == null)
+                            result.learningObjectives = {};
 
                         this.setState({
                             showEditAppointment: true,
