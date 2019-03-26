@@ -271,7 +271,7 @@ export class EditAppointment extends Component {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                        <button type="button" className="btn btn-primary" data-dismiss="modal"/* disabled={this.state.copyContent.selectedClass === null || this.state.copyContent.selectedDates[0].value == undefined}*/ onClick={this.copyContentClick}>Confirmar</button>
+                                        <button type="button" className="btn btn-primary" data-dismiss="modal" disabled={this.state.copyContent.selectedClass === null || this.state.copyContent.selectedDates[0].value == undefined} onClick={this.copyContentClick}>Confirmar</button>
                                     </div>
                                 </div>
                             </div>

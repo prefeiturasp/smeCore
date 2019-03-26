@@ -882,44 +882,52 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> SalvarDesenvolvimentoAula(EditClassScheduleModel model)
         {
-            Planning planning = await
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefaultAsync();
-
-            if (planning != null)
+            try
             {
-                ClassSchedule classSchedule = await
-                    (from current in _db.ClassSchedules
-                     where current.Date == model.Date
-                     select current).SingleOrDefaultAsync();
+                Planning planning = await
+                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                     where current.UserId == model.Username
+                     && current.School == model.School
+                     && current.Year == model.Year
+                     && current.Classroom == model.Classroom
+                     select current).FirstOrDefaultAsync();
 
-                if (classSchedule != null)
+                if (planning != null)
                 {
-                    classSchedule.LearninObjectives = JsonConvert.SerializeObject(model.LearningObjectives);
-                    classSchedule.ClassroomDevelopment = model.ClassDevelopment;
-                    classSchedule.ContinuousRecovery = model.ContinuousRecovery;
-                    classSchedule.Homework = model.Homework;
+                    ClassSchedule classSchedule = await
+                        (from current in _db.ClassSchedules
+                         where current.Date == model.Date
+                         select current).SingleOrDefaultAsync();
 
-                    try
+                    if (classSchedule != null)
                     {
-                        await _db.SaveChangesAsync();
-                    }
-                    catch (Exception error)
-                    {
-                        return (StatusCode(500, error));
-                    }
+                        classSchedule.LearninObjectives = JsonConvert.SerializeObject(model.LearningObjectives);
+                        classSchedule.ClassroomDevelopment = model.ClassDevelopment;
+                        classSchedule.ContinuousRecovery = model.ContinuousRecovery;
+                        classSchedule.Homework = model.Homework;
 
-                    return (Ok());
+                        try
+                        {
+                            await _db.SaveChangesAsync();
+                        }
+                        catch (Exception error)
+                        {
+                            return (StatusCode(500, error));
+                        }
+
+                        return (Ok());
+                    }
                 }
-            }
 
-            return (NotFound("Planejamento e aula não encontrados."));
+                return (NotFound("Planejamento e aula não encontrados."));
             }
-      
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<string>> AbrirDesenvolvimentoAula(EditClassScheduleModel model)
         {
@@ -937,7 +945,7 @@ namespace smeCore.SGP.Controllers
                     (from current in _db.ClassSchedules
                      where current.Date == model.Date
                      select current).SingleOrDefaultAsync();
- 
+
                 if (classSchedule != null)
                 {
                     classSchedule.LearninObjectives = classSchedule.LearninObjectives == null ? "" : classSchedule.LearninObjectives;
@@ -955,7 +963,7 @@ namespace smeCore.SGP.Controllers
                     return (Ok(result));
                 }
             }
-            
+
             return (NotFound());
         }
 
@@ -1205,21 +1213,27 @@ namespace smeCore.SGP.Controllers
                  where current.Date == model.Date
                  select current).FirstOrDefault();
 
-                Planning planningTo =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.CopyToSchool
-                 && current.Year == model.Year
-                 && current.Classroom == model.CopyToClassroom
-                 select current).FirstOrDefault();
+            Planning planningTo =
+            (from current in _db.Plannings.Include(x => x.ClassSchedules)
+             where current.UserId == model.Username
+             && current.School == model.CopyToSchool
+             && current.Year == model.Year
+             && current.Classroom == model.CopyToClassroom
+             select current).FirstOrDefault();
+
+            ClassSchedule scheduleTo =
+              (from current in planningTo.ClassSchedules
+               where current.Date == model.Date
+               select current).FirstOrDefault();
+
 
             if (planningTo == null)
             {
-                 foreach(var data in model.CopyDates)
+                foreach (var data in model.CopyDates)
                 {
                     dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
                 }
-                return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+                return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
             }
 
             else if (planningTo.ClassSchedules == null)
@@ -1228,10 +1242,13 @@ namespace smeCore.SGP.Controllers
                 {
                     dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
                 }
-                return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+                return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
             }
+
+            List<DateTime> lDateSchedules = new List<DateTime>();
             foreach (ClassSchedule schedule in planningTo.ClassSchedules)
-                
+            {
+
                 if (model.CopyDates.Contains(schedule.Date) == true)
                 {
                     if (model.LearningObjectives == true)
@@ -1242,17 +1259,25 @@ namespace smeCore.SGP.Controllers
                         schedule.Homework = scheduleFrom.Homework;
                 }
 
-                else
+                lDateSchedules.Add(schedule.Date);
+            }
+
+            foreach (DateTime date in model.CopyDates)
+            {
+                if (!lDateSchedules.Contains(date))
                 {
-                    dates += "    - " + schedule.Date.ToString("dd/MM/yyyy") + "\n";
+                    dates += "    - " + date.ToString("dd/MM/yyyy") + "\n";
                 }
+            }
+
+
             try
             {
                 if (!string.IsNullOrEmpty(dates))
                 {
                     return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
                 }
-                   
+
                 else
                 {
                     await _db.SaveChangesAsync();
@@ -1263,8 +1288,6 @@ namespace smeCore.SGP.Controllers
             {
                 return (StatusCode(500));
             }
-
-          
         }
 
         [HttpPost]
