@@ -1,1 +1,8 @@
-﻿
+﻿#sgp-menu-icon {
+    width: 1em;
+    height: 1em;
+}
+
+.admin-menu-item {
+    cursor: pointer;
+}

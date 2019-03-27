@@ -108,15 +108,15 @@
 }
 
 */
-.nav-link {
+.planning-tab.nav-link {
     padding: 0 1rem !important;
 }
 
-    .nav-link:hover {
+    .planning-tab.nav-link:hover {
         border: solid 1px #fff !important;
     }
 
-    .nav-link.active {
+    .planning-tab.nav-link.active {
         border-top: none !important;
         border-left: none !important;
         border-right: none !important;
@@ -125,7 +125,7 @@
         text-align: center;
     }
 
-        .nav-link.active::after {
+        .planning-tab.nav-link.active::after {
             content: " ";
             width: 100%;
             height: 12px;

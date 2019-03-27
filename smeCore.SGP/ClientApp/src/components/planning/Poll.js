@@ -40,10 +40,10 @@ export class Poll extends Component {
                     <div>
                         <ul className="nav nav-tabs" id="myTab" role="tablist">
                             <li className="nav-item">
-                                <a className="nav-link active azul-ux" id="portugues-tab" data-toggle="tab" href="#portugues" role="tab" aria-controls="portuguesPoll" aria-selected="true">Portugu&ecirc;s</a>
+                                <a className="planning-tab nav-link active azul-ux" id="portugues-tab" data-toggle="tab" href="#portugues" role="tab" aria-controls="portuguesPoll" aria-selected="true">Portugu&ecirc;s</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link azul-ux" id="matematica-tab" data-toggle="tab" href="#matematica" role="tab" aria-controls="matematicaPoll" aria-selected="false">Matem&aacute;tica</a>
+                                <a className="planning-tab nav-link azul-ux" id="matematica-tab" data-toggle="tab" href="#matematica" role="tab" aria-controls="matematicaPoll" aria-selected="false">Matem&aacute;tica</a>
                             </li>
                         </ul>
                     </div>
@@ -55,10 +55,10 @@ export class Poll extends Component {
                                     <thead>
                                         <tr>
                                             <th rowSpan="2" className="align-middle border text-color-purple"><div className="ml-2">Sondagem</div></th>
-                                            <th colSpan="2" className="text-center border text-color-purple">1</th>
-                                            <th colSpan="2" className="text-center border text-color-purple">2</th>
-                                            <th colSpan="2" className="text-center border text-color-purple">3</th>
-                                            <th colSpan="2" className="text-center border text-color-purple">4</th>
+                                            <th colSpan="2" className="text-center border text-color-purple">1° Bimestre</th>
+                                            <th colSpan="2" className="text-center border text-color-purple">2° Bimestre</th>
+                                            <th colSpan="2" className="text-center border text-color-purple">3° Bimestre</th>
+                                            <th colSpan="2" className="text-center border text-color-purple">4° Bimestre</th>
                                         </tr>
                                         <tr>
                                             <th className="text-center border poll-select-container"><small className="text-muted">Escrita</small></th>

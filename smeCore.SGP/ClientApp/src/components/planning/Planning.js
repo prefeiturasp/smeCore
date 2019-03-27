@@ -244,7 +244,7 @@ export default class Planning extends Component {
             .then(data => {
                 if (data.status === 200)
                     this.props.showMessage("Plano de aula salvo com sucesso!", "sucesso");
-                else if  (data.status === 500)
+                else if (data.status === 500)
                     this.props.showMessage("Ocorreu um erro!", "erro");
             });
 
@@ -432,8 +432,7 @@ export default class Planning extends Component {
         }
         this.props.apiPost('/api/Planejamento/SalvarDesenvolvimentoAula', model)
             .then(data => {
-                debugger;
-                if (data.status === 200) 
+                if (data.status === 200)
                     this.props.showMessage("Plano de aula salvo com sucesso", "sucesso");
                 else if (data.status === 500)
                     this.props.showMessage("Ocorreu um erro", "erro");
@@ -743,7 +742,7 @@ export default class Planning extends Component {
                 var year = planningModel.classroom.substring(index, index + 1);
                 ++index;
                 var classroom = planningModel.classroom.substring(index, index + 1);
-
+                debugger;
                 if (data.status === 200) {
                     data.json().then(result => {
                         var annual = {
@@ -880,19 +879,19 @@ export default class Planning extends Component {
                 <div id="curriculoContent">
                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                         <li className="nav-item">
-                            <a className="nav-link azul-ux" id="planoAula-tab" data-toggle="tab" href="#planoAula" role="tab" aria-controls="planoAula" aria-selected="true">Plano de Aula</a>
+                            <a className="planning-tab nav-link azul-ux" id="planoAula-tab" data-toggle="tab" href="#planoAula" role="tab" aria-controls="planoAula" aria-selected="true">Plano de Aula</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active azul-ux" id="planoAnual-tab" data-toggle="tab" href="#planoAnual" role="tab" aria-controls="planoAnual" aria-selected="false">Plano Anual</a>
+                            <a className="planning-tab nav-link active azul-ux" id="planoAnual-tab" data-toggle="tab" href="#planoAnual" role="tab" aria-controls="planoAnual" aria-selected="false">Plano Anual</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link azul-ux" id="planoCiclo-tab" data-toggle="tab" href="#planoCiclo" role="tab" aria-controls="planoCiclo" aria-selected="false">Plano de Ciclo</a>
+                            <a className="planning-tab nav-link azul-ux" id="planoCiclo-tab" data-toggle="tab" href="#planoCiclo" role="tab" aria-controls="planoCiclo" aria-selected="false">Plano de Ciclo</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#sondagem" role="tab" aria-controls="sondagem" aria-selected="false">Sondagem</a>
+                            <a className="planning-tab nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#sondagem" role="tab" aria-controls="sondagem" aria-selected="false">Sondagem</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#documentos" role="tab" aria-controls="documentos" aria-selected="false">Documentos</a>
+                            <a className="planning-tab nav-link azul-ux" id="documentos-tab" data-toggle="tab" href="#documentos" role="tab" aria-controls="documentos" aria-selected="false">Documentos</a>
                         </li>
                     </ul>
                     <div className="tab-content border-azul rounded" id="myTabContent">
