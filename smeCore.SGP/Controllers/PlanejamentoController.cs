@@ -444,6 +444,8 @@ namespace smeCore.SGP.Controllers
                 return (Ok(result));
         }
 
+
+
         [HttpPost]
         public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle model)
         {
@@ -500,6 +502,8 @@ namespace smeCore.SGP.Controllers
             else
                 return (NotFound());
         }
+
+
 
         [HttpPost]
         public async Task<ActionResult<string>> SalvarPlanoAnual(AnnualPlanModel model)
@@ -598,6 +602,8 @@ namespace smeCore.SGP.Controllers
 
             return (NotFound());
         }
+
+
 
         [HttpPost]
         public async Task<ActionResult<string>> SalvarHorarioAula(ClassScheduleModel model)
@@ -921,10 +927,9 @@ namespace smeCore.SGP.Controllers
 
                 return (NotFound("Planejamento e aula não encontrados."));
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-
-                throw;
+                return (StatusCode(500, error));
             }
         }
 
@@ -948,8 +953,6 @@ namespace smeCore.SGP.Controllers
 
                 if (classSchedule != null)
                 {
-                    classSchedule.LearninObjectives = classSchedule.LearninObjectives == null ? "" : classSchedule.LearninObjectives;
-
                     EditClassScheduleModel result = new EditClassScheduleModel()
                     {
                         Date = classSchedule.Date,
@@ -1136,51 +1139,6 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
-        [HttpPost]
-        public async Task<ActionResult<string>> CarregarAlunosSondagem(PlanningModel model)
-        {
-            Planning planning =
-                (from current in _db.Plannings
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            if (planning != null)
-            {
-                List<Models.Planning.StudentPollModel> result =
-                    (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
-                     join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
-                     join poll in _db.ClassPolls.Include(x => x.PollPortuguese).Include(x => x.StudentClass) on studentClasses equals poll.StudentClass
-                     where studentClasses.Planning == planning
-                     select new Models.Planning.StudentPollModel()
-                     {
-                         Id = student.Id,
-                         Name = student.Profile.Name,
-                         Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
-                         PollResults = new PollResultsModel()
-                         {
-                             Portuguese = new PollPortugueseModel()
-                             {
-                                 T1e = poll.PollPortuguese.T1E,
-                                 T1l = poll.PollPortuguese.T1L,
-                                 T2e = poll.PollPortuguese.T2E,
-                                 T2l = poll.PollPortuguese.T2L,
-                                 T3e = poll.PollPortuguese.T3E,
-                                 T3l = poll.PollPortuguese.T3L,
-                                 T4e = poll.PollPortuguese.T4E,
-                                 T4l = poll.PollPortuguese.T4L,
-                             }
-                         }
-                     }).ToList();
-
-                return (Ok(result.OrderBy(x => x.Sequence)));
-            }
-
-            return (NotFound());
-        }
-
         [HttpGet]
         public async Task<ActionResult<string>> CalendarioAnoLetivo(string name = "", int year = 0)
         {
@@ -1288,6 +1246,53 @@ namespace smeCore.SGP.Controllers
             {
                 return (StatusCode(500));
             }
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<string>> CarregarAlunosSondagem(PlanningModel model)
+        {
+            Planning planning =
+                (from current in _db.Plannings
+                 where current.UserId == model.Username
+                 && current.School == model.School
+                 && current.Year == model.Year
+                 && current.Classroom == model.Classroom
+                 select current).FirstOrDefault();
+
+            if (planning != null)
+            {
+                List<Models.Planning.StudentPollModel> result =
+                    (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+                     join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
+                     join poll in _db.ClassPolls.Include(x => x.PollPortuguese).Include(x => x.StudentClass) on studentClasses equals poll.StudentClass
+                     where studentClasses.Planning == planning
+                     select new Models.Planning.StudentPollModel()
+                     {
+                         Id = student.Id,
+                         Name = student.Profile.Name,
+                         Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                         PollResults = new PollResultsModel()
+                         {
+                             Portuguese = new PollPortugueseModel()
+                             {
+                                 T1e = poll.PollPortuguese.T1E,
+                                 T1l = poll.PollPortuguese.T1L,
+                                 T2e = poll.PollPortuguese.T2E,
+                                 T2l = poll.PollPortuguese.T2L,
+                                 T3e = poll.PollPortuguese.T3E,
+                                 T3l = poll.PollPortuguese.T3L,
+                                 T4e = poll.PollPortuguese.T4E,
+                                 T4l = poll.PollPortuguese.T4L,
+                             }
+                         }
+                     }).ToList();
+
+                return (Ok(result.OrderBy(x => x.Sequence)));
+            }
+
+            return (NotFound());
         }
 
         [HttpPost]

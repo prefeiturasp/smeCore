@@ -30,15 +30,14 @@ export class ClassPlan extends Component {
         this.updateEditClassSchedule = this.updateEditClassSchedule.bind(this);
         this.defaultStateOrConverter = this.defaultStateOrConverter.bind(this);
     }
-    defaultStateOrConverter(results) {
-        if (results === null) {
-            results = EditorState.createEmpty();;
-        }
-        else {
-            results = EditorState.createWithContent(convertFromRaw(JSON.parse(results)));
-        }
 
-        return results;
+    defaultStateOrConverter(result) {
+        if (result === null)
+            result = EditorState.createEmpty();
+        else
+            result = EditorState.createWithContent(convertFromRaw(JSON.parse(result)));
+
+        return result;
     };
 
     editAppointmentClick(properties) {
