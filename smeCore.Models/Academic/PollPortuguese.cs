@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace smeCore.Models.Academic
+﻿namespace smeCore.Models.Academic
 {
     public class PollPortuguese : Base.Abstracts.Table
     {
         #region ==================== ATTRIBUTES ====================
+
         public string T1E { get; set; }
         public string T1L { get; set; }
         public string T2E { get; set; }
@@ -19,11 +14,11 @@ namespace smeCore.Models.Academic
         public string T4L { get; set; }
 
         public virtual ClassPoll ClassPoll { get; set; }
+
         #endregion ==================== ATTRIBUTES ====================
 
-
-
         #region ==================== CONSTRUCTORS ====================
+
         public PollPortuguese()
             : base()
         {
@@ -36,11 +31,7 @@ namespace smeCore.Models.Academic
             T4E = "";
             T4L = "";
         }
+
         #endregion ==================== CONSTRUCTORS ====================
-
-
-
-        #region ==================== METHODS ====================
-        #endregion ==================== METHODS ====================
     }
 }

@@ -10,8 +10,6 @@ namespace smeCore.Models.Base.Abstracts
 
         #endregion ==================== ATTRIBUTES ====================
 
-
-
         #region ==================== METHODS ====================
 
         public virtual void NewID()

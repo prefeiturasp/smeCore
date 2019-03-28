@@ -66,7 +66,7 @@ export class ClassPlan extends Component {
             (properties.month > 9 ? properties.month : "0" + properties.month) + "-" +
             (properties.day > 9 ? properties.day : "0" + properties.day) + " " +
             properties.time;
-        
+
         // Fazer método para buscar aula já realizada (carregar tela salva)
         var model = {
             username: this.props.user.username,

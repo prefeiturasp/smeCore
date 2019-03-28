@@ -42,6 +42,10 @@ namespace smeCore.SGP.Controllers
 
         #region -------------------- PRIVATE --------------------
 
+        /// <summary>
+        /// Método para buscar os objetivos de aprendizagem do Currículo Digital.
+        /// </summary>
+        /// <returns>Retorna uma lista contendo todos os objetivos de aprendizagem cadastrados na base do Currículo Digital</returns>
         private async Task<List<LearningObjective>> GetLearningObjectives()
         {
             // Inicialização do cliente para requisições (GET e POST)
@@ -59,6 +63,10 @@ namespace smeCore.SGP.Controllers
             }
         }
 
+        /// <summary>
+        /// Método que cria um CalendarModel.
+        /// </summary>
+        /// <returns>Retorna um CalendarModel</returns>
         private CalendarModel CreateCalendar()
         {
             CalendarModel calendar = new CalendarModel() { Weeks = new List<List<DayScheduleModel>>() };
@@ -72,6 +80,11 @@ namespace smeCore.SGP.Controllers
             return (calendar);
         }
 
+        /// <summary>
+        /// Método para criar uma semana a partir de uma data (primeiro dia da semana, adotado como domingo por padrão)
+        /// </summary>
+        /// <param name="sunday">Primeiro dia da semana (data do domingo)</param>
+        /// <returns>Retorna uma semana criada a partir de uma data</returns>
         private List<DayScheduleModel> CreateWeekDays(DateTime sunday)
         {
             List<DayScheduleModel> week = new List<DayScheduleModel>();
@@ -101,6 +114,12 @@ namespace smeCore.SGP.Controllers
             return (week);
         }
 
+        /// <summary>
+        /// Retorna um calendario letivo desejado.
+        /// </summary>
+        /// <param name="name">Nome do calendário letivo desejado</param>
+        /// <param name="year">Ano vigente do calendário desejado</param>
+        /// <returns>Retorna SchoolYearModel contendo os dados relativos ao calendário letivo desejado</returns>
         private async Task<SchoolYearModel> GetSchoolYearCalendar(string name = "", int year = 0)
         {
             if (name == "")
@@ -141,6 +160,95 @@ namespace smeCore.SGP.Controllers
 
                 return (result);
             }
+        }
+
+        /// <summary>
+        /// Busca o plano de ciclo pelo nome da escola e o tipo, opcionalmente é criado um novo plano de ciclo caso não seja encontrado nenhum.
+        /// </summary>
+        /// <param name="school">Nome da escola</param>
+        /// <param name="type">Tipo do plano de ciclo</param>
+        /// <param name="createNew">[Opcional] Criar um novo plano de ciclo caso não seja encontrado nenhum</param>
+        /// <returns>Retorna o plano de ciclo desejado</returns>
+        private async Task<Cycle> GetCyclePlan(string school, smeCore.Models.Academic.Enumerators.CycleTypes type, bool createNew = false)
+        {
+            Cycle cycle = await
+                (from current in _db.Cycles
+                 where current.School == school
+                 && current.Type == type
+                 select current).FirstOrDefaultAsync();
+
+            if (cycle == null && createNew == true)
+            {
+                cycle = new Cycle();
+                cycle.NewID();
+                cycle.CreatedAt = DateTime.Now;
+
+                await _db.Cycles.AddAsync(cycle);
+            }
+
+            return (cycle);
+        }
+
+        /// <summary>
+        /// Busca o planejamento pelo nome de usuário, nome da escola, ano da turma e classe da turma, opcionalmente é criado um novo planejamento caso não seja encontrado nenhum.
+        /// </summary>
+        /// <param name="username">Nome do usuário</param>
+        /// <param name="school">Nome da Escola</param>
+        /// <param name="classYear">Ano da turma</param>
+        /// <param name="classroom">Classe da turma</param>
+        /// <param name="includes">[Opcional] Inclui propriedades a serem carregadas</param>
+        /// <param name="createNew">[Opcional] Criar um novo planejamento caso não seja encontrado nenhum</param>
+        /// <returns>Retorna o planejamento desejado</returns>
+        private async Task<Planning> GetPlanning(string username, string school, int classYear, string classroom, string includes = null, bool createNew = false)
+        {
+            Planning planning = null;
+
+            if (includes != null)
+                planning = await
+                    (from current in _db.Plannings.Include(includes)
+                     where current.UserId == username
+                     && current.School == school
+                     && current.Year == classYear
+                     && current.Classroom == classroom
+                     select current).FirstOrDefaultAsync();
+            else
+                planning = await
+                    (from current in _db.Plannings
+                     where current.UserId == username
+                     && current.School == school
+                     && current.Year == classYear
+                     && current.Classroom == classroom
+                     select current).FirstOrDefaultAsync();
+
+            if (planning == null && createNew == true)
+            {
+                planning = new Planning();
+                planning.NewID();
+                planning.CreatedAt = DateTime.Now;
+                planning.UserId = username;
+                planning.School = school;
+                planning.Year = classYear;
+                planning.Classroom = classroom;
+
+                await _db.Plannings.AddAsync(planning);
+            }
+
+            return (planning);
+        }
+
+        /// <summary>
+        /// Busca o plano de aula pelo horario
+        /// </summary>
+        /// <param name="date">Data e horario do plano de aula desejado</param>
+        /// <returns>Retorna o plano de aula desejado</returns>
+        private async Task<ClassSchedule> GetClassSchedule(DateTime date)
+        {
+            ClassSchedule classSchedule = await
+                    (from current in _db.ClassSchedules
+                     where current.Date == date
+                     select current).SingleOrDefaultAsync();
+
+            return (classSchedule);
         }
 
         #endregion -------------------- PRIVATE --------------------
@@ -253,6 +361,11 @@ namespace smeCore.SGP.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para carregar as turmas do professor desejado.
+        /// </summary>
+        /// <param name="username">Nome de usuário do professor desejado</param>
+        /// <returns>Retorna uma lista contendo as escolas/turmas do professor desejado</returns>
         [HttpGet]
         public async Task<ActionResult<string>> CarregarTurmasProfessor(string username)
         {
@@ -444,26 +557,15 @@ namespace smeCore.SGP.Controllers
                 return (Ok(result));
         }
 
-
-
+        /// <summary>
+        /// Método para salvar o plano de ciclo, cria um novo caso não exista nenhum para atualizar.
+        /// </summary>
+        /// <param name="model">Modelo contendo os dados referentes ao plano de ciclo</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário StatusCode 500</returns>
         [HttpPost]
         public async Task<ActionResult<string>> SalvarPlanoCiclo(Cycle model)
         {
-            Cycle cycle =
-                (from current in _db.Cycles
-                 where current.School == model.School
-                 && current.Type == model.Type
-                 select current).FirstOrDefault();
-
-            bool newItem = false;
-
-            if (cycle == null)
-            {
-                cycle = new Cycle();
-                cycle.NewID();
-                cycle.CreatedAt = DateTime.Now;
-                newItem = true;
-            }
+            Cycle cycle = await GetCyclePlan(model.School, model.Type, true);
 
             cycle.ModifiedAt = DateTime.Now;
             cycle.School = model.School;
@@ -475,27 +577,25 @@ namespace smeCore.SGP.Controllers
 
             try
             {
-                if (newItem == true)
-                    await _db.Cycles.AddAsync(cycle);
-
                 await _db.SaveChangesAsync();
             }
-            catch
+            catch (Exception error)
             {
-                return (StatusCode(500));
+                return (StatusCode(500, error));
             }
 
             return (Ok());
         }
 
+        /// <summary>
+        /// Método para abrir um plano de ciclo desejado.
+        /// </summary>
+        /// <param name="model">Modelo com os dados: nome da escola e tipo do ciclo</param>
+        /// <returns>Retorna o plano de ciclo encontrado, caso contrário NotFound</returns>
         [HttpPost]
         public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle model)
         {
-            Cycle result =
-                (from current in _db.Cycles
-                 where current.Type == model.Type
-                 && current.School == model.School
-                 select current).SingleOrDefault();
+            Cycle result = await GetCyclePlan(model.School, model.Type);
 
             if (result != null)
                 return (Ok(result));
@@ -503,31 +603,15 @@ namespace smeCore.SGP.Controllers
                 return (NotFound());
         }
 
-
-
+        /// <summary>
+        /// Método para salvar o plano anual, cria um novo caso não exista nenhum para atualizar.
+        /// </summary>
+        /// <param name="model">AnnualPlanModel contendo dados do plano anual a ser salvo</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário StatusCode 500</returns>
         [HttpPost]
         public async Task<ActionResult<string>> SalvarPlanoAnual(AnnualPlanModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            if (planning == null)
-            {
-                planning = new Planning();
-                planning.NewID();
-                planning.CreatedAt = DateTime.Now;
-                planning.UserId = model.Username;
-                planning.School = model.School;
-                planning.Year = model.Year;
-                planning.Classroom = model.Classroom;
-
-                await _db.Plannings.AddAsync(planning);
-            }
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".AnnualPlan", true);
 
             planning.ModifiedAt = DateTime.Now;
 
@@ -547,41 +631,27 @@ namespace smeCore.SGP.Controllers
             planning.AnnualPlan.DescriptionB3 = model.DescriptionB3;
             planning.AnnualPlan.DescriptionB4 = model.DescriptionB4;
 
-            await _db.SaveChangesAsync();
-
-
-            // Daqui pra baixo tem que arrumar
-
-            //if (planning != null)
-            //{
-            //    await _db.SaveChangesAsync();
-            //}
-            //else
-            //{
-            //    try
-            //    {
-            //        await _db.Annuals.AddAsync(annual);
-            //        await _db.SaveChangesAsync();
-            //    }
-            //    catch
-            //    {
-            //        return (BadRequest());
-            //    }
-            //}
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception error)
+            {
+                return (StatusCode(500, error));
+            }
 
             return (Ok());
         }
 
+        /// <summary>
+        /// Método para abrir o plano anual desejado.
+        /// </summary>
+        /// <param name="model">Modelo com os dados: nome de usuário, nome da escola, ano da turma e classe da turma</param>
+        /// <returns>Retorna o plano anual encontrado, caso contrário NotFound</returns>
         [HttpPost]
         public async Task<ActionResult<string>> AbrirPlanoAnual(PlanningModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".AnnualPlan");
 
             if (planning != null && planning.AnnualPlan != null)
             {
@@ -603,31 +673,15 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
-
-
+        /// <summary>
+        /// Método para salvar o horário de aula, cria um novo caso não exista nenhum para atualizar.
+        /// </summary>
+        /// <param name="model">ClassScheduleModel contendo os dados do horario de aula a ser salvo</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário StatusCode 500</returns>
         [HttpPost]
         public async Task<ActionResult<string>> SalvarHorarioAula(ClassScheduleModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            if (planning == null)
-            {
-                planning = new Planning();
-                planning.NewID();
-                planning.CreatedAt = DateTime.Now;
-                planning.UserId = model.Username;
-                planning.School = model.School;
-                planning.Year = model.Year;
-                planning.Classroom = model.Classroom;
-
-                await _db.Plannings.AddAsync(planning);
-            }
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules", true);
 
             planning.ModifiedAt = DateTime.Now;
 
@@ -754,29 +808,27 @@ namespace smeCore.SGP.Controllers
             else
                 return (StatusCode(500, "School Year Calendar not found"));
 
-
             try
             {
                 await _db.SaveChangesAsync();
             }
-            catch
+            catch (Exception error)
             {
-                return (StatusCode(500));
+                return (StatusCode(500, error));
             }
 
             return (Ok());
         }
 
+        /// <summary>
+        /// Método para abrir os horarios de aula registrados para o planejamento desejado.
+        /// </summary>
+        /// <param name="model">ClassScheduleModel contendo os dados do planejamento e seus respectivos horarios de aula</param>
+        /// <returns>Lista de horarios de aula do planejamento desejado</returns>
         [HttpPost]
         public async Task<ActionResult<string>> AbrirHorarioAula(ClassScheduleModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
             List<ClassScheduleModel> result = new List<ClassScheduleModel>();
 
@@ -797,16 +849,15 @@ namespace smeCore.SGP.Controllers
             return (Ok(result));
         }
 
+        /// <summary>
+        /// Método para remover um horario de aula desejado.
+        /// </summary>
+        /// <param name="model">ClassScheduleModel contendo dados referentes ao hoario de aula desejado e seu respectivo planejamento</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum registro</returns>
         [HttpPost]
         public async Task<ActionResult<string>> RemoverHorarioAula(ClassScheduleModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
             if (planning != null)
             {
@@ -815,7 +866,6 @@ namespace smeCore.SGP.Controllers
 
                 if (calendar != null)
                 {
-                    ClassSchedule classSchedule = null;
                     DateTime start = DateTime.Now;
                     DateTime end = DateTime.Now;
                     DateTime today = model.Date;
@@ -885,25 +935,21 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
+        /// <summary>
+        /// Método para salvar/atualizar o desenvolvimento da aula.
+        /// </summary>
+        /// <param name="model">EditClassScheduleModel contendo os dados do planejamento, da aula e seu respectivo horario</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum registro</returns>
         [HttpPost]
         public async Task<ActionResult<string>> SalvarDesenvolvimentoAula(EditClassScheduleModel model)
         {
             try
             {
-                Planning planning = await
-                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                     where current.UserId == model.Username
-                     && current.School == model.School
-                     && current.Year == model.Year
-                     && current.Classroom == model.Classroom
-                     select current).FirstOrDefaultAsync();
+                Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
                 if (planning != null)
                 {
-                    ClassSchedule classSchedule = await
-                        (from current in _db.ClassSchedules
-                         where current.Date == model.Date
-                         select current).SingleOrDefaultAsync();
+                    ClassSchedule classSchedule = await GetClassSchedule(model.Date);
 
                     if (classSchedule != null)
                     {
@@ -933,23 +979,19 @@ namespace smeCore.SGP.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para abrir o desenvolvimento de aula.
+        /// </summary>
+        /// <param name="model">EditClassScheduleModel contendo os dados do planejamento, da aula e seu respectivo horario</param>
+        /// <returns>Retorna EditClassScheduleModel contendo informações do desenvolvimento de aula desejado</returns>
         [HttpPost]
         public async Task<ActionResult<string>> AbrirDesenvolvimentoAula(EditClassScheduleModel model)
         {
-            Planning planning = await
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefaultAsync();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
             if (planning != null)
             {
-                ClassSchedule classSchedule = await
-                    (from current in _db.ClassSchedules
-                     where current.Date == model.Date
-                     select current).SingleOrDefaultAsync();
+                ClassSchedule classSchedule = await GetClassSchedule(model.Date);
 
                 if (classSchedule != null)
                 {
@@ -970,16 +1012,15 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
+        /// <summary>
+        /// Método para criar e popular o calendário do plano de aula e respectivo planejamento desejado.
+        /// </summary>
+        /// <param name="model">ClassScheduleModel contendo os dados do planejamento</param>
+        /// <returns>Retorna o CalendarModel contendo os horários de aula do planejamento desejado</returns>
         [HttpPost]
         public async Task<ActionResult<string>> AbrirCalendarioAula(ClassScheduleModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
             List<ClassScheduleModel> result = new List<ClassScheduleModel>();
             CalendarModel calendar = CreateCalendar();
@@ -1022,16 +1063,15 @@ namespace smeCore.SGP.Controllers
             return (Ok(calendar));
         }
 
+        /// <summary>
+        /// Método para carregar os alunos (dados fictícios).
+        /// </summary>
+        /// <param name="model">PlanningModel contendo os dados do planejamento</param>
+        /// <returns>Retorna uma lista contendo os alunos fictícios</returns>
         [HttpPost]
         public async Task<ActionResult<string>> CarregarAlunosMock(PlanningModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".AnnualPlan");
 
             if (planning != null)
             {
@@ -1139,6 +1179,12 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
+        /// <summary>
+        /// Método para pegar o calendário letivo desejado.
+        /// </summary>
+        /// <param name="name">Nome do calendário desejado</param>
+        /// <param name="year">Ano vigente</param>
+        /// <returns>Retorna SchoolYearModel contendo os dados referentes ao calendario desejado</returns>
         [HttpGet]
         public async Task<ActionResult<string>> CalendarioAnoLetivo(string name = "", int year = 0)
         {
@@ -1150,6 +1196,11 @@ namespace smeCore.SGP.Controllers
                 return (Ok(result));
         }
 
+        /// <summary>
+        /// Método para migrar o conteúdo de um desenvolvimento de aula para outro(s).
+        /// </summary>
+        /// <param name="model">CopyClassScheduleModel contendo os dados do desenvolvimento de aula desejado e os destinos para esses conteúdos</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum/algum registro</returns>
         [HttpPost]
         public async Task<ActionResult<string>> MigrarConteudo(CopyClassScheduleModel model)
         {
@@ -1158,55 +1209,38 @@ namespace smeCore.SGP.Controllers
             // Se existir pegar esse plano de aula novo e copiar os conteudos.
             // Se não existir retornar mensagem contendo as datas que não existem
 
-            Planning planningFrom =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planningFrom = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
             ClassSchedule scheduleFrom =
                 (from current in planningFrom.ClassSchedules
                  where current.Date == model.Date
                  select current).FirstOrDefault();
 
-            Planning planningTo =
-            (from current in _db.Plannings.Include(x => x.ClassSchedules)
-             where current.UserId == model.Username
-             && current.School == model.CopyToSchool
-             && current.Year == model.Year
-             && current.Classroom == model.CopyToClassroom
-             select current).FirstOrDefault();
+            Planning planningTo = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
 
             ClassSchedule scheduleTo =
               (from current in planningTo.ClassSchedules
                where current.Date == model.Date
                select current).FirstOrDefault();
 
-
             if (planningTo == null)
             {
                 foreach (var data in model.CopyDates)
-                {
                     dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
-                }
+
                 return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
             }
-
             else if (planningTo.ClassSchedules == null)
             {
                 foreach (var data in model.CopyDates)
-                {
                     dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
-                }
+
                 return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
             }
 
             List<DateTime> lDateSchedules = new List<DateTime>();
             foreach (ClassSchedule schedule in planningTo.ClassSchedules)
             {
-
                 if (model.CopyDates.Contains(schedule.Date) == true)
                 {
                     if (model.LearningObjectives == true)
@@ -1221,45 +1255,35 @@ namespace smeCore.SGP.Controllers
             }
 
             foreach (DateTime date in model.CopyDates)
-            {
                 if (!lDateSchedules.Contains(date))
-                {
                     dates += "    - " + date.ToString("dd/MM/yyyy") + "\n";
-                }
-            }
-
 
             try
             {
                 if (!string.IsNullOrEmpty(dates))
-                {
                     return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
-                }
-
                 else
                 {
                     await _db.SaveChangesAsync();
+
                     return (Ok());
                 }
             }
-            catch
+            catch (Exception error)
             {
-                return (StatusCode(500));
+                return (StatusCode(500, error));
             }
         }
 
-
-
+        /// <summary>
+        /// Método para carregar os alunos para a tela de sondagem.
+        /// </summary>
+        /// <param name="model">Modelo com os dados: nome de usuário, nome da escola, ano da turma e classe da turma</param>
+        /// <returns>Retorna uma lista de PollResultsModel contendo os dados referentes aos alunos e suas respectivas notas de sondagem</returns>
         [HttpPost]
         public async Task<ActionResult<string>> CarregarAlunosSondagem(PlanningModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom);
 
             if (planning != null)
             {
@@ -1295,16 +1319,15 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
+        /// <summary>
+        /// Método para salvar os dados da tela de sondagem.
+        /// </summary>
+        /// <param name="model">PollModel contendo os dados dos alunos e suas respectivas avaliaçoes de sondagem</param>
+        /// <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum/algum registro</returns>
         [HttpPost]
         public async Task<ActionResult<string>> SalvarSondagem(PollModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
+            Planning planning = await GetPlanning(model.Username, model.School, model.Year, model.Classroom);
 
             if (planning != null)
             {

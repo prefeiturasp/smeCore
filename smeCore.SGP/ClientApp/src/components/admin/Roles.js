@@ -1,27 +1,5 @@
-﻿import React, { Component, useState } from 'react';
-import { useSpring, animated } from 'react-spring';
-
-const NewRole = () => {
-    const props = useSpring({
-        opacity: 1,
-        delay: '3000',
-        from: { opacity: 0 }
-    });
-
-    return (
-        <animated.div id="addRoleCollapse" styles={props}>
-            <div className="card card-body">
-                <h5 className="lead pb-2">Adicionar Novo Grupo/Perfil</h5>
-
-                <div className="form-inline">
-                    <input type="text" id="newRole" className="form-control form-control-sm mr-2" placeholder="Nome" />
-
-                    <button type="submit" className="btn btn-sm btn-success">Adicionar</button>
-                </div>
-            </div>
-        </animated.div>
-    );
-}
+﻿import React, { Component } from 'react';
+import { Spring } from 'react-spring/renderprops';
 
 export class Roles extends Component {
     constructor(props) {
@@ -29,6 +7,7 @@ export class Roles extends Component {
 
         this.state = {
             searchRole: "",
+            newRoleToggle: false,
             newRole: "",
             roles: [
                 { name: "Admin" },
@@ -39,6 +18,7 @@ export class Roles extends Component {
         };
 
         this.changeText = this.changeText.bind(this);
+        this.newRoleClick = this.newRoleClick.bind(this);
         this.addRole = this.addRole.bind(this);
         this.deleteRole = this.deleteRole.bind(this);
         this.editRole = this.editRole.bind(this);
@@ -48,6 +28,10 @@ export class Roles extends Component {
         this.setState({
             [event.target.id]: event.target.value
         });
+    }
+
+    newRoleClick() {
+        this.setState({ newRoleToggle: !this.state.newRoleToggle });
     }
 
     addRole() {
@@ -93,7 +77,6 @@ export class Roles extends Component {
         });
     }
 
-
     render() {
         var filter = this.state.roles;
 
@@ -114,10 +97,32 @@ export class Roles extends Component {
                         </div>
                     </div>
 
-                    <button type="button" className="btn btn-sm btn-outline-success ml-2"><i className="fas fa-plus"></i></button>
+                    <button type="button" className="btn btn-sm btn-outline-success ml-2" onClick={this.newRoleClick}><i className="fas fa-plus"></i></button>
                 </div>
 
-                <NewRole />
+                <Spring
+                    from={{
+                        opacity: 0,
+                        height: 0
+                    }}
+                    to={{
+                        opacity: this.state.newRoleToggle ? 1 : 0,
+                        height: this.state.newRoleToggle ? 'auto' : 0
+                    }}>
+                    {props =>
+                        <div id="addRoleCollapse" style={props}>
+                            <div className="card card-body">
+                                <h5 className="lead pb-2">Adicionar Novo Grupo/Perfil</h5>
+
+                                <div className="form-inline">
+                                    <input type="text" id="newRole" className="form-control form-control-sm mr-2" placeholder="Nome" />
+
+                                    <button type="submit" className="btn btn-sm btn-success">Adicionar</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </Spring>
 
                 <div>
                     <table className="table table-sm table-hover">

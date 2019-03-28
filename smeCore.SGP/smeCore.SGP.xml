@@ -16,6 +16,61 @@
             </summary>
             <param name="db">Depêndencia de dataContext (SMEContext)</param>
         </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.GetLearningObjectives">
+            <summary>
+            Método para buscar os objetivos de aprendizagem do Currículo Digital.
+            </summary>
+            <returns>Retorna uma lista contendo todos os objetivos de aprendizagem cadastrados na base do Currículo Digital</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.CreateCalendar">
+            <summary>
+            Método que cria um CalendarModel.
+            </summary>
+            <returns>Retorna um CalendarModel</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.CreateWeekDays(System.DateTime)">
+            <summary>
+            Método para criar uma semana a partir de uma data (primeiro dia da semana, adotado como domingo por padrão)
+            </summary>
+            <param name="sunday">Primeiro dia da semana (data do domingo)</param>
+            <returns>Retorna uma semana criada a partir de uma data</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.GetSchoolYearCalendar(System.String,System.Int32)">
+            <summary>
+            Retorna um calendario letivo desejado.
+            </summary>
+            <param name="name">Nome do calendário letivo desejado</param>
+            <param name="year">Ano vigente do calendário desejado</param>
+            <returns>Retorna SchoolYearModel contendo os dados relativos ao calendário letivo desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.GetCyclePlan(System.String,smeCore.Models.Academic.Enumerators.CycleTypes,System.Boolean)">
+            <summary>
+            Busca o plano de ciclo pelo nome da escola e o tipo, opcionalmente é criado um novo plano de ciclo caso não seja encontrado nenhum.
+            </summary>
+            <param name="school">Nome da escola</param>
+            <param name="type">Tipo do plano de ciclo</param>
+            <param name="createNew">[Opcional] Criar um novo plano de ciclo caso não seja encontrado nenhum</param>
+            <returns>Retorna o plano de ciclo desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.GetPlanning(System.String,System.String,System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Busca o planejamento pelo nome de usuário, nome da escola, ano da turma e classe da turma, opcionalmente é criado um novo planejamento caso não seja encontrado nenhum.
+            </summary>
+            <param name="username">Nome do usuário</param>
+            <param name="school">Nome da Escola</param>
+            <param name="classYear">Ano da turma</param>
+            <param name="classroom">Classe da turma</param>
+            <param name="includes">[Opcional] Inclui propriedades a serem carregadas</param>
+            <param name="createNew">[Opcional] Criar um novo planejamento caso não seja encontrado nenhum</param>
+            <returns>Retorna o planejamento desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.GetClassSchedule(System.DateTime)">
+            <summary>
+            Busca o plano de aula pelo horario
+            </summary>
+            <param name="date">Data e horario do plano de aula desejado</param>
+            <returns>Retorna o plano de aula desejado</returns>
+        </member>
         <member name="M:smeCore.SGP.Controllers.PlanejamentoController.ListarObjetivosAprendizagem(System.String)">
             <summary>
             Método para listar os objetivos de aprendizagem, podendo ser filtrado pelo ano desejado.
@@ -34,6 +89,119 @@
             Método para listar os Objetivos de Desenvolvimento Sustentável (ODS).
             </summary>
             <returns>Retorna todos os elementos dos objetivos de desenvolvimento sustentavel (ODS) em formato JSON.</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.CarregarTurmasProfessor(System.String)">
+            <summary>
+            Método para carregar as turmas do professor desejado.
+            </summary>
+            <param name="username">Nome de usuário do professor desejado</param>
+            <returns>Retorna uma lista contendo as escolas/turmas do professor desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.SalvarPlanoCiclo(smeCore.Models.Academic.Cycle)">
+            <summary>
+            Método para salvar o plano de ciclo, cria um novo caso não exista nenhum para atualizar.
+            </summary>
+            <param name="model">Modelo contendo os dados referentes ao plano de ciclo</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário StatusCode 500</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.AbrirPlanoCiclo(smeCore.Models.Academic.Cycle)">
+            <summary>
+            Método para abrir um plano de ciclo desejado.
+            </summary>
+            <param name="model">Modelo com os dados: nome da escola e tipo do ciclo</param>
+            <returns>Retorna o plano de ciclo encontrado, caso contrário NotFound</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.SalvarPlanoAnual(smeCore.SGP.Models.Planning.AnnualPlanModel)">
+            <summary>
+            Método para salvar o plano anual, cria um novo caso não exista nenhum para atualizar.
+            </summary>
+            <param name="model">AnnualPlanModel contendo dados do plano anual a ser salvo</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário StatusCode 500</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.AbrirPlanoAnual(smeCore.SGP.Models.Planning.PlanningModel)">
+            <summary>
+            Método para abrir o plano anual desejado.
+            </summary>
+            <param name="model">Modelo com os dados: nome de usuário, nome da escola, ano da turma e classe da turma</param>
+            <returns>Retorna o plano anual encontrado, caso contrário NotFound</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.SalvarHorarioAula(smeCore.SGP.Models.Planning.ClassScheduleModel)">
+            <summary>
+            Método para salvar o horário de aula, cria um novo caso não exista nenhum para atualizar.
+            </summary>
+            <param name="model">ClassScheduleModel contendo os dados do horario de aula a ser salvo</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário StatusCode 500</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.AbrirHorarioAula(smeCore.SGP.Models.Planning.ClassScheduleModel)">
+            <summary>
+            Método para abrir os horarios de aula registrados para o planejamento desejado.
+            </summary>
+            <param name="model">ClassScheduleModel contendo os dados do planejamento e seus respectivos horarios de aula</param>
+            <returns>Lista de horarios de aula do planejamento desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.RemoverHorarioAula(smeCore.SGP.Models.Planning.ClassScheduleModel)">
+            <summary>
+            Método para remover um horario de aula desejado.
+            </summary>
+            <param name="model">ClassScheduleModel contendo dados referentes ao hoario de aula desejado e seu respectivo planejamento</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum registro</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.SalvarDesenvolvimentoAula(smeCore.SGP.Models.Planning.EditClassScheduleModel)">
+            <summary>
+            Método para salvar/atualizar o desenvolvimento da aula.
+            </summary>
+            <param name="model">EditClassScheduleModel contendo os dados do planejamento, da aula e seu respectivo horario</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum registro</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.AbrirDesenvolvimentoAula(smeCore.SGP.Models.Planning.EditClassScheduleModel)">
+            <summary>
+            Método para abrir o desenvolvimento de aula.
+            </summary>
+            <param name="model">EditClassScheduleModel contendo os dados do planejamento, da aula e seu respectivo horario</param>
+            <returns>Retorna EditClassScheduleModel contendo informações do desenvolvimento de aula desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.AbrirCalendarioAula(smeCore.SGP.Models.Planning.ClassScheduleModel)">
+            <summary>
+            Método para criar e popular o calendário do plano de aula e respectivo planejamento desejado.
+            </summary>
+            <param name="model">ClassScheduleModel contendo os dados do planejamento</param>
+            <returns>Retorna o CalendarModel contendo os horários de aula do planejamento desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.CarregarAlunosMock(smeCore.SGP.Models.Planning.PlanningModel)">
+            <summary>
+            Método para carregar os alunos (dados fictícios).
+            </summary>
+            <param name="model">PlanningModel contendo os dados do planejamento</param>
+            <returns>Retorna uma lista contendo os alunos fictícios</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.CalendarioAnoLetivo(System.String,System.Int32)">
+            <summary>
+            Método para pegar o calendário letivo desejado.
+            </summary>
+            <param name="name">Nome do calendário desejado</param>
+            <param name="year">Ano vigente</param>
+            <returns>Retorna SchoolYearModel contendo os dados referentes ao calendario desejado</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.MigrarConteudo(smeCore.SGP.Models.Planning.CopyClassScheduleModel)">
+            <summary>
+            Método para migrar o conteúdo de um desenvolvimento de aula para outro(s).
+            </summary>
+            <param name="model">CopyClassScheduleModel contendo os dados do desenvolvimento de aula desejado e os destinos para esses conteúdos</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum/algum registro</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.CarregarAlunosSondagem(smeCore.SGP.Models.Planning.PlanningModel)">
+            <summary>
+            Método para carregar os alunos para a tela de sondagem.
+            </summary>
+            <param name="model">Modelo com os dados: nome de usuário, nome da escola, ano da turma e classe da turma</param>
+            <returns>Retorna uma lista de PollResultsModel contendo os dados referentes aos alunos e suas respectivas notas de sondagem</returns>
+        </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.SalvarSondagem(smeCore.SGP.Models.Planning.PollModel)">
+            <summary>
+            Método para salvar os dados da tela de sondagem.
+            </summary>
+            <param name="model">PollModel contendo os dados dos alunos e suas respectivas avaliaçoes de sondagem</param>
+            <returns>Retorna StatusCode 200, caso a operação seja efetuada com sucesso, caso contrário retorna NotFound se não for encontrado nenhum/algum registro</returns>
         </member>
         <member name="M:smeCore.SGP.Models.Planning.LearningObjective.CleanCode">
             <summary>

@@ -7,15 +7,15 @@ export default ({ component: C, props: cProps, ...rest }) =>
     <Route {...rest}
         render={
             props => cProps.isAuthenticated
-            ? (
-                <div>
-                    <TopMenu {...cProps} />
-                    <div className="content pb-5">
-                        <C {...props} {...cProps} />
+                ? (
+                    <div>
+                        <TopMenu {...cProps} />
+                        <div className="content pb-5">
+                            <C {...props} {...cProps} />
+                        </div>
+                        <Footer />
                     </div>
-                    <Footer />
-                </div>
-            )
-            : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`} />
+                )
+                : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`} />
         }
     />;

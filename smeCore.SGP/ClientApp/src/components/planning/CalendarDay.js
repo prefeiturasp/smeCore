@@ -284,8 +284,8 @@ export class CalendarDay extends Component {
                                         </div>
                                     </div>
 
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.addAppointmentClick} disabled={this.props.year <= 0}>SALVAR</button>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.addAppointmentClick} disabled={this.props.year <= 0}>SALVAR</button>
                                     </div>
                                 </div>
                             </div>

@@ -35,7 +35,7 @@ export default class Login extends Component {
             username: this.state.username,
             password: this.state.password
         };
-        
+
         this.props.apiPost("/api/Auth/Login", credential)
             .then(response => response.json())
             .then(data => {

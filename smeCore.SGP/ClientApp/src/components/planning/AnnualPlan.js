@@ -11,7 +11,7 @@ export class AnnualPlan extends Component {
         this.state = {
             id: props.name + "Item",
         };
-        
+
         this.setBimester1 = this.setBimester1.bind(this);
         this.setBimester2 = this.setBimester2.bind(this);
         this.setBimester3 = this.setBimester3.bind(this);
