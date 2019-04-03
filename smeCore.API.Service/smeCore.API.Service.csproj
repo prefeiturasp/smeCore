@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\smeCore.API.Repository.Interface\smeCore.API.Repository.Interface.csproj" />
     <ProjectReference Include="..\smeCore.API.Service.Interface\smeCore.API.Service.Interface.csproj" />
     <ProjectReference Include="..\smeCore.Library\smeCore.Library.csproj" />

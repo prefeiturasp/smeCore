@@ -491,16 +491,24 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle model)
         {
-            Cycle result =
-                (from current in _db.Cycles
-                 where current.Type == model.Type
-                 && current.School == model.School
-                 select current).SingleOrDefault();
-
-            if (result != null)
-                return (Ok(result));
-            else
+            Cycle result = new Cycle();
+            try
+            {
+                result = await
+                    (from current in _db.Cycles
+                     where current.Type == model.Type
+                           && current.School == model.School
+                     select current).SingleOrDefaultAsync();
+                if (result != null)
+                    return (Ok(result));
+                else
+                    return (NotFound(null));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
                 return (NotFound());
+            }
         }
 
 
@@ -575,32 +583,40 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AbrirPlanoAnual(PlanningModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            if (planning != null && planning.AnnualPlan != null)
+            try
             {
-                AnnualPlanModel result = new AnnualPlanModel()
+                Planning planning =
+                    (from current in _db.Plannings.Include(x => x.AnnualPlan)
+                        where current.UserId == model.Username
+                              && current.School == model.School
+                              && current.Year == model.Year
+                              && current.Classroom == model.Classroom
+                        select current).FirstOrDefault();
+
+                if (planning != null && planning.AnnualPlan != null)
                 {
-                    SelectedLearningObjectivesB1 = planning.AnnualPlan.SelectedLearningObjectivesB1,
-                    SelectedLearningObjectivesB2 = planning.AnnualPlan.SelectedLearningObjectivesB2,
-                    SelectedLearningObjectivesB3 = planning.AnnualPlan.SelectedLearningObjectivesB3,
-                    SelectedLearningObjectivesB4 = planning.AnnualPlan.SelectedLearningObjectivesB4,
-                    DescriptionB1 = planning.AnnualPlan.DescriptionB1,
-                    DescriptionB2 = planning.AnnualPlan.DescriptionB2,
-                    DescriptionB3 = planning.AnnualPlan.DescriptionB3,
-                    DescriptionB4 = planning.AnnualPlan.DescriptionB4
-                };
+                    AnnualPlanModel result = new AnnualPlanModel()
+                    {
+                        SelectedLearningObjectivesB1 = planning.AnnualPlan.SelectedLearningObjectivesB1,
+                        SelectedLearningObjectivesB2 = planning.AnnualPlan.SelectedLearningObjectivesB2,
+                        SelectedLearningObjectivesB3 = planning.AnnualPlan.SelectedLearningObjectivesB3,
+                        SelectedLearningObjectivesB4 = planning.AnnualPlan.SelectedLearningObjectivesB4,
+                        DescriptionB1 = planning.AnnualPlan.DescriptionB1,
+                        DescriptionB2 = planning.AnnualPlan.DescriptionB2,
+                        DescriptionB3 = planning.AnnualPlan.DescriptionB3,
+                        DescriptionB4 = planning.AnnualPlan.DescriptionB4
+                    };
 
-                return (Ok(result));
+                    return (Ok(result));
+                }
+
+                return (NotFound());
             }
-
-            return (NotFound());
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return (NotFound());
+            }
         }
 
 
@@ -770,31 +786,39 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AbrirHorarioAula(ClassScheduleModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            List<ClassScheduleModel> result = new List<ClassScheduleModel>();
-
-            if (planning != null && planning.ClassSchedules != null)
+            try
             {
-                result =
-                    (from current in planning.ClassSchedules
-                     where current.Date.Day == model.Date.Day
-                     && current.Date.Month == model.Date.Month
-                     && current.Date.Year == model.Date.Year
-                     select new ClassScheduleModel
-                     {
-                         Date = current.Date,
-                         TagColor = current.TagColor
-                     }).ToList();
-            }
+                Planning planning =
+                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                        where current.UserId == model.Username
+                              && current.School == model.School
+                              && current.Year == model.Year
+                              && current.Classroom == model.Classroom
+                        select current).FirstOrDefault();
 
-            return (Ok(result));
+                List<ClassScheduleModel> result = new List<ClassScheduleModel>();
+
+                if (planning != null && planning.ClassSchedules != null)
+                {
+                    result =
+                        (from current in planning.ClassSchedules
+                            where current.Date.Day == model.Date.Day
+                                  && current.Date.Month == model.Date.Month
+                                  && current.Date.Year == model.Date.Year
+                            select new ClassScheduleModel
+                            {
+                                Date = current.Date,
+                                TagColor = current.TagColor
+                            }).ToList();
+                }
+
+                return (Ok(result));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return (NotFound());
+            }
         }
 
         [HttpPost]
@@ -936,218 +960,250 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AbrirDesenvolvimentoAula(EditClassScheduleModel model)
         {
-            Planning planning = await
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefaultAsync();
-
-            if (planning != null)
+            try
             {
-                ClassSchedule classSchedule = await
-                    (from current in _db.ClassSchedules
-                     where current.Date == model.Date
-                     select current).SingleOrDefaultAsync();
+                Planning planning = await
+                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                        where current.UserId == model.Username
+                              && current.School == model.School
+                              && current.Year == model.Year
+                              && current.Classroom == model.Classroom
+                        select current).FirstOrDefaultAsync();
 
-                if (classSchedule != null)
+                if (planning != null)
                 {
-                    EditClassScheduleModel result = new EditClassScheduleModel()
+                    ClassSchedule classSchedule = await
+                        (from current in _db.ClassSchedules
+                            where current.Date == model.Date
+                            select current).SingleOrDefaultAsync();
+
+                    if (classSchedule != null)
                     {
-                        Date = classSchedule.Date,
-                        LearningObjectives = JsonConvert.DeserializeObject<Dictionary<string, string>>(classSchedule.LearninObjectives),
-                        StudentsAbsence = new List<StudentAbsenceModel>(),
-                        ClassDevelopment = classSchedule.ClassroomDevelopment,
-                        ContinuousRecovery = classSchedule.ContinuousRecovery,
-                        Homework = classSchedule.Homework
-                    };
+                        EditClassScheduleModel result = new EditClassScheduleModel()
+                        {
+                            Date = classSchedule.Date,
+                            LearningObjectives = JsonConvert.DeserializeObject<Dictionary<string, string>>(classSchedule.LearninObjectives),
+                            StudentsAbsence = new List<StudentAbsenceModel>(),
+                            ClassDevelopment = classSchedule.ClassroomDevelopment,
+                            ContinuousRecovery = classSchedule.ContinuousRecovery,
+                            Homework = classSchedule.Homework
+                        };
 
-                    return (Ok(result));
+                        return (Ok(result));
+                    }
                 }
-            }
 
-            return (NotFound());
+                return (NotFound());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return (NotFound());
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<string>> AbrirCalendarioAula(ClassScheduleModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            List<ClassScheduleModel> result = new List<ClassScheduleModel>();
-            CalendarModel calendar = CreateCalendar();
-
-            if (planning != null && planning.ClassSchedules != null)
+            try
             {
-                result =
-                    (from current in planning.ClassSchedules
-                     where current.Date >= calendar.Weeks[0][0].FullDate
-                     && current.Date <= calendar.Weeks[4][6].FullDate
-                     select new ClassScheduleModel
-                     {
-                         Id = current.Id,
-                         Date = current.Date,
-                         TagColor = current.TagColor
-                     }).ToList();
+                Planning planning =
+                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                        where current.UserId == model.Username
+                              && current.School == model.School
+                              && current.Year == model.Year
+                              && current.Classroom == model.Classroom
+                        select current).FirstOrDefault();
 
-                for (int i = 0; i < 5; i++)
+                List<ClassScheduleModel> result = new List<ClassScheduleModel>();
+                CalendarModel calendar = CreateCalendar();
+
+                if (planning != null && planning.ClassSchedules != null)
+                {
+                    result =
+                        (from current in planning.ClassSchedules
+                            where current.Date >= calendar.Weeks[0][0].FullDate
+                                  && current.Date <= calendar.Weeks[4][6].FullDate
+                            select new ClassScheduleModel
+                            {
+                                Id = current.Id,
+                                Date = current.Date,
+                                TagColor = current.TagColor
+                            }).ToList();
+
+                    for (int i = 0; i < 5; i++)
                     for (int j = 0; j < 7; j++)
                     {
                         calendar.Weeks[i][j].Schedules =
                             (from current in result
-                             where current.Date.Day == calendar.Weeks[i][j].Day
-                             && current.Date.Month == calendar.Weeks[i][j].Month
-                             && current.Date.Year == calendar.Weeks[i][j].Year
-                             select new ScheduleModel
-                             {
-                                 Id = current.Id,
-                                 Color = current.TagColor,
-                                 Time = current.Date.ToShortTimeString(),
-                                 Name = model.Classroom,
-                                 School = model.School.Substring(0, model.School.IndexOf("-") - 1),
-                                 Day = current.Date.Day,
-                                 Month = current.Date.Month,
-                                 FullYear = current.Date.Year
-                             }).ToList();
+                                where current.Date.Day == calendar.Weeks[i][j].Day
+                                      && current.Date.Month == calendar.Weeks[i][j].Month
+                                      && current.Date.Year == calendar.Weeks[i][j].Year
+                                select new ScheduleModel
+                                {
+                                    Id = current.Id,
+                                    Color = current.TagColor,
+                                    Time = current.Date.ToShortTimeString(),
+                                    Name = model.Classroom,
+                                    School = model.School.Substring(0, model.School.IndexOf("-") - 1),
+                                    Day = current.Date.Day,
+                                    Month = current.Date.Month,
+                                    FullYear = current.Date.Year
+                                }).ToList();
                     }
-            }
+                }
 
-            return (Ok(calendar));
+                return (Ok(calendar));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return (NotFound());
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<string>> CarregarAlunosMock(PlanningModel model)
         {
-            Planning planning =
-                (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            if (planning != null)
+            try
             {
-                if (_db.Students.Any() == false)
+                Planning planning =
+                    (from current in _db.Plannings.Include(x => x.AnnualPlan)
+                        where current.UserId == model.Username
+                              && current.School == model.School
+                              && current.Year == model.Year
+                              && current.Classroom == model.Classroom
+                        select current).FirstOrDefault();
+
+                if (planning != null)
                 {
-                    List<Profile> people = new List<Profile>()
+                    if (_db.Students.Any() == false)
                     {
-                        new Profile() { Name = "Ágatha Melo Pinto" },
-                        new Profile() { Name = "André Cardoso Melo" },
-                        new Profile() { Name = "Beatrice Cunha Castro" },
-                        new Profile() { Name = "Bruna Pereira Araujo" },
-                        new Profile() { Name = "Caio Goncalves Azevedo" },
-                        new Profile() { Name = "Carlos Carvalho Lima" },
-                        new Profile() { Name = "Daniel Gomes Santos" },
-                        new Profile() { Name = "Davi Cunha Rodrigues" },
-                        new Profile() { Name = "Diego Oliveira Fernandes" },
-                        new Profile() { Name = "Diogo Rodrigues Almeida" },
-                        new Profile() { Name = "Evelyn Gomes Santos" },
-                        new Profile() { Name = "Fernanda Silva Carvalho" },
-                        new Profile() { Name = "Gustavo Cardoso Castro" },
-                        new Profile() { Name = "Isabela Barbosa Fernandes" },
-                        new Profile() { Name = "Isabella Cardoso Dias" },
-                        new Profile() { Name = "Júlia Goncalves Martins" },
-                        new Profile() { Name = "Julieta Azevedo Costa" },
-                        new Profile() { Name = "Kauã Fernandes Carvalho" },
-                        new Profile() { Name = "Laura Cavalcanti Ferreira" },
-                        new Profile() { Name = "Letícia Barros Cunha" },
-                        new Profile() { Name = "Marisa Dias Ferreira" },
-                        new Profile() { Name = "Nicolas Barbosa Cavalcanti" },
-                        new Profile() { Name = "Paulo Melo Santos" },
-                        new Profile() { Name = "Rodrigo Silva Dias" },
-                        new Profile() { Name = "Ryan Goncalves Alves" },
-                        new Profile() { Name = "Samuel Ferreira Silva" },
-                        new Profile() { Name = "Sarah Melo Barbosa" },
-                        new Profile() { Name = "Sophia Pereira Lima" },
-                        new Profile() { Name = "Tânia Sousa Ferreira" },
-                        new Profile() { Name = "Thiago Pereira Silva" },
-                        new Profile() { Name = "Fernanda Almeida" }
-                    };
-
-                    Discipline discipline = new Discipline() { Name = "Disciplina Teste" };
-                    discipline.NewID();
-
-                    await _db.Disciplines.AddAsync(discipline);
-
-                    int count = 0;
-                    Code studentCode = new Code();
-                    studentCode.NewID();
-                    studentCode.Name = "Código de Chamada";
-
-                    await _db.Codes.AddAsync(studentCode);
-
-                    foreach (Profile person in people)
-                    {
-                        person.NewID();
-                        person.Student = new Student();
-                        person.Student.NewID();
-                        person.Student.Codes = new List<StudentCode>();
-                        person.Student.Codes.Add(new StudentCode()
+                        List<Profile> people = new List<Profile>()
                         {
-                            Code = studentCode,
-                            Validity = new DateTime(DateTime.Now.Year, 12, 20),
-                            Value = (++count).ToString()
-                        });
-                        person.Student.Codes[0].NewID();
+                            new Profile() { Name = "Ágatha Melo Pinto" },
+                            new Profile() { Name = "André Cardoso Melo" },
+                            new Profile() { Name = "Beatrice Cunha Castro" },
+                            new Profile() { Name = "Bruna Pereira Araujo" },
+                            new Profile() { Name = "Caio Goncalves Azevedo" },
+                            new Profile() { Name = "Carlos Carvalho Lima" },
+                            new Profile() { Name = "Daniel Gomes Santos" },
+                            new Profile() { Name = "Davi Cunha Rodrigues" },
+                            new Profile() { Name = "Diego Oliveira Fernandes" },
+                            new Profile() { Name = "Diogo Rodrigues Almeida" },
+                            new Profile() { Name = "Evelyn Gomes Santos" },
+                            new Profile() { Name = "Fernanda Silva Carvalho" },
+                            new Profile() { Name = "Gustavo Cardoso Castro" },
+                            new Profile() { Name = "Isabela Barbosa Fernandes" },
+                            new Profile() { Name = "Isabella Cardoso Dias" },
+                            new Profile() { Name = "Júlia Goncalves Martins" },
+                            new Profile() { Name = "Julieta Azevedo Costa" },
+                            new Profile() { Name = "Kauã Fernandes Carvalho" },
+                            new Profile() { Name = "Laura Cavalcanti Ferreira" },
+                            new Profile() { Name = "Letícia Barros Cunha" },
+                            new Profile() { Name = "Marisa Dias Ferreira" },
+                            new Profile() { Name = "Nicolas Barbosa Cavalcanti" },
+                            new Profile() { Name = "Paulo Melo Santos" },
+                            new Profile() { Name = "Rodrigo Silva Dias" },
+                            new Profile() { Name = "Ryan Goncalves Alves" },
+                            new Profile() { Name = "Samuel Ferreira Silva" },
+                            new Profile() { Name = "Sarah Melo Barbosa" },
+                            new Profile() { Name = "Sophia Pereira Lima" },
+                            new Profile() { Name = "Tânia Sousa Ferreira" },
+                            new Profile() { Name = "Thiago Pereira Silva" },
+                            new Profile() { Name = "Fernanda Almeida" }
+                        };
 
-                        person.Student.Classes = new List<StudentClass>();
-                        person.Student.Classes.Add(new StudentClass()
+                        Discipline discipline = new Discipline() { Name = "Disciplina Teste" };
+                        discipline.NewID();
+
+                        await _db.Disciplines.AddAsync(discipline);
+
+                        int count = 0;
+                        Code studentCode = new Code();
+                        studentCode.NewID();
+                        studentCode.Name = "Código de Chamada";
+
+                        await _db.Codes.AddAsync(studentCode);
+
+                        foreach (Profile person in people)
                         {
-                            Year = DateTime.Now.Year,
-                            Planning = planning,
-                            Polls = new ClassPoll()
-                        });
-                        person.Student.Classes[0].NewID();
-                        person.Student.Classes[0].Polls.NewID();
-                        person.Student.Classes[0].Polls.PollPortuguese = new PollPortuguese();
-                        person.Student.Classes[0].Polls.PollPortuguese.NewID();
+                            person.NewID();
+                            person.Student = new Student();
+                            person.Student.NewID();
+                            person.Student.Codes = new List<StudentCode>();
+                            person.Student.Codes.Add(new StudentCode()
+                            {
+                                Code = studentCode,
+                                Validity = new DateTime(DateTime.Now.Year, 12, 20),
+                                Value = (++count).ToString()
+                            });
+                            person.Student.Codes[0].NewID();
+
+                            person.Student.Classes = new List<StudentClass>();
+                            person.Student.Classes.Add(new StudentClass()
+                            {
+                                Year = DateTime.Now.Year,
+                                Planning = planning,
+                                Polls = new ClassPoll()
+                            });
+                            person.Student.Classes[0].NewID();
+                            person.Student.Classes[0].Polls.NewID();
+                            person.Student.Classes[0].Polls.PollPortuguese = new PollPortuguese();
+                            person.Student.Classes[0].Polls.PollPortuguese.NewID();
+                        }
+
+                        try
+                        {
+                            await _db.Profiles.AddRangeAsync(people);
+                            await _db.SaveChangesAsync();
+                        }
+                        catch (Exception error)
+                        {
+                            return (StatusCode(500, error));
+                        }
                     }
 
-                    try
-                    {
-                        await _db.Profiles.AddRangeAsync(people);
-                        await _db.SaveChangesAsync();
-                    }
-                    catch (Exception error)
-                    {
-                        return (StatusCode(500, error));
-                    }
+                    List<Models.Mocking.Student> result =
+                        (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+                            join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
+                            select new Models.Mocking.Student()
+                            {
+                                Id = student.Id,
+                                Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                                Name = student.Profile.Name,
+                                Attendance = 100
+                            }).ToList();
+
+                    return (Ok(result.OrderBy(x => x.Sequence)));
                 }
 
-                List<Models.Mocking.Student> result =
-                    (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
-                     join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
-                     select new Models.Mocking.Student()
-                     {
-                         Id = student.Id,
-                         Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
-                         Name = student.Profile.Name,
-                         Attendance = 100
-                     }).ToList();
-
-                return (Ok(result.OrderBy(x => x.Sequence)));
+                return (NotFound());
             }
-
-            return (NotFound());
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return (NotFound());
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<string>> CalendarioAnoLetivo(string name = "", int year = 0)
         {
-            SchoolYearModel result = await GetSchoolYearCalendar(name, year);
+            try
+            {
+                SchoolYearModel result = await GetSchoolYearCalendar(name, year);
 
-            if (result == null)
+                if (result == null)
+                    return (NotFound());
+                else
+                    return (Ok(result));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
                 return (NotFound());
-            else
-                return (Ok(result));
+            }
         }
 
         [HttpPost]
@@ -1157,93 +1213,102 @@ namespace smeCore.SGP.Controllers
             // Verifica se existe Plano de aula para as datas.
             // Se existir pegar esse plano de aula novo e copiar os conteudos.
             // Se não existir retornar mensagem contendo as datas que não existem
-
-            Planning planningFrom =
-                (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                 where current.UserId == model.Username
-                 && current.School == model.School
-                 && current.Year == model.Year
-                 && current.Classroom == model.Classroom
-                 select current).FirstOrDefault();
-
-            ClassSchedule scheduleFrom =
-                (from current in planningFrom.ClassSchedules
-                 where current.Date == model.Date
-                 select current).FirstOrDefault();
-
-            Planning planningTo =
-            (from current in _db.Plannings.Include(x => x.ClassSchedules)
-             where current.UserId == model.Username
-             && current.School == model.CopyToSchool
-             && current.Year == model.Year
-             && current.Classroom == model.CopyToClassroom
-             select current).FirstOrDefault();
-
-            ClassSchedule scheduleTo =
-              (from current in planningTo.ClassSchedules
-               where current.Date == model.Date
-               select current).FirstOrDefault();
-
-
-            if (planningTo == null)
-            {
-                foreach (var data in model.CopyDates)
-                {
-                    dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
-                }
-                return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
-            }
-
-            else if (planningTo.ClassSchedules == null)
-            {
-                foreach (var data in model.CopyDates)
-                {
-                    dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
-                }
-                return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
-            }
-
-            List<DateTime> lDateSchedules = new List<DateTime>();
-            foreach (ClassSchedule schedule in planningTo.ClassSchedules)
-            {
-
-                if (model.CopyDates.Contains(schedule.Date) == true)
-                {
-                    if (model.LearningObjectives == true)
-                        schedule.LearninObjectives = scheduleFrom.LearninObjectives;
-                    if (model.ClassDevelopment == true)
-                        schedule.ClassroomDevelopment = scheduleFrom.ClassroomDevelopment;
-                    if (model.Homework == true)
-                        schedule.Homework = scheduleFrom.Homework;
-                }
-
-                lDateSchedules.Add(schedule.Date);
-            }
-
-            foreach (DateTime date in model.CopyDates)
-            {
-                if (!lDateSchedules.Contains(date))
-                {
-                    dates += "    - " + date.ToString("dd/MM/yyyy") + "\n";
-                }
-            }
-
+            Planning planningFrom =new Planning();
 
             try
             {
-                if (!string.IsNullOrEmpty(dates))
+                planningFrom =
+                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                        where current.UserId == model.Username
+                              && current.School == model.School
+                              && current.Year == model.Year
+                              && current.Classroom == model.Classroom
+                        select current).FirstOrDefault();
+
+                ClassSchedule scheduleFrom =
+                    (from current in planningFrom.ClassSchedules
+                        where current.Date == model.Date
+                        select current).FirstOrDefault();
+
+                Planning planningTo =
+                    (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                        where current.UserId == model.Username
+                              && current.School == model.CopyToSchool
+                              && current.Year == model.Year
+                              && current.Classroom == model.CopyToClassroom
+                        select current).FirstOrDefault();
+
+                ClassSchedule scheduleTo =
+                    (from current in planningTo.ClassSchedules
+                        where current.Date == model.Date
+                        select current).FirstOrDefault();
+
+
+                if (planningTo == null)
                 {
-                    return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+                    foreach (var data in model.CopyDates)
+                    {
+                        dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
+                    }
+                    return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
                 }
 
-                else
+                else if (planningTo.ClassSchedules == null)
                 {
-                    await _db.SaveChangesAsync();
-                    return (Ok());
+                    foreach (var data in model.CopyDates)
+                    {
+                        dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
+                    }
+                    return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
+                }
+
+                List<DateTime> lDateSchedules = new List<DateTime>();
+                foreach (ClassSchedule schedule in planningTo.ClassSchedules)
+                {
+
+                    if (model.CopyDates.Contains(schedule.Date) == true)
+                    {
+                        if (model.LearningObjectives == true)
+                            schedule.LearninObjectives = scheduleFrom.LearninObjectives;
+                        if (model.ClassDevelopment == true)
+                            schedule.ClassroomDevelopment = scheduleFrom.ClassroomDevelopment;
+                        if (model.Homework == true)
+                            schedule.Homework = scheduleFrom.Homework;
+                    }
+
+                    lDateSchedules.Add(schedule.Date);
+                }
+
+                foreach (DateTime date in model.CopyDates)
+                {
+                    if (!lDateSchedules.Contains(date))
+                    {
+                        dates += "    - " + date.ToString("dd/MM/yyyy") + "\n";
+                    }
+                }
+
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(dates))
+                    {
+                        return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+                    }
+
+                    else
+                    {
+                        await _db.SaveChangesAsync();
+                        return (Ok());
+                    }
+                }
+                catch
+                {
+                    return (StatusCode(500));
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 return (StatusCode(500));
             }
         }
@@ -1253,7 +1318,10 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> CarregarAlunosSondagem(PlanningModel model)
         {
-            Planning planning =
+            Planning planning = new Planning();
+            try
+            {
+                planning =
                 (from current in _db.Plannings
                  where current.UserId == model.Username
                  && current.School == model.School
@@ -1261,38 +1329,45 @@ namespace smeCore.SGP.Controllers
                  && current.Classroom == model.Classroom
                  select current).FirstOrDefault();
 
-            if (planning != null)
-            {
-                List<Models.Planning.StudentPollModel> result =
-                    (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
-                     join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
-                     join poll in _db.ClassPolls.Include(x => x.PollPortuguese).Include(x => x.StudentClass) on studentClasses equals poll.StudentClass
-                     where studentClasses.Planning == planning
-                     select new Models.Planning.StudentPollModel()
-                     {
-                         Id = student.Id,
-                         Name = student.Profile.Name,
-                         Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
-                         PollResults = new PollResultsModel()
+                if (planning != null)
+                {
+                    List<Models.Planning.StudentPollModel> result =
+                        (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+                         join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
+                         join poll in _db.ClassPolls.Include(x => x.PollPortuguese).Include(x => x.StudentClass) on studentClasses equals poll.StudentClass
+                         where studentClasses.Planning == planning
+                         select new Models.Planning.StudentPollModel()
                          {
-                             Portuguese = new PollPortugueseModel()
+                             Id = student.Id,
+                             Name = student.Profile.Name,
+                             Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                             PollResults = new PollResultsModel()
                              {
-                                 T1e = poll.PollPortuguese.T1E,
-                                 T1l = poll.PollPortuguese.T1L,
-                                 T2e = poll.PollPortuguese.T2E,
-                                 T2l = poll.PollPortuguese.T2L,
-                                 T3e = poll.PollPortuguese.T3E,
-                                 T3l = poll.PollPortuguese.T3L,
-                                 T4e = poll.PollPortuguese.T4E,
-                                 T4l = poll.PollPortuguese.T4L,
+                                 Portuguese = new PollPortugueseModel()
+                                 {
+                                     T1e = poll.PollPortuguese.T1E,
+                                     T1l = poll.PollPortuguese.T1L,
+                                     T2e = poll.PollPortuguese.T2E,
+                                     T2l = poll.PollPortuguese.T2L,
+                                     T3e = poll.PollPortuguese.T3E,
+                                     T3l = poll.PollPortuguese.T3L,
+                                     T4e = poll.PollPortuguese.T4E,
+                                     T4l = poll.PollPortuguese.T4L,
+                                 }
                              }
-                         }
-                     }).ToList();
+                         }).ToList();
 
-                return (Ok(result.OrderBy(x => x.Sequence)));
+                    return (Ok(result.OrderBy(x => x.Sequence)));
+                }
+
+                return (NotFound());
             }
-
-            return (NotFound());
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return (NotFound());
+            }
+            
         }
 
         [HttpPost]

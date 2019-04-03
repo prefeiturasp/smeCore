@@ -63,6 +63,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\PlanejamentoController - Copy" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\smeCore.Models\smeCore.Models.csproj" />
   </ItemGroup>
 
