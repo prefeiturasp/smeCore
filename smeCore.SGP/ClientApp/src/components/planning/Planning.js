@@ -835,16 +835,7 @@ export default class Planning extends Component {
         };
 
         return (
-            <div id="homeRoot" className="card pb-5">
-                <div id="breadcrumb">
-                    <span className="titulo-breadcrumb">Você está em: &nbsp;</span>
-                    <button type="button" className="btn btn-link btn-sm bt-breadcrumb">Home</button>
-                    &gt;
-                    <button type="button" className="btn btn-link btn-sm bt-breadcrumb">Registro de Classe</button>
-                    &gt;
-                    <button type="button" className="btn btn-link btn-sm bt-breadcrumb">Planejamento</button>
-                </div>
-
+            <div id="homeRoot" className="card card-component pb-5">
                 <div id="changeClass">
                     <div className="form-inline">
 
