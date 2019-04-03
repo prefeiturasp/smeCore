@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace smeCore.Models.Academic.Enumerators
+﻿namespace smeCore.Models.Academic.Enumerators
 {
     public enum SchoolType
     {

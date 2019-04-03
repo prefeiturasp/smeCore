@@ -125,8 +125,6 @@ export default class Planning extends Component {
         this.getSchoolCalendar();
     }
 
-
-
     getSchoolCalendar(name = "", year = 2019) {
         var parameters = "";
 
@@ -439,8 +437,6 @@ export default class Planning extends Component {
             });
     }
 
-
-
     setAnnualPlan(annual) {
         this.setState({ annual: annual });
     }
@@ -467,11 +463,8 @@ export default class Planning extends Component {
                     this.props.showMessage("Plano anual salvo com sucesso!", "sucesso");
                 else if (data.status === 500)
                     this.props.showMessage("Ocorreu um erro!", "erro");
-
-
             });
     }
-
 
     getMonthByIndex(index) {
         switch (index) {
@@ -590,8 +583,6 @@ export default class Planning extends Component {
             });
     }
 
-
-
     updatePollStudent(sequence, subjectName, propertyName, value) {
         var pollStudents = this.state.pollStudents;
 
@@ -652,8 +643,6 @@ export default class Planning extends Component {
             });
     }
 
-
-
     selectedChange(selectedClass) {
         var relatedClasses = [];
 
@@ -675,7 +664,6 @@ export default class Planning extends Component {
             school: this.state.selectedClass.school
         };
 
-
         // Carrega informações do Planejamento Anual (objetivos de aprendizagem) atrvés do ano letivo
         var url = "api/Planejamento/ListarObjetivosAprendizagem?ano=" + planningModel.schoolYear;
         this.props.apiGet(url)
@@ -691,8 +679,6 @@ export default class Planning extends Component {
                     learningObjectiveItems: data
                 });
             });
-
-
 
         // Carrega informações do Planejamento de Classe
         var classPlanModel = {
@@ -725,8 +711,6 @@ export default class Planning extends Component {
                         this.setState({ pollStudents: result });
                     });
             });
-
-
 
         // Carrega informações do Planejamento Anual
         var annualPlanModel = {
@@ -777,7 +761,6 @@ export default class Planning extends Component {
                     this.setState({ annual: annual });
                 }
             });
-
 
         // Carrega informações do Planejamento de Ciclo
         var cyclePlanModel = {
@@ -852,7 +835,7 @@ export default class Planning extends Component {
         };
 
         return (
-            <div id="homeRoot">
+            <div id="homeRoot" className="card pb-5">
                 <div id="breadcrumb">
                     <span className="titulo-breadcrumb">Você está em: &nbsp;</span>
                     <button type="button" className="btn btn-link btn-sm bt-breadcrumb">Home</button>

@@ -131,9 +131,6 @@ namespace smeCore.SGP.Contexts
                 SchoolYearId = schoolYear.Id,
             });
 
-
-
-
             // Seed data para Permissões de Acesso
             smeCore.Models.Authentication.AccessPermission accessPermission = new smeCore.Models.Authentication.AccessPermission()
             {

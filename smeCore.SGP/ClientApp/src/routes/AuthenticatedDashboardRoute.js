@@ -1,7 +1,6 @@
 ﻿import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { TopMenu } from '../components/navigation/TopMenu';
-import { Footer } from "../components/navigation/Footer";
+import { Dashboard } from '../components/navigation/Dashboard';
 
 export default ({ component: C, props: cProps, ...rest }) =>
     <Route {...rest}
@@ -9,11 +8,9 @@ export default ({ component: C, props: cProps, ...rest }) =>
             props => cProps.isAuthenticated
                 ? (
                     <div>
-                        <TopMenu {...cProps} />
-                        <div className="content pb-5">
+                        <Dashboard {...cProps}>
                             <C {...props} {...cProps} />
-                        </div>
-                        <Footer />
+                        </Dashboard>
                     </div>
                 )
                 : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`} />

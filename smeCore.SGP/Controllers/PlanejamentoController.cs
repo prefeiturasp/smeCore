@@ -491,9 +491,9 @@ namespace smeCore.SGP.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AbrirPlanoCiclo(Cycle model)
         {
-            Cycle result = new Cycle();
             try
             {
+                Cycle result = new Cycle();
                 result = await
                     (from current in _db.Cycles
                      where current.Type == model.Type

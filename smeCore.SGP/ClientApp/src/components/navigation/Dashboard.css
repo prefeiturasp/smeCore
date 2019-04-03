@@ -1,0 +1,133 @@
+﻿#dashboard-component {
+    width: 100%;
+    height: calc(100vh - 69px);
+    height: -o-calc(100vh - 69px); /* opera */
+    height: -webkit-calc(100vh - 69px); /* google, safari */
+    height: -moz-calc(100vh - 69px); /* firefox */
+}
+
+
+
+#top-menu {
+    height: 69px;
+}
+
+#logo-content-top-menu {
+    width: 265px;
+    background-color: #FBFBFC;
+}
+
+#logo-top-menu {
+    width: 132px;
+    height: 46px;
+}
+
+#top-menu-bar {
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+
+#logout-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #DADADA;
+    cursor: pointer;
+}
+
+#logout-button-icon {
+    color: #C0C0C0;
+}
+
+
+
+#left-menu {
+    position: relative;
+    top: 69px;
+    width: 265px;
+    background: linear-gradient(0deg, #1BA9DD 0%, #0E6194 100%);
+    box-shadow: 6px 0px 18px rgba(0, 0, 0, 0.15);
+    max-height: calc(100vh - 69px);
+    max-height: -o-calc(100vh - 69px); /* opera */
+    max-height: -webkit-calc(100vh - 69px); /* google, safari */
+    max-height: -moz-calc(100vh - 69px); /* firefox */
+    overflow: hidden;
+}
+
+#left-menu-button {
+    position: absolute;
+    top: 69px;
+    left: 265px;
+    width: 30px;
+    height: 30px;
+    /*border-left: 0px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 50px solid #10A3FB;*/
+    background-color: #10A3FB;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.open-left-menu {
+    background: #0D679A;
+}
+
+.left-menu-item {
+}
+
+.left-menu-item-icon {
+    color: #92D6FF;
+}
+
+.left-menu-item-name {
+    color: white;
+}
+
+.left-menu-item-selected {
+    color: #FFD500;
+}
+
+
+
+#user-info {
+    font-size: 11px;
+}
+
+#user-info-avatar {
+    width: 50px;
+    height: 50px;
+    background: white;
+}
+
+#user-info-email {
+    border: 1px solid #92D6FF;
+    border-radius: 22px;
+}
+
+#user-info-profile {
+    color: #92D6FF;
+}
+
+
+
+#dashboard-content {
+    position: absolute;
+    top: 69px;
+    height: calc(100vh - 69px);
+    height: -o-calc(100vh - 69px); /* opera */
+    height: -webkit-calc(100vh - 69px); /* google, safari */
+    height: -moz-calc(100vh - 69px); /* firefox */
+    width: 100%;
+    background-color: #F5F6F8;
+    max-height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+
+
+.clickable {
+    cursor: pointer;
+    z-index: 1;
+}

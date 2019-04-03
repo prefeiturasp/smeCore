@@ -44,7 +44,6 @@ export class EditAppointment extends Component {
         this.orderByFrequency = this.orderByFrequency.bind(this);
         this.orderByName = this.orderByName.bind(this);
         this.clearModal = this.clearModal.bind(this);
-
     }
 
     clearModal() {
@@ -71,7 +70,6 @@ export class EditAppointment extends Component {
     }
 
     addDate() {
-
         var copyContent = this.state.copyContent;
         if (copyContent.selectedDates.length < 5)
             copyContent.selectedDates.push({
@@ -85,7 +83,6 @@ export class EditAppointment extends Component {
     removeDate(dateId) {
         var copyContent = this.state.copyContent;
         if (copyContent.selectedDates.length > 1) {
-
             var removeIndex = -1;
 
             for (var i = 0; i < copyContent.selectedDates.length; i++)
@@ -99,8 +96,6 @@ export class EditAppointment extends Component {
             this.setState({ copyContent: copyContent })
         }
     }
-
-    
 
     checkboxChange(event) {
         var copyContent = this.state.copyContent;
@@ -145,8 +140,7 @@ export class EditAppointment extends Component {
                     //this.props.showMessage("Conteúdo migrado com sucesso!", "sucesso");
                     alert("Conteúdo migrado com sucesso!");
                 }
-                   
-               
+
                 else if (data.status === 404)
                     data.json().then(result => {
                         //  this.props.showMessage(result, "erro");
@@ -186,8 +180,6 @@ export class EditAppointment extends Component {
         this.props.updateEditClassSchedule(editClassSchedule);
     }
 
-
-
     orderByFrequency() {
         this.props.frequencyOrderBySequence();
     }
@@ -195,8 +187,6 @@ export class EditAppointment extends Component {
     orderByName() {
         this.props.frequencyOrderByName();
     }
-
-
 
     render() {
         var copyContent = this.state.copyContent;

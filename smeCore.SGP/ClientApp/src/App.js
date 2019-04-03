@@ -20,6 +20,24 @@ class App extends Component {
                         "Professor"
                     ]
                 },
+                {
+                    name: "Home",
+                    location: "/",
+                    roles: [
+                        "Admin",
+                        "Diretor",
+                        "Professor"
+                    ]
+                },
+                {
+                    name: "Registro de Classe",
+                    location: "/Planejamento",
+                    roles: [
+                        "Admin",
+                        "Diretor",
+                        "Professor"
+                    ]
+                },
             ],
             isAuthenticated: false,
             user: {
@@ -45,8 +63,6 @@ class App extends Component {
 
         this.apiGet = this.apiGet.bind(this);
         this.apiPost = this.apiPost.bind(this);
-
-
 
         // Configuração do Google Analytics
         ReactGA.initialize('UA-85250794-12');
@@ -146,8 +162,7 @@ class App extends Component {
     showMessage(message, status, title = "Aviso") {
         debugger;
         this.setState({
-           
-            messageWindow: { 
+            messageWindow: {
                 status: status,
                 title: title,
                 message: message
@@ -157,8 +172,6 @@ class App extends Component {
         var modal = document.getElementById("messageWindowButton");
         modal.click();
     }
-
-
 
     apiPost(url, data = null) {
         if (data !== null)
@@ -177,8 +190,6 @@ class App extends Component {
     apiGet(url) {
         return (fetch(url));
     }
-
-
 
     render() {
         const childProps = {
