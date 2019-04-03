@@ -17,6 +17,13 @@ export default class Admin extends Component {
                     ]
                 },
                 { id: "test", label: "Teste" },
+                { id: "test2", label: "Teste2" },
+                {
+                    dropdown: true, items: [
+                        { id: "roles", label: "Grupos/Perfis" },
+                        { id: "accessPermission", label: "Permissões" },
+                    ]
+                },
             ],
             menuElements: [
                 { id: "accessPermission", render: () => <AccessPermission {...props} /> },

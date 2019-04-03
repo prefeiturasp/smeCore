@@ -835,7 +835,7 @@ export default class Planning extends Component {
         };
 
         return (
-            <div id="homeRoot">
+            <div id="homeRoot" className="card pb-5">
                 <div id="breadcrumb">
                     <span className="titulo-breadcrumb">Você está em: &nbsp;</span>
                     <button type="button" className="btn btn-link btn-sm bt-breadcrumb">Home</button>

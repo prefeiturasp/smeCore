@@ -20,6 +20,24 @@ class App extends Component {
                         "Professor"
                     ]
                 },
+                {
+                    name: "Home",
+                    location: "/",
+                    roles: [
+                        "Admin",
+                        "Diretor",
+                        "Professor"
+                    ]
+                },
+                {
+                    name: "Registro de Classe",
+                    location: "/Planejamento",
+                    roles: [
+                        "Admin",
+                        "Diretor",
+                        "Professor"
+                    ]
+                },
             ],
             isAuthenticated: false,
             user: {
