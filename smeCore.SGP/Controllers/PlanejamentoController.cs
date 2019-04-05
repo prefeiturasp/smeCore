@@ -587,11 +587,11 @@ namespace smeCore.SGP.Controllers
             {
                 Planning planning =
                     (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                        where current.UserId == model.Username
-                              && current.School == model.School
-                              && current.Year == model.Year
-                              && current.Classroom == model.Classroom
-                        select current).FirstOrDefault();
+                     where current.UserId == model.Username
+                           && current.School == model.School
+                           && current.Year == model.Year
+                           && current.Classroom == model.Classroom
+                     select current).FirstOrDefault();
 
                 if (planning != null && planning.AnnualPlan != null)
                 {
@@ -790,11 +790,11 @@ namespace smeCore.SGP.Controllers
             {
                 Planning planning =
                     (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                        where current.UserId == model.Username
-                              && current.School == model.School
-                              && current.Year == model.Year
-                              && current.Classroom == model.Classroom
-                        select current).FirstOrDefault();
+                     where current.UserId == model.Username
+                           && current.School == model.School
+                           && current.Year == model.Year
+                           && current.Classroom == model.Classroom
+                     select current).FirstOrDefault();
 
                 List<ClassScheduleModel> result = new List<ClassScheduleModel>();
 
@@ -802,14 +802,14 @@ namespace smeCore.SGP.Controllers
                 {
                     result =
                         (from current in planning.ClassSchedules
-                            where current.Date.Day == model.Date.Day
-                                  && current.Date.Month == model.Date.Month
-                                  && current.Date.Year == model.Date.Year
-                            select new ClassScheduleModel
-                            {
-                                Date = current.Date,
-                                TagColor = current.TagColor
-                            }).ToList();
+                         where current.Date.Day == model.Date.Day
+                               && current.Date.Month == model.Date.Month
+                               && current.Date.Year == model.Date.Year
+                         select new ClassScheduleModel
+                         {
+                             Date = current.Date,
+                             TagColor = current.TagColor
+                         }).ToList();
                 }
 
                 return (Ok(result));
@@ -819,6 +819,40 @@ namespace smeCore.SGP.Controllers
                 Console.WriteLine(e);
                 return (NotFound());
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> ExisteConteudoAula(ClassScheduleModel model)
+        {
+            try
+            {
+                Planning planning =
+               (from current in _db.Plannings.Include(x => x.ClassSchedules)
+                where current.UserId == model.Username
+                && current.School == model.School
+                && current.Year == model.Year
+                && current.Classroom == model.Classroom
+                select current).FirstOrDefault();
+
+                ClassSchedule classSchedule = await
+                    (from current in _db.ClassSchedules
+                     where current.Date == model.Date
+                     select current).SingleOrDefaultAsync();
+
+                if (classSchedule.LearninObjectives != null || classSchedule.ClassroomDevelopment != null
+                   || classSchedule.ContinuousRecovery != null)
+                {
+                    return Ok(true);
+                }
+
+                return Ok(false);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+
         }
 
         [HttpPost]
@@ -909,6 +943,8 @@ namespace smeCore.SGP.Controllers
             return (NotFound());
         }
 
+
+
         [HttpPost]
         public async Task<ActionResult<string>> SalvarDesenvolvimentoAula(EditClassScheduleModel model)
         {
@@ -964,18 +1000,18 @@ namespace smeCore.SGP.Controllers
             {
                 Planning planning = await
                     (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                        where current.UserId == model.Username
-                              && current.School == model.School
-                              && current.Year == model.Year
-                              && current.Classroom == model.Classroom
-                        select current).FirstOrDefaultAsync();
+                     where current.UserId == model.Username
+                           && current.School == model.School
+                           && current.Year == model.Year
+                           && current.Classroom == model.Classroom
+                     select current).FirstOrDefaultAsync();
 
                 if (planning != null)
                 {
                     ClassSchedule classSchedule = await
                         (from current in _db.ClassSchedules
-                            where current.Date == model.Date
-                            select current).SingleOrDefaultAsync();
+                         where current.Date == model.Date
+                         select current).SingleOrDefaultAsync();
 
                     if (classSchedule != null)
                     {
@@ -1009,11 +1045,11 @@ namespace smeCore.SGP.Controllers
             {
                 Planning planning =
                     (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                        where current.UserId == model.Username
-                              && current.School == model.School
-                              && current.Year == model.Year
-                              && current.Classroom == model.Classroom
-                        select current).FirstOrDefault();
+                     where current.UserId == model.Username
+                           && current.School == model.School
+                           && current.Year == model.Year
+                           && current.Classroom == model.Classroom
+                     select current).FirstOrDefault();
 
                 List<ClassScheduleModel> result = new List<ClassScheduleModel>();
                 CalendarModel calendar = CreateCalendar();
@@ -1022,35 +1058,35 @@ namespace smeCore.SGP.Controllers
                 {
                     result =
                         (from current in planning.ClassSchedules
-                            where current.Date >= calendar.Weeks[0][0].FullDate
-                                  && current.Date <= calendar.Weeks[4][6].FullDate
-                            select new ClassScheduleModel
-                            {
-                                Id = current.Id,
-                                Date = current.Date,
-                                TagColor = current.TagColor
-                            }).ToList();
+                         where current.Date >= calendar.Weeks[0][0].FullDate
+                               && current.Date <= calendar.Weeks[4][6].FullDate
+                         select new ClassScheduleModel
+                         {
+                             Id = current.Id,
+                             Date = current.Date,
+                             TagColor = current.TagColor
+                         }).ToList();
 
                     for (int i = 0; i < 5; i++)
-                    for (int j = 0; j < 7; j++)
-                    {
-                        calendar.Weeks[i][j].Schedules =
-                            (from current in result
-                                where current.Date.Day == calendar.Weeks[i][j].Day
-                                      && current.Date.Month == calendar.Weeks[i][j].Month
-                                      && current.Date.Year == calendar.Weeks[i][j].Year
-                                select new ScheduleModel
-                                {
-                                    Id = current.Id,
-                                    Color = current.TagColor,
-                                    Time = current.Date.ToShortTimeString(),
-                                    Name = model.Classroom,
-                                    School = model.School.Substring(0, model.School.IndexOf("-") - 1),
-                                    Day = current.Date.Day,
-                                    Month = current.Date.Month,
-                                    FullYear = current.Date.Year
-                                }).ToList();
-                    }
+                        for (int j = 0; j < 7; j++)
+                        {
+                            calendar.Weeks[i][j].Schedules =
+                                (from current in result
+                                 where current.Date.Day == calendar.Weeks[i][j].Day
+                                   && current.Date.Month == calendar.Weeks[i][j].Month
+                                   && current.Date.Year == calendar.Weeks[i][j].Year
+                                 select new ScheduleModel
+                                 {
+                                     Id = current.Id,
+                                     Color = current.TagColor,
+                                     Time = current.Date.ToShortTimeString(),
+                                     Name = model.Classroom,
+                                     School = model.School.Substring(0, model.School.IndexOf("-") - 1),
+                                     Day = current.Date.Day,
+                                     Month = current.Date.Month,
+                                     FullYear = current.Date.Year
+                                 }).ToList();
+                        }
                 }
 
                 return (Ok(calendar));
@@ -1069,11 +1105,11 @@ namespace smeCore.SGP.Controllers
             {
                 Planning planning =
                     (from current in _db.Plannings.Include(x => x.AnnualPlan)
-                        where current.UserId == model.Username
-                              && current.School == model.School
-                              && current.Year == model.Year
-                              && current.Classroom == model.Classroom
-                        select current).FirstOrDefault();
+                     where current.UserId == model.Username
+                           && current.School == model.School
+                           && current.Year == model.Year
+                           && current.Classroom == model.Classroom
+                     select current).FirstOrDefault();
 
                 if (planning != null)
                 {
@@ -1166,14 +1202,14 @@ namespace smeCore.SGP.Controllers
 
                     List<Models.Mocking.Student> result =
                         (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
-                            join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
-                            select new Models.Mocking.Student()
-                            {
-                                Id = student.Id,
-                                Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
-                                Name = student.Profile.Name,
-                                Attendance = 100
-                            }).ToList();
+                         join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
+                         select new Models.Mocking.Student()
+                         {
+                             Id = student.Id,
+                             Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                             Name = student.Profile.Name,
+                             Attendance = 100
+                         }).ToList();
 
                     return (Ok(result.OrderBy(x => x.Sequence)));
                 }
@@ -1213,35 +1249,35 @@ namespace smeCore.SGP.Controllers
             // Verifica se existe Plano de aula para as datas.
             // Se existir pegar esse plano de aula novo e copiar os conteudos.
             // Se não existir retornar mensagem contendo as datas que não existem
-            Planning planningFrom =new Planning();
+            Planning planningFrom = new Planning();
 
             try
             {
                 planningFrom =
                     (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                        where current.UserId == model.Username
-                              && current.School == model.School
-                              && current.Year == model.Year
-                              && current.Classroom == model.Classroom
-                        select current).FirstOrDefault();
+                     where current.UserId == model.Username
+                           && current.School == model.School
+                           && current.Year == model.Year
+                           && current.Classroom == model.Classroom
+                     select current).FirstOrDefault();
 
                 ClassSchedule scheduleFrom =
                     (from current in planningFrom.ClassSchedules
-                        where current.Date == model.Date
-                        select current).FirstOrDefault();
+                     where current.Date == model.Date
+                     select current).FirstOrDefault();
 
                 Planning planningTo =
                     (from current in _db.Plannings.Include(x => x.ClassSchedules)
-                        where current.UserId == model.Username
-                              && current.School == model.CopyToSchool
-                              && current.Year == model.Year
-                              && current.Classroom == model.CopyToClassroom
-                        select current).FirstOrDefault();
+                     where current.UserId == model.Username
+                           && current.School == model.CopyToSchool
+                           && current.Year == model.Year
+                           && current.Classroom == model.CopyToClassroom
+                     select current).FirstOrDefault();
 
                 ClassSchedule scheduleTo =
                     (from current in planningTo.ClassSchedules
-                        where current.Date == model.Date
-                        select current).FirstOrDefault();
+                     where current.Date == model.Date
+                     select current).FirstOrDefault();
 
 
                 if (planningTo == null)
@@ -1367,7 +1403,7 @@ namespace smeCore.SGP.Controllers
                 Console.WriteLine(e);
                 return (NotFound());
             }
-            
+
         }
 
         [HttpPost]

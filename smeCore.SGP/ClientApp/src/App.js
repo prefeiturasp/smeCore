@@ -12,7 +12,7 @@ class App extends Component {
         this.state = {
             permissions: [
                 {
-                    name: "¡rea Administrativa",
+                    name: "√Årea Administrativa",
                     location: "/Admin",
                     roles: [
                         "Admin",
@@ -64,13 +64,13 @@ class App extends Component {
         this.apiGet = this.apiGet.bind(this);
         this.apiPost = this.apiPost.bind(this);
 
-        // ConfiguraÁ„o do Google Analytics
+        // Configura√ß√£o do Google Analytics
         ReactGA.initialize('UA-85250794-12');
         ReactGA.pageview('/Planejamento');
     }
 
     componentDidMount() {
-        // Pega as permissıes de acesso
+        // Pega as permiss√µes de acesso
         //this.apiPost("/api/Auth/GetAccessPermissions")
         //    .then(data => {
         //        if (data.status === 200)
@@ -111,7 +111,7 @@ class App extends Component {
     }
 
     validateUser() {
-        // Verifica se o usu·rio j· est· autenticado
+        // Verifica se o usu√°rio j√° est√° autenticado
         var user = JSON.parse(sessionStorage.getItem("user"));
 
         if (user !== null) {
@@ -123,13 +123,13 @@ class App extends Component {
             //var diffHrs = Math.floor((diff % 86400000) / 3600000); // hours
             var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000); // minutes
 
-            if (diffMins <= 10) { // Faz verificaÁ„o se o token ainda È v·lido
+            if (diffMins <= 10) { // Faz verifica√ß√£o se o token ainda √© v√°lido
                 this.setState({
                     user: user,
                     isAuthenticated: true
                 });
             }
-            else if (diffMins <= 30) { // Faz verificaÁ„o se o refreshToken ainda È v·lido, caso seja atualiza o token
+            else if (diffMins <= 30) { // Faz verifica√ß√£o se o refreshToken ainda √© v√°lido, caso seja atualiza o token
                 var credential = {
                     username: user.username,
                     refreshToken: user.refreshToken
@@ -145,7 +145,7 @@ class App extends Component {
                                 token: data.token,
                                 refreshToken: data.refreshToken,
                                 lastAuthentication: new Date(),
-                                //TODO: Pegar valores do perfil do usu·rio
+                                //TODO: Pegar valores do perfil do usu√°rio
                                 roles: [
                                     "Admin",
                                     "Supervisor"
@@ -160,7 +160,6 @@ class App extends Component {
     }
 
     showMessage(message, status, title = "Aviso") {
-        debugger;
         this.setState({
             messageWindow: {
                 status: status,
