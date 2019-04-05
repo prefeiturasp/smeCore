@@ -141,3 +141,30 @@
     cursor: pointer;
     z-index: 1;
 }
+
+.opacity-30 {
+    opacity: 0.3!important;
+}
+
+.sgp-gray {
+    color: #C0C0C0;
+}
+
+.sgp-blue {
+    color: #00A6E2;
+}
+
+.round-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+    background: #10A3FB;
+    color: white;
+}
+
+.round-button-dashed {
+    width: 40px;
+    height: 40px;
+    border: dashed 1px #10A3FB;
+    border-radius: 25px;
+}
