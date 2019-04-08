@@ -35,6 +35,69 @@
             </summary>
             <returns>Retorna todos os elementos dos objetivos de desenvolvimento sustentavel (ODS) em formato JSON.</returns>
         </member>
+        <member name="T:smeCore.SGP.Models.EducationalDepartment.EducationalDepartment">
+            <summary>
+            Modelos baseados na documentação do seguinte link https://github.com/victorwss/apis-sme/blob/master/API-escola.md
+            acesso dia 03/04/2019, existe uma pequena diferença que foi alinhado, que na API, quando se puxar a DRE, virá também as escolas vinculadas a ela
+            O Modelo EducationalDepartment é a DRE
+            </summary>
+        </member>
+        <member name="T:smeCore.SGP.Models.EducationalDepartment.School">
+            <summary>
+            Esse modelo representa a Escola ligada a uma DRE
+            </summary>
+        </member>
+        <member name="T:smeCore.SGP.Models.EducationalDepartment.SchoolShift">
+            <summary>
+            Tuno da escola:
+            M - Manhã			Aula regular no período da manhã.
+            I - Intermediário   Aula das 11:00 às 15:00.
+            T - Tarde           Aula regular no período da tarde.
+            V - Vespertino      Aula das 15:00 às 19:00.
+            G - Integral        Aula de manhã e pela tarde.
+            N - Noite           Aula regular no período da noite.
+            </summary>
+        </member>
+        <member name="T:smeCore.SGP.Models.EducationalDepartment.SchoolStatus">
+            <summary>
+            Status da Escola
+            O Created é quando a escola ainda não está em funcionamento
+            </summary>
+        </member>
+        <member name="T:smeCore.SGP.Models.EducationalDepartment.SchoolType">
+            <summary>
+            Tipo de Escola:
+            CCA	        - Centro para Crianças e Adolescentes
+            CCI/CIPS	- Centro de Convivência Infantil / Centro Integrado de Proteção e Saúde
+            CECI	    - Centro de Educação e Cultura Indígena
+            CEI DIRET	- Centro de Educação Infantil Direto
+            CEI INDIR	- Centro de Educação Infantil Indireto Conveniado
+            CEMEI	    - Centro Municipal de Educação Infantil
+            CEU	        - Centro Educacional Unificado
+            CEU AT COM	- Unidade CEU para atendimento exclusivo de Atividades Complementares
+            CEU CEI	    - Centro de Educação Infantil integrante de CEU
+            CEU EMEF	- Escola Municipal de Ensino Fundamental integrante de CEU
+            CEU EMEI	- Escola Municipal de Educação Infantil integrante de CEU
+            CIEJA	    - Centro Integrado de Educação de Jovens e Adultos
+            CMCT	    - Centro Municipal de Capacitação e Treinamento
+            CR.P.CONV	- Creche Privada Conveniada
+            DIR EDUC	- Diretoria Regional de Educação
+            E TECNICA	- Escola Técnica
+            EMEBS	    - Escola Municipal de Educação Bilíngue para Surdos
+            EMEF	    - Escola Municipal de Ensino Fundamental
+            EMEFM	    - Escola Municipal de Ensino Fundamental e Médio
+            EMEI	    - Escola Municipal de Educação Infantil
+            ESC.PART.	- Escola Particular
+            ESP CONV	- Especial Conveniada
+            MOVA	    - Movimento de Alfabetização de Jovens e Adultos
+            OUT-PMSP	- Outras - Prefeitura Municipal de São Paulo
+            </summary>
+        </member>
+        <member name="T:smeCore.SGP.Models.EducationalDepartment.EducationalDepartmentStatus">
+            <summary>
+            Status da DRE
+            </summary>
+        </member>
         <member name="M:smeCore.SGP.Models.Planning.LearningObjective.CleanCode">
             <summary>
             Limpa os caracteres indesejados do campo 'code'
