@@ -47,6 +47,7 @@ export class CalendarDay extends Component {
     this.changeRemoveRepeat = this.changeRemoveRepeat.bind(this);
     this.removeScheduleClick = this.removeScheduleClick.bind(this);
     this.contentScheduleExists = this.contentScheduleExists.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   textChange(event) {
@@ -117,6 +118,10 @@ export class CalendarDay extends Component {
     }
   }
 
+  openModal() {
+    var modal = document.getElementById("classPlanContentExistsButton" + this.props.day);
+    modal.click();
+  }
   removeAppointmentClick(appointment) {
     this.setState({ removeSchedule: appointment });
   }
@@ -126,11 +131,11 @@ export class CalendarDay extends Component {
   }
 
   contentScheduleExists() {
-    var model = { 
+    var model = {
       username: this.props.user.username,
-      year: this.state.schoolYear,
+      year: this.props.schoolYear,
       classroom: this.props.classroom,
-      school: this.state.school,
+      school: this.props.school,
       date: this.props.fullYear + "-" + this.props.month + "-" + this.props.day + " " + this.state.removeSchedule.time,
       repeat: this.state.modalSelectedRemoveRepeat
     };
@@ -139,8 +144,7 @@ export class CalendarDay extends Component {
         if (data.status === 200)
           data.json().then(result => {
             if (result) {
-              var modal = document.getElementById("classPlanContentExistsButton");
-              modal.click();
+              this.openModal();
             }
             else {
 
@@ -153,6 +157,7 @@ export class CalendarDay extends Component {
   }
 
   removeScheduleClick() {
+
     this.props.deleteSchedule({
       day: this.props.day,
       month: this.props.month,
@@ -239,22 +244,22 @@ export class CalendarDay extends Component {
         </div>
 
         <div>
-          <button id="classPlanContentExistsButton" type="button" className="btn btn-primary d-none" data-toggle="modal" data-target="#classPlanContentExistsModal"></button>
-          <div class="modal fade" id="classPlanContentExistsModal" tabindex="-1" role="dialog" aria-labelledby="classPlanContentExistsModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Aviso</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button id={"classPlanContentExistsButton" + this.props.day} type="button" className="btn btn-primary d-none" data-toggle="modal" data-target={"#" + "classPlanContentExistsModal" + this.props.day}></button>
+          <div className="modal fade" id={"classPlanContentExistsModal" +  this.props.day} tabindex="-1" role="dialog" aria-labelledby="classPlanContentExistsModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id={"dialogModalLabel" + this.props.day}>Aviso</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   Esta aula possui conteúdo cadastrado e/ou chamada cadastrada. Deseja realmente excluir a aula?
-                 </div>          
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.removeScheduleClick}>Sim</button>
+                 </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Não</button>
+                  <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.removeScheduleClick}>Sim</button>
                 </div>
               </div>
             </div>
