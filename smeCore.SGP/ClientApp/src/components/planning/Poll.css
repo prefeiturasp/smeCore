@@ -1,4 +1,4 @@
-﻿.dot {
+.dot {
     height: 0.7em;
     width: 0.7em;
     border-radius: 50%;
@@ -27,4 +27,28 @@
 
 .poll-select-container {
     width: 9%;
+}
+
+.card-body-sondagem {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.card-header-sondagem {
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.d-flex.line {
+    border-bottom: 1px solid #DEDEDE;
+}
+.max-column-size{
+    width:400px !important;
+}
+
+.d-flex.flex-column.align-items-end.flexsondagem{
+    padding-left:25px;
+}
+.p-2.p-2sondagem{
+    width:330px;
 }

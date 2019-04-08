@@ -1,0 +1,13 @@
+﻿.poll-select {
+    background-color: white;
+    font-size: 0.7em;
+    color: lightgray;
+}
+
+    .poll-select option.bg-bluescale {
+        background-color: #0077BE;
+    }
+
+    .poll-select.opt {
+        background-color: #0077BE;
+    }

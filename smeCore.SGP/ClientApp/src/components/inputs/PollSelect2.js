@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import './PollSelect.css';
+import './PollSelect2.css';
 
-export class PollSelect extends Component {
+export class PollSelect2 extends Component {
     constructor(props) {
         super(props);
 
@@ -14,8 +14,8 @@ export class PollSelect extends Component {
     }
 
     getColor(value) {
-        if (value > 0) {
-            return ("custom-select custom-select-sm poll-select opt-1 text-white");
+        if (value!=="") {
+            return ("custom-select custom-select-sm poll-select opt text-white");
         } else {
             return ("custom-select custom-select-sm poll-select");
         }
@@ -30,10 +30,11 @@ export class PollSelect extends Component {
             <div>
                 <select id={"pollItem-" + this.props.name + "-" + this.props.sequence} value={this.props.value} className={this.getColor(this.props.value)} onChange={this.onOptionChange}>
                     <option defaultValue hidden className="text-muted" value="">Selecione</option>
-                    <option className="text-white bg-bluescale-1" value="1">Nivel 1</option>
-                    <option className="text-white bg-bluescale-1" value="2">Nivel 2</option>
-                    <option className="text-white bg-bluescale-1" value="3">Nivel 3</option>
-                    <option className="text-white bg-bluescale-1" value="4">Nivel 4</option>
+                    <option className="text-white bg-bluescale" value="ps">PS</option>
+                    <option className="text-white bg-bluescale" value="ssv">SSV</option>
+                    <option className="text-white bg-bluescale" value="scv">SCV</option>
+                    <option className="text-white bg-bluescale" value="sa">SA</option>
+                    <option className="text-white bg-bluescale" value="a">A</option>
                 </select>
             </div>
         );
