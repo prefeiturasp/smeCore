@@ -1076,7 +1076,7 @@ namespace smeCore.SGP.Controllers
     /// <param name="model">ClassScheduleModel contendo os dados do planejamento</param>
     /// <returns>Retorna o CalendarModel contendo os horários de aula do planejamento desejado</returns>
     [HttpPost]
-    public async Task<ActionResult<string>> AbrirCalendarioAula(ClassScheduleModel model)
+    public async Task<ActionResult<string>> AbrirCalendarioAula (ClassScheduleModel model)
     {
       try
       {
@@ -1098,7 +1098,9 @@ namespace smeCore.SGP.Controllers
               var classScheduleModel = new ClassScheduleModel
               {
                 Date = classSchedules.Date,
-                TagColor = classSchedules.TagColor
+                TagColor = classSchedules.TagColor,
+                Year = plan.Year,
+                Classroom = plan.Classroom,
               };
               results.Add(classScheduleModel);
             }
@@ -1121,7 +1123,7 @@ namespace smeCore.SGP.Controllers
                      Id = current.Id,
                      Color = current.TagColor,
                      Time = current.Date.ToShortTimeString(),
-                     Name = model.Classroom,
+                     Name = current.Classroom,
                      School = model.School.Substring(0, model.School.IndexOf("-") - 1),
                      Day = current.Date.Day,
                      Month = current.Date.Month,
