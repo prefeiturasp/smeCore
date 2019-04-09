@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+import React, { Component } from 'react';
 import './EditAppointment.css';
 import { MyObjectiveItem } from './MyObjectiveItem';
 import { DynamicDatePicker } from '../inputs/DynamicDatePicker';
@@ -137,18 +137,15 @@ export class EditAppointment extends Component {
         })
             .then(data => {
                 if (data.status === 200) {
-                    //this.props.showMessage("Conteúdo migrado com sucesso!", "sucesso");
-                    alert("Conteúdo migrado com sucesso!");
+                    this.props.showMessage("Conteúdo migrado com sucesso!", "sucesso");
                 }
 
                 else if (data.status === 404)
                     data.json().then(result => {
-                        //  this.props.showMessage(result, "erro");
-                        alert(result);
+                         this.props.showMessage(result, "erro");
                     });
                 else if (data.status === 500)
-                    //this.props.showMessage("Ocorreu um erro!", "erro");
-                    alert("Ocorreu um erro!")
+                    this.props.showMessage("Ocorreu um erro!", "erro");
             });
     }
 

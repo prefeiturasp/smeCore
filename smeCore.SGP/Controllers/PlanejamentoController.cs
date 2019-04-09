@@ -870,7 +870,6 @@ namespace smeCore.SGP.Controllers
       }
     }
 
-    [HttpPost]
     public async Task<ActionResult<string>> ExisteConteudoAula(ClassScheduleModel model)
     {
       try
@@ -882,8 +881,12 @@ namespace smeCore.SGP.Controllers
              where current.Date == model.Date
              select current).SingleOrDefaultAsync();
 
-        if (classSchedule.LearninObjectives != null || classSchedule.ClassroomDevelopment != null
-           || classSchedule.ContinuousRecovery != null)
+        var ExistsContentClassroomDevelopment = ContentExistString(classSchedule.ClassroomDevelopment);
+        var ExistsContentHomework = ContentExistString(classSchedule.Homework);
+        var ExistsContentContinuousRecovery = ContentExistString(classSchedule.ContinuousRecovery);
+
+        if (ExistsContentClassroomDevelopment || ExistsContentHomework
+           || ExistsContentContinuousRecovery)
         {
           return Ok(true);
         }
@@ -896,6 +899,34 @@ namespace smeCore.SGP.Controllers
         return StatusCode(500);
       }
 
+    }
+
+
+
+    private static bool ContentExistString(string stringText)
+    {
+      if (string.IsNullOrEmpty(stringText))
+      {
+        return false;
+      }
+
+      else
+      {
+        var splitText = stringText.Split(":");
+        stringText = splitText[3];
+        splitText = stringText.Split(",");
+        var Text = splitText[0];
+
+        if (Text == "\"\"")
+        {
+          return false;
+        }
+
+        else
+        {
+          return true;
+        }
+      }
     }
 
     /// <summary>
