@@ -1344,7 +1344,7 @@ namespace smeCore.SGP.Controllers
              where current.Date == model.Date
              select current).FirstOrDefault();
 
-        Planning planningTo = await GetPlanning(model.Username, model.School, model.Year, model.Classroom, ".ClassSchedules");
+        Planning planningTo = await GetPlanning(model.Username, model.CopyToSchool, model.Year, model.CopyToClassroom, ".ClassSchedules");
 
         ClassSchedule scheduleTo =
             (from current in planningTo.ClassSchedules
@@ -1358,7 +1358,7 @@ namespace smeCore.SGP.Controllers
           {
             dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
           }
-          return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
+          return (StatusCode(206, ("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates)));
         }
 
         else if (planningTo.ClassSchedules == null)
@@ -1367,7 +1367,7 @@ namespace smeCore.SGP.Controllers
           {
             dates += "    - " + data.Date.ToString("dd/MM/yyyy") + "\n";
           }
-          return (NotFound("Atenção professor, você não possui aula no(s) dia(s) escolhido(s):\n" + dates));
+          return (Ok("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
         }
 
         List<DateTime> lDateSchedules = new List<DateTime>();
@@ -1395,18 +1395,17 @@ namespace smeCore.SGP.Controllers
           }
         }
 
-
         try
         {
           if (!string.IsNullOrEmpty(dates))
           {
-            return (NotFound("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates));
+            return (StatusCode(206,("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates)));
           }
 
           else
           {
             await _db.SaveChangesAsync();
-            return (Ok());
+            return (Ok("Conteúdo migrado com sucesso!"));
           }
         }
         catch

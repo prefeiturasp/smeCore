@@ -245,7 +245,7 @@ export class CalendarDay extends Component {
 
         <div>
           <button id={"classPlanContentExistsButton" + this.props.day} type="button" className="btn btn-primary d-none" data-toggle="modal" data-target={"#" + "classPlanContentExistsModal" + this.props.day}></button>
-          <div className="modal fade" id={"classPlanContentExistsModal" +  this.props.day} tabindex="-1" role="dialog" aria-labelledby="classPlanContentExistsModalLabel" aria-hidden="true">
+          <div className="modal fade" id={"classPlanContentExistsModal" +  this.props.day} tabIndex="-1" role="dialog" aria-labelledby="classPlanContentExistsModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered" role="document">
               <div className="modal-content">
                 <div className="modal-header">

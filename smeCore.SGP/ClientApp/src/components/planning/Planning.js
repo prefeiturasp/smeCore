@@ -824,7 +824,7 @@ export default class Planning extends Component {
   render() {
     const { selectedClass } = this.state;
     const childProps = {
-      todayDate: this.state.todayDate,
+          todayDate: this.state.todayDate,
       getMonthByIndex: this.getMonthByIndex,
       year: this.state.schoolYear,
       classroom: this.state.classroom,

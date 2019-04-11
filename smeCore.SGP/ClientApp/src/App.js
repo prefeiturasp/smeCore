@@ -161,6 +161,7 @@ class App extends Component {
 
   showMessage(message, status, title = "Aviso") {
     this.setState({
+
       messageWindow: {
         status: status,
         title: title,
@@ -223,9 +224,9 @@ class App extends Component {
                   </button>
                 </div>
                 <div className="modal-body d-flex align-items-stretch">
-                  {this.state.messageWindow.status === 'erro' && <i className="fa fa-window-close fa-2x pr-2" aria-hidden="true"></i>}
-                  {this.state.messageWindow.status === 'sucesso' && <i className="fa fa-check-circle fa-2x pr-2" aria-hidden="true"></i>}
-                  <h4> {this.state.messageWindow.message} </h4>
+                  <div>  {this.state.messageWindow.status === 'erro' && <i className="fa fa-window-close fa-2x pr-2" aria-hidden="true"></i>} </div>
+                  <div>  {this.state.messageWindow.status === 'sucesso' && <i className="fa fa-check-circle fa-2x pr-2" aria-hidden="true"></i>}</div>
+                  <div>  <h4> {this.state.messageWindow.message} </h4> </div>
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-primary" data-dismiss="modal">Ok</button>
