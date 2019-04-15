@@ -280,7 +280,8 @@ export class EditAppointment extends Component {
               <hr className="header-rule" />
 
               <ul className="list-unstyled">
-                {Object.entries(this.props.editClassSchedule.learningObjectives).map(([key, value]) => (
+                {
+                 this.props.editClassSchedule.learningObjectives != null &&  Object.entries(this.props.editClassSchedule.learningObjectives).map(([key, value]) => (
                   <MyObjectiveItem key={key} id={key} name={key} value={value} parent="EditAppointment" changeLearningObjective={this.changeLearningObjective} />
                 ))}
               </ul>

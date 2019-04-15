@@ -89,9 +89,6 @@ export class ClassPlan extends Component {
             result.continuousRecovery = this.defaultStateOrConverter(result.continuousRecovery);
             result.homework = this.defaultStateOrConverter(result.homework);
 
-            //if (result.learningObjectives == null)
-            //    result.learningObjectives = {};
-
             this.setState({
               showEditAppointment: true,
               editClassSchedule: result

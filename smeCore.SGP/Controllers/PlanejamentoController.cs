@@ -1078,26 +1078,28 @@ namespace smeCore.SGP.Controllers
 
           if (classSchedule != null)
           {
-            EditClassScheduleModel result = new EditClassScheduleModel()
+            EditClassScheduleModel result = new EditClassScheduleModel();
+           
+            if (classSchedule.LearninObjectives != null)
             {
-              Date = classSchedule.Date,
-              LearningObjectives = JsonConvert.DeserializeObject<Dictionary<string, string>>(classSchedule.LearninObjectives),
-              StudentsAbsence = new List<StudentAbsenceModel>(),
-              ClassDevelopment = classSchedule.ClassroomDevelopment,
-              ContinuousRecovery = classSchedule.ContinuousRecovery,
-              Homework = classSchedule.Homework
-            };
+              result.LearningObjectives = JsonConvert.DeserializeObject<Dictionary<string, string>>(classSchedule.LearninObjectives);
+            }
+            result.Date = classSchedule.Date;
+            result.StudentsAbsence = new List<StudentAbsenceModel>();
+            result.ClassDevelopment = classSchedule.ClassroomDevelopment;
+            result.ContinuousRecovery = classSchedule.ContinuousRecovery;
+            result.Homework = classSchedule.Homework;
 
             return (Ok(result));
-          }
+
+          };
         }
 
         return (NotFound());
       }
       catch (Exception e)
       {
-        Console.WriteLine(e);
-        return (NotFound());
+        return StatusCode(500);
       }
     }
 
@@ -1107,7 +1109,7 @@ namespace smeCore.SGP.Controllers
     /// <param name="model">ClassScheduleModel contendo os dados do planejamento</param>
     /// <returns>Retorna o CalendarModel contendo os horários de aula do planejamento desejado</returns>
     [HttpPost]
-    public async Task<ActionResult<string>> AbrirCalendarioAula (ClassScheduleModel model)
+    public async Task<ActionResult<string>> AbrirCalendarioAula(ClassScheduleModel model)
     {
       try
       {
@@ -1399,7 +1401,7 @@ namespace smeCore.SGP.Controllers
         {
           if (!string.IsNullOrEmpty(dates))
           {
-            return (StatusCode(206,("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates)));
+            return (StatusCode(206, ("O professor não possui aulas dessa turma nessa(s) data(s):\n" + dates)));
           }
 
           else
