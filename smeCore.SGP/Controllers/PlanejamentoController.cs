@@ -248,6 +248,29 @@ namespace smeCore.SGP.Controllers
 
       return (classSchedule);
     }
+
+    /// <summary>
+    /// Busca os alunos de Sondagem da turma
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    private List<Models.Mocking.Student> GetSondagemStudents(PlanningModel model)
+    {
+        List<Models.Mocking.Student> result =
+              (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+               .Where(x => x.Planning.Classroom == model.Classroom && x.Planning.Year == model.Year && x.Planning.School == model.School)
+               join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes)
+               on studentClasses.Student equals student
+
+               select new Models.Mocking.Student()
+               {
+                 Id = student.Id,
+                 Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+                 Name = student.Profile.Name,
+                 Attendance = 100
+               }).ToList();
+      return result;
+    }
     #endregion -------------------- PRIVATE --------------------
 
     #region -------------------- PUBLIC --------------------
@@ -1079,7 +1102,7 @@ namespace smeCore.SGP.Controllers
           if (classSchedule != null)
           {
             EditClassScheduleModel result = new EditClassScheduleModel();
-           
+
             if (classSchedule.LearninObjectives != null)
             {
               result.LearningObjectives = JsonConvert.DeserializeObject<Dictionary<string, string>>(classSchedule.LearninObjectives);
@@ -1275,16 +1298,80 @@ namespace smeCore.SGP.Controllers
             }
           }
 
-          List<Models.Mocking.Student> result =
-              (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
-               join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes) on studentClasses.Student equals student
-               select new Models.Mocking.Student()
-               {
-                 Id = student.Id,
-                 Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
-                 Name = student.Profile.Name,
-                 Attendance = 100
-               }).ToList();
+          List<Models.Mocking.Student> result = GetSondagemStudents(model);
+
+          if (result.Count == 0)
+          {
+            List<Profile> people = new List<Profile>()
+            {
+              new Profile() { Name ="Amanda Cavalcanti Cardoso"},
+              new Profile() { Name ="Anind Canela"},
+              new Profile() { Name ="Cândido Abreu"},
+              new Profile() { Name ="Ester Rodrigues"},
+              new Profile() { Name ="Frederica Belo"},
+              new Profile() { Name ="Guaraci Santos"},
+              new Profile() { Name ="Clara Santos Rodrigues"},
+              new Profile() { Name ="Herculano Cesário"},
+              new Profile() { Name ="Horácio Baptista"},
+              new Profile() { Name ="Jaime Sequera"},
+              new Profile() { Name ="Lázaro Ornellas"},
+              new Profile() { Name ="Matilde Oliveira"},
+              new Profile() { Name ="Moema Salles"},
+              new Profile() { Name ="Napoleão Araujo"},
+              new Profile() { Name ="Osvaldo Martins "},
+              new Profile() { Name ="Vitoria  Alcântara"},
+              new Profile() { Name ="Vanderlei Gouvêa"},
+              new Profile() { Name ="Vânia Pedrozo"},
+              new Profile() { Name ="Zubaida Guerrero"},
+              new Profile() { Name ="Íris Castro"}
+            };
+
+            int count = 0;
+            Code studentCode = new Code();
+            studentCode.NewID();
+            studentCode.Name = "Código de Chamada";
+
+            await _db.Codes.AddAsync(studentCode);
+
+            foreach (Profile person in people)
+            {
+              person.NewID();
+              person.Student = new Student();
+              person.Student.NewID();
+              person.Student.Codes = new List<StudentCode>();
+              person.Student.Codes.Add(new StudentCode()
+              {
+                Code = studentCode,
+                Validity = new DateTime(DateTime.Now.Year, 12, 20),
+                Value = (++count).ToString()
+              });
+              person.Student.Codes[0].NewID();
+
+              person.Student.Classes = new List<StudentClass>();
+              person.Student.Classes.Add(new StudentClass()
+              {
+                Year = DateTime.Now.Year,
+                Planning = planning,
+                Polls = new ClassPoll()
+              });
+              person.Student.Classes[0].NewID();
+              person.Student.Classes[0].Polls.NewID();
+              person.Student.Classes[0].Polls.PollPortuguese = new PollPortuguese();
+              person.Student.Classes[0].Polls.PollPortuguese.NewID();
+            }
+
+            try
+            {
+              await _db.Profiles.AddRangeAsync(people);
+              await _db.SaveChangesAsync();
+            }
+            catch (Exception error)
+            {
+              return (StatusCode(500, error));
+            }
+
+            result = GetSondagemStudents(model);
+          }
 
           return (Ok(result.OrderBy(x => x.Sequence)));
         }
