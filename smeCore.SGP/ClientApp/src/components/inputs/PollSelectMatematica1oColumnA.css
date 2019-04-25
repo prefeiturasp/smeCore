@@ -1,0 +1,29 @@
+.poll-select {
+  background-color: white;
+  font-size: 0.7em;
+  color: lightgray;
+}
+
+.poll-select-n {
+  background-color: #9C96F6;
+  font-size: 0.7em;
+  color: white;
+}
+
+.poll-select-s {
+  background-color: #9C96F6;
+  font-size: 0.7em;
+  color: white;
+}
+
+.text-white.bg-bluescale-a {
+  background-color: #9C96F6;
+  width: 60px;
+}
+
+.poll-select.opt {
+  background-color: #9C96F6;
+}
+.custom-select.custom-select-sm{
+  width:60px;
+}

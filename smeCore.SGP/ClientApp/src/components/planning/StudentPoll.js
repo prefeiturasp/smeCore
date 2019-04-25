@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+import React, { Component } from 'react';
 import { PollSelect } from '../inputs/PollSelect';
 import { PollSelect2 } from '../inputs/PollSelect2';
 
