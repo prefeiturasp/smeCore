@@ -5,9 +5,11 @@ using smeCore.Models.Academic;
 using smeCore.Models.Entity;
 using smeCore.Models.Organization;
 using smeCore.SGP.Contexts;
+
 using smeCore.SGP.Models.Planning;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -256,21 +258,121 @@ namespace smeCore.SGP.Controllers
     /// <returns></returns>
     private List<Models.Mocking.Student> GetSondagemStudents(PlanningModel model)
     {
-        List<Models.Mocking.Student> result =
-              (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
-               .Where(x => x.Planning.Classroom == model.Classroom && x.Planning.Year == model.Year && x.Planning.School == model.School)
-               join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes)
-               on studentClasses.Student equals student
+      List<Models.Mocking.Student> result =
+            (from studentClasses in _db.StudentClasses.Include(x => x.Planning)
+             .Where(x => x.Planning.Classroom == model.Classroom && x.Planning.Year == model.Year && x.Planning.School == model.School)
+             join student in _db.Students.Include(x => x.Profile).Include(x => x.Codes)
+             on studentClasses.Student equals student
 
-               select new Models.Mocking.Student()
-               {
-                 Id = student.Id,
-                 Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
-                 Name = student.Profile.Name,
-                 Attendance = 100
-               }).ToList();
+             select new Models.Mocking.Student()
+             {
+               Id = student.Id,
+               Sequence = Convert.ToInt32(student.Codes.Where(x => x.Code.Name == "Código de Chamada").FirstOrDefault().Value),
+               Name = student.Profile.Name,
+               Attendance = 100
+             }).ToList();
       return result;
     }
+  
+    public List<Models.Mocking.StudentClassRoom> MockListaChamada()
+    {
+      var ListStudantClassRoom = new List<Models.Mocking.StudentClassRoom>();
+
+
+      Models.Mocking.StudentClassRoom studant = new Models.Mocking.StudentClassRoom();
+
+      studant.CodigoAluno = 10;
+      studant.NomeAluno = "Caique dos Santos Latorre Siqueira";
+      studant.NomeSocial = "Caique";
+      studant.NumeroAluno = 1;
+      studant.SituacaoMatricula = "Ativo";
+      studant.AEE = false;
+      studant.DataDaSituacao = DateTime.ParseExact("04/02/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+      studant.DataNascimento = DateTime.ParseExact("30/07/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+      Models.Mocking.StudentClassRoom studant2 = new Models.Mocking.StudentClassRoom()
+      {
+        CodigoAluno = 20,
+        NomeAluno = "Massato Kanno",
+        NomeSocial = "Massato",
+        NumeroAluno = 2,
+        SituacaoMatricula = "Ativo",
+        AEE = false,
+        DataDaSituacao = DateTime.ParseExact("23/04/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+        DataNascimento = DateTime.ParseExact("30/07/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture)
+      };
+
+      Models.Mocking.StudentClassRoom studant3 = new Models.Mocking.StudentClassRoom()
+      {
+        CodigoAluno = 30,
+        NomeAluno = "Daniel Matsumoto",
+        NomeSocial = "Daniela",
+        NumeroAluno = 3,
+        SituacaoMatricula = "Ativo",
+        AEE = false,
+        DataDaSituacao = DateTime.ParseExact("04/02/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+        DataNascimento = DateTime.ParseExact("30/07/1994", "dd/MM/yyyy", CultureInfo.InvariantCulture)
+      };
+
+      Models.Mocking.StudentClassRoom studant4 = new Models.Mocking.StudentClassRoom()
+      {
+        CodigoAluno = 40,
+        NomeAluno = "Danieli de Paula",
+        NomeSocial = "Danieli",
+        NumeroAluno = 4,
+        SituacaoMatricula = "Ativo",
+        AEE = false,
+        DataDaSituacao = DateTime.ParseExact("04/02/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+        DataNascimento = DateTime.ParseExact("30/07/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture)
+      };
+
+      Models.Mocking.StudentClassRoom studant5 = new Models.Mocking.StudentClassRoom()
+      {
+        CodigoAluno = 50,
+        NomeAluno = "Gabi Rowlands",
+        NomeSocial = "Gabi",
+        NumeroAluno = 5,
+        SituacaoMatricula = "Ativo",
+        AEE = false,
+        DataDaSituacao = DateTime.ParseExact("04/02/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+        DataNascimento = DateTime.ParseExact("30/07/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture)
+      };
+      Models.Mocking.StudentClassRoom studant6 = new Models.Mocking.StudentClassRoom()
+      {
+        CodigoAluno = 60,
+        NomeAluno = "Estudante Transferido",
+        NomeSocial = "Estudante",
+        NumeroAluno = 5,
+        SituacaoMatricula = "3 - Transferido outra escola",
+        AEE = false,
+        DataDaSituacao = DateTime.ParseExact("02/02/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+        DataNascimento = DateTime.ParseExact("30/07/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture)
+      };
+
+      Models.Mocking.StudentClassRoom studant7 = new Models.Mocking.StudentClassRoom()
+      {
+        CodigoAluno = 60,
+        NomeAluno = "Edson Arantes do Nascimento",
+        NomeSocial = "Pelé",
+        NumeroAluno = 6,
+        SituacaoMatricula = "3 - Transferido outra escola",
+        AEE = false,
+        DataDaSituacao = DateTime.ParseExact("08/02/2019", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+        DataNascimento = DateTime.ParseExact("30/07/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture)
+      };
+
+
+      ListStudantClassRoom.Add(studant);
+      ListStudantClassRoom.Add(studant2);
+      ListStudantClassRoom.Add(studant3);
+      ListStudantClassRoom.Add(studant4);
+      ListStudantClassRoom.Add(studant5);
+      ListStudantClassRoom.Add(studant6);
+      ListStudantClassRoom.Add(studant7);
+
+      return ListStudantClassRoom;
+    }
+
     #endregion -------------------- PRIVATE --------------------
 
     #region -------------------- PUBLIC --------------------
@@ -1120,7 +1222,7 @@ namespace smeCore.SGP.Controllers
 
         return (NotFound());
       }
-      catch (Exception e)
+      catch (Exception)
       {
         return StatusCode(500);
       }
@@ -1594,11 +1696,123 @@ namespace smeCore.SGP.Controllers
 
           await _db.SaveChangesAsync();
         }
-
         return (Ok());
       }
-
       return (NotFound());
+    }
+
+   [HttpGet]
+    [ResponseCache(Duration = 30)]
+    public async Task<ActionResult<string>> CarregaAlunosTurma()
+    {
+      try
+      {
+        List<Models.Mocking.StudentClassRoom> List = MockListaChamada();
+
+        // Remover alunos que sairam antes do inicio do periodo letivo
+        var schoolYear = GetSchoolYearCalendar("Ensino Regular", 2019);
+        string name = "Ensino Regular";
+
+        SchoolTerm schoolTerm = await
+            (from current in _db.SchoolTerms
+             where current.SchoolYear.Year == 2019
+             select current).FirstOrDefaultAsync();
+
+
+        // Remover alunos que sairam antes do inicio do periodo letivo
+        var ListAlunosAtivos = List.FindAll(x => x.DataDaSituacao >= schoolTerm.ValidityStart);
+
+        //Se o aluno for maior de 18 anos aparecer nome social, se houver na lista de frequência. Nas demais listas nome oficial com social entre parênteses
+
+        foreach (var student in ListAlunosAtivos)
+        {
+          var idade = CalculaIdade(student.DataNascimento);
+
+          if (idade >= 18)
+          {
+            student.NomeFrequencia = student.NomeSocial;
+            student.NomeAluno = student.NomeAluno + " (" + student.NomeSocial + ")";
+          }
+
+          else
+          {
+            student.NomeFrequencia = student.NomeAluno;
+            student.NomeAluno = student.NomeAluno + " (" + student.NomeSocial + ")";
+
+          }
+
+        }
+
+        // Marcador visual alunos recem matriculados.
+
+        SchoolTerm schoolTermAtual = AchaBimetreAtual();
+
+        foreach (var student in ListAlunosAtivos)
+        {
+          //Verifica se foi matriculado nesse bimestre
+          if (student.DataDaSituacao > schoolTermAtual.ValidityStart && student.DataDaSituacao < schoolTermAtual.ValidityEnd)
+          {
+            int diasMatriculado = DateTime.Now.DayOfYear - student.DataDaSituacao.DayOfYear;
+
+            if(diasMatriculado < 30 ) //Incluir parametro do banco
+            {
+              student.AlunoRecemMatriculado = true;
+            }
+
+          }
+
+        }
+          return (Ok(ListAlunosAtivos));
+
+      }
+      catch (Exception ex)
+      {
+
+        throw ex;
+      }
+
+
+    }
+
+    private SchoolTerm AchaBimetreAtual()
+    {
+      var ListSchoolTerm =
+             (from current in _db.SchoolTerms
+              where current.SchoolYear.Year == 2019
+              select current).ToList();
+      // achar o bimestre
+      foreach (var sTerm in ListSchoolTerm)
+      {
+        if (DateTime.Now > sTerm.ValidityStart && DateTime.Now < sTerm.ValidityEnd)
+        {
+          return sTerm;
+        }
+      }
+      return ListSchoolTerm[0];
+    }
+    private int CalculaIdade(DateTime dtNascimento)
+    {
+      int idade = DateTime.Now.Year - dtNascimento.Year;
+      if (DateTime.Now.Month < dtNascimento.Month || (DateTime.Now.Month == dtNascimento.Month && DateTime.Now.Day < dtNascimento.Day))
+        idade--;
+
+      return idade;
+    }
+
+    private void criaAluno()
+    {
+      Code code = new Code();
+      code.NewID();
+      code.Name = "Código EOL";
+
+
+      List<Models.Mocking.StudentClassRoom> List = MockListaChamada();
+
+
+      foreach (var student in List)
+      {
+
+      }
     }
 
     #endregion -------------------- PUBLIC --------------------

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using smeCore.Models.Organization;
+using System;
 
 namespace smeCore.Models.Academic
 {
@@ -7,8 +8,9 @@ namespace smeCore.Models.Academic
         #region ==================== ATTRIBUTES ====================
 
         public DateTime Date { get; set; }
-
+        public string CodeEol { get; set; }
         public virtual StudentClass StudentClass { get; set; }
+        public virtual StudentCode StudentCode { get; set; }
 
         #endregion ==================== ATTRIBUTES ====================
     }

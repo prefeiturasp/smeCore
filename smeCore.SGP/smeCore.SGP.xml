@@ -71,6 +71,13 @@
             <param name="date">Data e horario do plano de aula desejado</param>
             <returns>Retorna o plano de aula desejado</returns>
         </member>
+        <member name="M:smeCore.SGP.Controllers.PlanejamentoController.GetSondagemStudents(smeCore.SGP.Models.Planning.PlanningModel)">
+            <summary>
+            Busca os alunos de Sondagem da turma
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:smeCore.SGP.Controllers.PlanejamentoController.ListarObjetivosAprendizagem(System.String)">
             <summary>
             Método para listar os objetivos de aprendizagem, podendo ser filtrado pelo ano desejado.

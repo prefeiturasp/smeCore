@@ -27,7 +27,10 @@ namespace smeCore.SGP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+      services.AddResponseCaching();
+ 
+      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -35,7 +38,7 @@ namespace smeCore.SGP
                 configuration.RootPath = "ClientApp/build";
             });
 
-            // ConfiguraÁ„o de injeÁ„o de dependÍncia do SMEContext (Postgres - Npgsql)
+            // Configura√ß√£o de inje√ß√£o de depend√™ncia do SMEContext (Postgres - Npgsql)
             services.AddDbContext<SMEContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -60,7 +63,7 @@ namespace smeCore.SGP
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                        .AllowAnyOrigin() // Ulilizar a funÁ„o abaixo e comentar essa para definir permiss„o de acesso de determinadas origens, caso contr·rio ser· aceito qualquer origem da requisiÁ„o
+                        .AllowAnyOrigin() // Ulilizar a fun√ß√£o abaixo e comentar essa para definir permiss√£o de acesso de determinadas origens, caso contr√°rio ser√° aceito qualquer origem da requisi√ß√£o
                                           //.WithOrigins("https://mydomain.com", "http://outroendereco.com.br")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
@@ -75,7 +78,7 @@ namespace smeCore.SGP
                 {
                     Title = "smeCore.SGP",
                     Version = "v1.0.0",
-                    Description = "DocumentaÁ„o das APIs do smeCore.SGP (.NET Core v2.2)",
+                    Description = "Documenta√ß√£o das APIs do smeCore.SGP (.NET Core v2.2)",
                 });
 
                 string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -89,7 +92,8 @@ namespace smeCore.SGP
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+              app.UseResponseCaching();
+              app.UseDeveloperExceptionPage();
             }
             else
             {

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace smeCore.SGP.Migrations
 {
@@ -252,7 +252,7 @@ namespace smeCore.SGP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SchoolTerm",
+                name: "SchoolTerms",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -266,9 +266,9 @@ namespace smeCore.SGP.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SchoolTerm", x => x.Id);
+                    table.PrimaryKey("PK_SchoolTerms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SchoolTerm_SchoolYears_SchoolYearId",
+                        name: "FK_SchoolTerms_SchoolYears_SchoolYearId",
                         column: x => x.SchoolYearId,
                         principalTable: "SchoolYears",
                         principalColumn: "Id",
@@ -576,7 +576,9 @@ namespace smeCore.SGP.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    StudentClassId = table.Column<string>(nullable: true)
+                    CodeEol = table.Column<string>(nullable: true),
+                    StudentClassId = table.Column<string>(nullable: true),
+                    StudentCodeId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -587,47 +589,97 @@ namespace smeCore.SGP.Migrations
                         principalTable: "StudentClasses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClassAbsences_StudentCodes_StudentCodeId",
+                        column: x => x.StudentCodeId,
+                        principalTable: "StudentCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "AccessPermission",
                 columns: new[] { "Id", "CreatedAt", "Location", "ModifiedAt", "Name" },
-                values: new object[] { "a432b866-b3fd-42d6-afd6-5d9df94f8a44", new DateTime(2019, 3, 21, 15, 21, 55, 1, DateTimeKind.Local).AddTicks(6443), "/Admin", new DateTime(2019, 3, 21, 15, 21, 55, 6, DateTimeKind.Local).AddTicks(9706), "Área Administrativa" });
+                values: new object[] { "6f84a81e-2edc-4a28-b569-406f0c372263", new DateTime(2019, 4, 25, 16, 57, 54, 480, DateTimeKind.Local).AddTicks(9533), "/Admin", new DateTime(2019, 4, 25, 16, 57, 54, 481, DateTimeKind.Local).AddTicks(619), "Área Administrativa" });
+
+            migrationBuilder.InsertData(
+                table: "ClassAbsences",
+                columns: new[] { "Id", "CodeEol", "Date", "StudentClassId", "StudentCodeId" },
+                values: new object[,]
+                {
+                    { "43476b04-19f7-44d4-9d13-33228ed655f2", "10", new DateTime(2019, 4, 25, 16, 57, 54, 476, DateTimeKind.Local).AddTicks(2346), null, null },
+                    { "4f7f3bb3-ffb5-40d0-8c69-48502073c566", "30", new DateTime(2019, 4, 25, 16, 57, 54, 480, DateTimeKind.Local).AddTicks(6659), null, null },
+                    { "84147558-f861-4f9c-a010-799c27715fb4", "30", new DateTime(2019, 4, 25, 16, 57, 54, 480, DateTimeKind.Local).AddTicks(6762), null, null },
+                    { "76bb9798-30e2-455c-a92a-1bd216cf2084", "30", new DateTime(2019, 4, 25, 16, 57, 54, 480, DateTimeKind.Local).AddTicks(6796), null, null },
+                    { "bded361d-70d8-4e75-9f9b-9abec0193a6e", "30", new DateTime(2019, 4, 25, 16, 57, 54, 480, DateTimeKind.Local).AddTicks(6834), null, null },
+                    { "de745767-c6d8-4f62-aa62-cfe45f9e5460", "30", new DateTime(2019, 4, 25, 16, 57, 54, 480, DateTimeKind.Local).AddTicks(6881), null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Codes",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "Código EOL" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { "1a1541b9-48d8-4987-b5d9-c44e9889d216", "Admin" },
-                    { "10f71a3e-9d19-4b39-87f8-aad934db2bc4", "Diretor" },
-                    { "c5197d8d-9565-4041-8f5f-09b2aec6577a", "Professor" }
+                    { "fddf23db-ab6b-481e-b501-129ed93f582f", "Professor" },
+                    { "de2c5278-52fc-45d3-9a8a-9158afab8671", "Admin" },
+                    { "cca0a8d9-3d32-48af-bb38-5daa928d188b", "Diretor" }
                 });
 
             migrationBuilder.InsertData(
                 table: "SchoolYears",
                 columns: new[] { "Id", "Name", "Year" },
-                values: new object[] { "b36ce928-fa73-4fa1-8b9d-95781562c0c5", "Ensino Regular", 2019 });
+                values: new object[] { "e17d4088-a785-41f8-9bfe-add46bd5c1e8", "Ensino Regular", 2019 });
+
+            migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "Id", "ProfileId" },
+                values: new object[,]
+                {
+                    { "bafed596-dcd6-47d5-92ac-9211ad006119", null },
+                    { "6397f044-b07b-4709-bd6b-06e918c19813", null },
+                    { "453eb516-4efb-4432-aafa-76ebc357fdb1", null },
+                    { "5416dc1f-7251-4c37-bf13-9c4f2f3e4e9d", null },
+                    { "34f816f6-23f4-4103-ac71-b4443257be94", null },
+                    { "1f8cf3d7-4791-43be-a675-bc7abbb61e5d", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "AccessPermissionRole",
                 columns: new[] { "Id", "AccessPermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { "a31f89c8-0ad1-473b-9333-e529f24b4f34", "a432b866-b3fd-42d6-afd6-5d9df94f8a44", "1a1541b9-48d8-4987-b5d9-c44e9889d216" },
-                    { "0c8f495d-9362-4c54-8b45-467054c395d5", "a432b866-b3fd-42d6-afd6-5d9df94f8a44", "10f71a3e-9d19-4b39-87f8-aad934db2bc4" },
-                    { "170e2ef8-8dda-43fb-8402-ae30fefdd54d", "a432b866-b3fd-42d6-afd6-5d9df94f8a44", "c5197d8d-9565-4041-8f5f-09b2aec6577a" }
+                    { "ca2afbd4-9d6a-49e4-81f1-6a05908648f7", "6f84a81e-2edc-4a28-b569-406f0c372263", "de2c5278-52fc-45d3-9a8a-9158afab8671" },
+                    { "470e6e7c-5608-491e-8f1a-e1450c512af2", "6f84a81e-2edc-4a28-b569-406f0c372263", "cca0a8d9-3d32-48af-bb38-5daa928d188b" },
+                    { "627fa964-a82b-4a5c-8474-33a2285b9587", "6f84a81e-2edc-4a28-b569-406f0c372263", "fddf23db-ab6b-481e-b501-129ed93f582f" }
                 });
 
             migrationBuilder.InsertData(
-                table: "SchoolTerm",
+                table: "SchoolTerms",
                 columns: new[] { "Id", "ClosureEnd", "ClosureStart", "Name", "ReportCardConsolidation", "SchoolYearId", "ValidityEnd", "ValidityStart" },
                 values: new object[,]
                 {
-                    { "a49de97c-c94f-45b0-a6de-9ba1c4591d40", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "313808ae-61dd-44f9-b4ed-aefd276052d9", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "e146330b-d623-4842-9759-ae50518513f2", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { "dfc9b2a3-1a6a-487f-860e-082030e5bf10", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "b36ce928-fa73-4fa1-8b9d-95781562c0c5", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { "2a397bc0-2190-4c8f-b59f-cad4240f05db", new DateTime(2019, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "1° Bimestre de 2019", new DateTime(2019, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "e17d4088-a785-41f8-9bfe-add46bd5c1e8", new DateTime(2019, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "3948459f-3a00-4b0c-bdc7-a6839ee62774", new DateTime(2019, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "2° Bimestre de 2019", new DateTime(2019, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "e17d4088-a785-41f8-9bfe-add46bd5c1e8", new DateTime(2019, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "10e58731-9bcb-4ff5-bf61-2fcfbcd8c988", new DateTime(2019, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "3° Bimestre de 2019", new DateTime(2019, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "e17d4088-a785-41f8-9bfe-add46bd5c1e8", new DateTime(2019, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { "1d3df0aa-e3dc-460f-87af-592bdb69b1a2", new DateTime(2019, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "4° Bimestre de 2019", new DateTime(2019, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "e17d4088-a785-41f8-9bfe-add46bd5c1e8", new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StudentCodes",
+                columns: new[] { "Id", "CodeId", "StudentId", "Validity", "Value" },
+                values: new object[,]
+                {
+                    { "41b121b9-ab56-4cdb-b073-21279eba911a", "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "34f816f6-23f4-4103-ac71-b4443257be94", new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), "10" },
+                    { "5cfab658-1faa-4e52-a7cf-d9b4e66d0d09", "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "1f8cf3d7-4791-43be-a675-bc7abbb61e5d", new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), "20" },
+                    { "baf64de7-d726-48f7-8d4e-0a83bc2dca04", "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "bafed596-dcd6-47d5-92ac-9211ad006119", new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), "30" },
+                    { "a009a3cd-b72a-4e50-8541-0148cd8806e9", "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "6397f044-b07b-4709-bd6b-06e918c19813", new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), "40" },
+                    { "c70216d0-c19a-4147-9430-93e0b122eea3", "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "453eb516-4efb-4432-aafa-76ebc357fdb1", new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), "50" },
+                    { "2129e985-a350-4cee-b358-1021014681e3", "6e1768df-3592-4e1c-8a84-1b7824bde8d4", "5416dc1f-7251-4c37-bf13-9c4f2f3e4e9d", new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), "60" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -650,6 +702,11 @@ namespace smeCore.SGP.Migrations
                 name: "IX_ClassAbsences_StudentClassId",
                 table: "ClassAbsences",
                 column: "StudentClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassAbsences_StudentCodeId",
+                table: "ClassAbsences",
+                column: "StudentCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClassModeCalendars_ClassModeId",
@@ -714,8 +771,8 @@ namespace smeCore.SGP.Migrations
                 column: "RegionalBoardEducationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SchoolTerm_SchoolYearId",
-                table: "SchoolTerm",
+                name: "IX_SchoolTerms_SchoolYearId",
+                table: "SchoolTerms",
                 column: "SchoolYearId");
 
             migrationBuilder.CreateIndex(
@@ -803,10 +860,7 @@ namespace smeCore.SGP.Migrations
                 name: "SchoolCalendars");
 
             migrationBuilder.DropTable(
-                name: "SchoolTerm");
-
-            migrationBuilder.DropTable(
-                name: "StudentCodes");
+                name: "SchoolTerms");
 
             migrationBuilder.DropTable(
                 name: "UserCodes");
@@ -821,10 +875,10 @@ namespace smeCore.SGP.Migrations
                 name: "StudentClasses");
 
             migrationBuilder.DropTable(
-                name: "SchoolYears");
+                name: "StudentCodes");
 
             migrationBuilder.DropTable(
-                name: "Codes");
+                name: "SchoolYears");
 
             migrationBuilder.DropTable(
                 name: "Roles");
@@ -834,6 +888,9 @@ namespace smeCore.SGP.Migrations
 
             migrationBuilder.DropTable(
                 name: "ClassPolls");
+
+            migrationBuilder.DropTable(
+                name: "Codes");
 
             migrationBuilder.DropTable(
                 name: "Students");

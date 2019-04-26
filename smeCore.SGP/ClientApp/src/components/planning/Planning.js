@@ -227,6 +227,7 @@ export default class Planning extends Component {
     this.setState({ students: students });
   }
 
+
   setClassSchedule(schedule) {
     var model = {
       username: this.props.user.username,
@@ -697,7 +698,7 @@ export default class Planning extends Component {
             this.setState({ calendar: result });
           });
       });
-    // Carrega os alunos
+     //Carrega os alunos
     this.props.apiPost('/api/Planejamento/CarregarAlunosMock', classPlanModel)
       .then(data => {
         if (data.status === 200)
@@ -705,13 +706,18 @@ export default class Planning extends Component {
             this.setState({ students: result });
           });
       });
+
+    //Carregar Alunos Turma
+
+    this.props.apiPost('/api/Planejamento/CarregaAlunosTurma', classPlanModel)
+      .then(data => {
+        if (data.status === 200) {
+
+        }
+      });
     // Carrega os alunos da Sondagem
     this.props.apiPost('/api/Planejamento/CarregarAlunosSondagem', classPlanModel)
       .then(data => {
-        if (data.status === 200)
-          data.json().then(result => {
-            this.setState({ pollStudents: result });
-          });
       });
 
     // Carrega informações do Planejamento Anual
