@@ -3,7 +3,7 @@ import { PollSelect } from '../inputs/PollSelect';
 import { PollSelect2 } from '../inputs/PollSelect2';
 
 export class StudentPoll extends Component {
-    constructor(props) {
+  constructor(props) {
         super(props);
 
         this.state = {

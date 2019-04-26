@@ -709,15 +709,19 @@ export default class Planning extends Component {
 
     //Carregar Alunos Turma
 
-    this.props.apiPost('/api/Planejamento/CarregaAlunosTurma', classPlanModel)
-      .then(data => {
-        if (data.status === 200) {
+    //this.props.apiPost('/api/Planejamento/CarregaAlunosTurma', classPlanModel)
+    //  .then(data => {
+    //    if (data.status === 200) {
 
-        }
-      });
+    //    }
+    //  });
     // Carrega os alunos da Sondagem
     this.props.apiPost('/api/Planejamento/CarregarAlunosSondagem', classPlanModel)
       .then(data => {
+        if (data.status === 200)
+          data.json().then(result => {
+            this.setState({ pollStudents: result });
+          });
       });
 
     // Carrega informações do Planejamento Anual

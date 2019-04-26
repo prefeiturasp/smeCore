@@ -278,7 +278,7 @@ namespace smeCore.SGP.Controllers
     {
       var ListStudantClassRoom = new List<Models.Mocking.StudentClassRoom>();
 
-
+   
       Models.Mocking.StudentClassRoom studant = new Models.Mocking.StudentClassRoom();
 
       studant.CodigoAluno = 10;
