@@ -36,7 +36,7 @@ export default class Login extends Component {
             password: this.state.password
         };
 
-        this.props.apiPost("/api/Auth/Login", credential)
+        this.props.apiPost("/api/Auth/LoginJWT", credential)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 401)
